@@ -1,0 +1,12 @@
+[submodule "external/fmt"]
+	path = external/fmt
+	url = git@github.com:fmtlib/fmt.git
+	shallow = true
+[submodule "external/spdlog"]
+	path = external/spdlog
+	url = git@github.com:gabime/spdlog.git
+	shallow = true
+[submodule "external/StormLib"]
+	path = external/StormLib
+	url = git@github.com:Lectem/StormLib.git
+	shallow = true
