@@ -22,18 +22,18 @@ void DC6::Decode(const char* filename)
 
 bool DC6::extractHeaders()
 {
-    if(fread(&header, sizeof(header), 1, file) != sizeof(header))return false;
+    if(fread(&header, sizeof(header), 1, file) != 1)return false;
     size_t framesNumber = static_cast<size_t>(header.directions * header.frames_per_dir);
     frameHeaders.resize(framesNumber);
 
     framePointers.resize(framesNumber);
-    if(fread(framePointers.data(), framesNumber * sizeof(uint32_t), 1, file) != framesNumber* sizeof(uint32_t))return false;
+    if(fread(framePointers.data(), sizeof(uint32_t), framesNumber, file) != framesNumber)return false;
 
     for (size_t i = 0; i < framesNumber; ++i)
     {
         FrameHeader& frameHeader = frameHeaders[i];
         fseek(file, framePointers[i], SEEK_SET);
-        if(fread(&frameHeader, sizeof(frameHeader), 1, file) != sizeof(frameHeader))return false;
+        if(fread(&frameHeader, sizeof(frameHeader), 1, file) != 1)return false;
         fmt::print("\nframe {}\n", i);
         fmt::print("flip {}\n", frameHeader.flip);
         fmt::print("width {}\n", frameHeader.width);
@@ -88,7 +88,7 @@ std::vector<uint8_t> DC6::decompressFrame(size_t frameNumber) const
                 rawIndex++;
                 if (color == EOF) throw;
                 assert(x >= 0 && y >= 0 && x + fHeader.width * y < fHeader.width * fHeader.height);
-                data[x + fHeader.width * y] = static_cast<uint8_t>(color);
+                data[static_cast<size_t>(x + fHeader.width * y)] = static_cast<uint8_t>(color);
             }
         }
     }

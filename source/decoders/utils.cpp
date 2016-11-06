@@ -22,7 +22,7 @@ void exportToPGM(const char* output, const uint8_t* data, int width, int height,
     FILE* file = fopen(output, "wb");
     if (file) {
         fmt::print(file, "P5 {} {} {}\n", width, height, maxVal);
-        fwrite(data, bpp, width * height, file);
+        fwrite(data, static_cast<size_t>(bpp), static_cast<size_t>(width * height), file);
     }
 }
 
@@ -34,7 +34,7 @@ void exportToPPM(const char* output, const uint8_t* data, int width, int height,
     FILE* file = fopen(output, "wb");
     if (file) {
         fmt::print(file, "P6 {} {} 255\n", width, height);
-        for (int i = 0; i < width * height; ++i)
+        for (size_t i = 0; i < static_cast<size_t>(width * height); ++i)
         {
             const std::vector<Palette::Color>& colors = palette.colors;
             fputc(colors[data[i]].r, file);

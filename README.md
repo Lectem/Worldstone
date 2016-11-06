@@ -13,7 +13,10 @@ Just started, so there's only the basic C++ tree, and a simple DC6 decoder.
 ### Prerequises
 * CMake 3.6 or higher
 * A C++14 compiler
-
+  - GCC 6.0 - tested (5.0 should work)
+  - clang 3.8 with libc++ - tested
+  - MSVC 14 (Visual 2015) - tested
+ 
 ### Copy-paste from command line (in the project directory):
 
     git submodule update --init
