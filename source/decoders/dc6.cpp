@@ -22,18 +22,18 @@ void DC6::Decode(const char* filename)
 
 bool DC6::extractHeaders()
 {
-    fread(&header, sizeof(header), 1, file);
+    if(fread(&header, sizeof(header), 1, file) != sizeof(header))return false;
     size_t framesNumber = static_cast<size_t>(header.directions * header.frames_per_dir);
     frameHeaders.resize(framesNumber);
 
     framePointers.resize(framesNumber);
-    fread(framePointers.data(), framesNumber * sizeof(uint32_t), 1, file);
+    if(fread(framePointers.data(), framesNumber * sizeof(uint32_t), 1, file) != framesNumber* sizeof(uint32_t))return false;
 
     for (size_t i = 0; i < framesNumber; ++i)
     {
         FrameHeader& frameHeader = frameHeaders[i];
         fseek(file, framePointers[i], SEEK_SET);
-        fread(&frameHeader, sizeof(frameHeader), 1, file);
+        if(fread(&frameHeader, sizeof(frameHeader), 1, file) != sizeof(frameHeader))return false;
         fmt::print("\nframe {}\n", i);
         fmt::print("flip {}\n", frameHeader.flip);
         fmt::print("width {}\n", frameHeader.width);
