@@ -21,11 +21,11 @@ matrix:
     - os: linux
       compiler: clang
       addons: {apt: {packages: [clang-3.8] , sources: [ubuntu-toolchain-r-test,llvm-toolchain-precise-3.8]}}
-      env: BUILD_TYPE=Debug COMPILER_VER=3.8
+      env: BUILD_TYPE=Debug COMPILER_VER=3.8 CXXFLAGS="-stdlib=libc++"
     - os: linux
       compiler: clang
       addons: {apt: {packages: [clang-3.8] , sources: [ubuntu-toolchain-r-test,llvm-toolchain-precise-3.8]}}
-      env: BUILD_TYPE=Release COMPILER_VER=3.8
+      env: BUILD_TYPE=Release COMPILER_VER=3.8 CXXFLAGS="-stdlib=libc++"
 
 
 cache:
