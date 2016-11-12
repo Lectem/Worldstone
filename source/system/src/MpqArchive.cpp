@@ -5,12 +5,15 @@
 #include "MpqArchive.h"
 #include <StormLib.h>
 #include <fmt/format.h>
+#include <type_traits>
 
 namespace WorldStone
 {
 
 MpqArchive::MpqArchive(const Archive::path& MpqFileName) : mpqFileName(MpqFileName)
 {
+    static_assert(std::is_same<MpqArchive::HANDLE, ::HANDLE>(),
+                  "Make sure we correctly defined HANDLE type");
     load();
 }
 

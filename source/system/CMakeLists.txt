@@ -1,6 +1,6 @@
 project(WSsystem)
 
-set(system_sources src/MpqArchive.cpp src/FileStream.cpp)
+set(system_sources src/MpqArchive.cpp src/FileStream.cpp src/_VTablesTU.cpp)
 set(system_headers include/Archive.h include/MpqArchive.h include/Stream.h include/IOBase.h include/FileStream.h src/FileStream.cpp)
 
 

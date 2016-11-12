@@ -28,10 +28,10 @@ protected:
     virtual bool unload()    = 0;
 
 public:
-    virtual ~Archive(){};
+    virtual ~Archive();
 
     virtual bool exists(const path& filePath)    = 0;
     virtual StreamPtr open(const path& filePath) = 0;
-    virtual bool isThreadSafe() { return false; };
+    virtual bool isThreadSafe() { return false; }
 };
 }

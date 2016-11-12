@@ -24,7 +24,7 @@ public:
     virtual long tell() = 0;
     virtual bool seek(long offset, seekdir origin) = 0;
 
-    virtual ~Stream(){};
+    virtual ~Stream();
 };
 
 using StreamPtr = std::unique_ptr<Stream>;
