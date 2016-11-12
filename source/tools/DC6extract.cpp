@@ -1,7 +1,5 @@
-#include <StormLib.h>
 #include <dc6.h>
 #include <fmt/format.h>
-#include <palette.h>
 
 int main(int argc, char* argv[])
 {

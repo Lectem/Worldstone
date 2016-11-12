@@ -1,9 +1,9 @@
 //
 // Created by Lectem on 05/11/2016.
 //
+#include "utils.h"
 #include <stdio.h>
 #include <fmt/format.h>
-#include <utils.h>
 #include "palette.h"
 
 namespace Utils
@@ -11,7 +11,7 @@ namespace Utils
 
 void exportToPGM(const char* output, const uint8_t* data, int width, int height, int maxVal)
 {
-    assert(width * height > 0);
+    assert(width > 0 && height > 0);
     if (maxVal == -1) {
         for (int i = 0; i < width * height; ++i)
         {
@@ -29,7 +29,7 @@ void exportToPGM(const char* output, const uint8_t* data, int width, int height,
 void exportToPPM(const char* output, const uint8_t* data, int width, int height,
                  const Palette& palette)
 {
-    assert(width * height > 0);
+    assert(width > 0 && height > 0);
     assert(palette.isValid());
     FILE* file = fopen(output, "wb");
     if (file) {
