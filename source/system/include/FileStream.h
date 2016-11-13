@@ -34,6 +34,6 @@ public:
      * @warning If the current position is invalid, the new position might be EOF
      */
     long   size();
-    size_t read(void* buffer, size_t size, size_t count) override;
+    streamsize read(void* buffer, size_t size, size_t count) override;
 };
 }

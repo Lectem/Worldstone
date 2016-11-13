@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Archive.h"
+#include "Stream.h"
 
 namespace WorldStone
 {
@@ -49,7 +50,7 @@ public:
     bool is_open() const { return file != nullptr; }
     bool close();
 
-    size_t read(void* buffer, size_t size, size_t count) override;
+    streamsize read(void* buffer, size_t size, size_t count) override;
 
     long tell() override;
 

@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
             while (file && file->good() && outFile)
             {
                 char   buffer[1024];
-                size_t readFromMpq = file->read(buffer, 1, sizeof(buffer));
+                streamsize readFromMpq = file->read(buffer, 1, sizeof(buffer));
                 outFile.write(buffer, readFromMpq);
             }
         }

@@ -30,7 +30,7 @@ bool FileStream::close()
     return good();
 }
 
-size_t FileStream::read(void* buffer, size_t size, size_t count)
+streamsize FileStream::read(void* buffer, size_t size, size_t count)
 {
     const size_t readSize = fread(buffer, size, count, file);
     if (readSize != size) {
@@ -39,7 +39,7 @@ size_t FileStream::read(void* buffer, size_t size, size_t count)
         else
             setstate(failbit);
     }
-    return readSize;
+    return static_cast<streamsize>(readSize);
 }
 
 long FileStream::tell()

@@ -75,7 +75,7 @@ bool MpqFileStream::close()
     return good();
 }
 
-size_t MpqFileStream::read(void* buffer, size_t size, size_t count)
+streamsize MpqFileStream::read(void* buffer, size_t size, size_t count)
 {
     DWORD readBytes = 0;
     if (!SFileReadFile(file, buffer, static_cast<DWORD>(size * count), &readBytes, NULL)) {
