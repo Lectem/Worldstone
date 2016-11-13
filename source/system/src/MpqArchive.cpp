@@ -49,8 +49,7 @@ bool MpqArchive::exists(const path& filePath)
 
 StreamPtr MpqArchive::open(const path& filePath)
 {
-    (void)filePath;
-    return nullptr;
+    return std::make_unique<MpqFileStream>(*this, filePath);
 }
 
 MpqFileStream::MpqFileStream(MpqArchive& archive, const path& filename)
