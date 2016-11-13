@@ -14,7 +14,7 @@ FileStream::FileStream(const path& filename)
 
 FileStream::~FileStream()
 {
-    if (file) fclose(file);
+    close();
 }
 
 bool FileStream::open(const path& filename)
