@@ -6,6 +6,7 @@
 
 #include "Archive.h"
 #include "Stream.h"
+#include <vector>
 
 namespace WorldStone
 {
@@ -24,6 +25,9 @@ public:
     StreamPtr open(const path& filePath) override;
 
     HANDLE getInternalHandle() { return mpqHandle; }
+
+    void addListFile(const path& listFilePAth);
+    std::vector<path> findFiles(const path& searchMask = "*");
 
 private:
     bool load() override;

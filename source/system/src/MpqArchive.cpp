@@ -22,6 +22,29 @@ MpqArchive::~MpqArchive()
     unload();
 }
 
+void MpqArchive::addListFile(const path& listFilePAth)
+{
+    if (!mpqHandle) return;
+    if (SFileAddListFile(mpqHandle, listFilePAth.c_str()) != ERROR_SUCCESS)
+        setstate(failbit);
+}
+
+std::vector<MpqArchive::path> MpqArchive::findFiles(const path& searchMask)
+{
+    if (!mpqHandle) return{};
+    std::vector<path> list;
+    SFILE_FIND_DATA findFileData;
+    HANDLE findHandle = SFileFindFirstFile(mpqHandle, searchMask.c_str(), &findFileData, NULL);
+
+    do {
+        list.emplace_back(findFileData.cFileName);
+    }
+    while (SFileFindNextFile(findHandle, &findFileData));
+
+    SFileFindClose(findHandle);
+    return list;
+}
+
 bool MpqArchive::load()
 {
     if (mpqHandle) throw std::runtime_error("tried to reopen mpq archive");

@@ -16,7 +16,8 @@ Just started, so there's only the basic C++ tree, and a simple DC6 decoder.
   - GCC 6.0 - tested (5.0 should work)
   - clang 3.8 with libc++ or libstdc++-5(only 6 is tested) - tested
   - MSVC 14 (Visual 2015) - tested
- 
+  - QT 5.x for the tools
+  
 ### Copy-paste from command line (in the project directory):
 
     git submodule update --init
@@ -28,6 +29,11 @@ Just started, so there's only the basic C++ tree, and a simple DC6 decoder.
 
 You can tweak the configuration using the following CMake variable (I suggest using cmake-gui)
 * ENABLE_LTO : Use link time optimization on non debug builds if available
+* CMAKE_PREFIX_PATH : You might need to add your Qt path to this variable
+
+### On Windows
+
+- In case where you can't run the tools from Visual (and don't want to copy the DLLs), add the QTDIR environment variable with the Qt path as value (example : C:\Qt\5.7\msvc2015_64) then add %QTDIR%\bin and %QTDIR%\plugins to your PATH variable.
 
 ## Short-term objectives
 * DC6/DCC viewer

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6)	
+cmake_minimum_required(VERSION 3.6)
 
 add_subdirectory(decoders)
 add_subdirectory(system)
@@ -8,7 +8,7 @@ target_link_libraries(DC6extract WS::decoders WS::system
 						optimized enable_lto)
 
 target_set_warnings(DC6extract
-					ENABLE ALL 
+					ENABLE ALL
 					AS_ERROR ALL
 					DISABLE Annoying)
 
@@ -21,5 +21,7 @@ target_set_warnings(MPQextract
 		ENABLE ALL
 		AS_ERROR ALL
 		DISABLE Annoying)
+
+add_subdirectory(tools/DCxViewer)
 
 set_directory_properties(PROPERTIES VS_STARTUP_PROJECT DC6extract)
