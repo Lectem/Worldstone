@@ -17,4 +17,14 @@ Archive::~Archive()
 Stream::~Stream()
 {
 }
+
+int Stream::getc()
+{
+    char val;
+    this->read(&val, sizeof(char), 1);
+    if (good())
+        return val;
+    else
+        return -1;
+}
 }

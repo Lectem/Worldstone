@@ -33,7 +33,7 @@ bool FileStream::close()
 streamsize FileStream::read(void* buffer, size_t size, size_t count)
 {
     const size_t readSize = fread(buffer, size, count, file);
-    if (readSize != size) {
+    if (readSize != count) {
         if (feof(file))
             setstate(eofbit);
         else

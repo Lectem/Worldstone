@@ -108,7 +108,7 @@ streamsize MpqFileStream::read(void* buffer, size_t size, size_t count)
         else
         {
             setstate(failbit);
-            return 0;
+            return -1;
         }
     }
     return readBytes;

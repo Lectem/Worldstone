@@ -23,6 +23,7 @@ public:
     static const seekdir end = std::ios_base::end;
 
     virtual streamsize read(void* buffer, size_t size, size_t count) = 0;
+    virtual int  getc();
     virtual long tell() = 0;
     virtual bool seek(long offset, seekdir origin) = 0;
 
