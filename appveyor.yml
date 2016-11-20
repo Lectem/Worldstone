@@ -30,8 +30,11 @@ before_build:
   - mkdir build
   - cd build
   - if "%platform%"=="Win32" set CMAKE_GENERATOR_NAME=Visual Studio 14 2015
+  - if "%platform%"=="Win32" set QTDIR="C:\Qt\5.7\msvc2015"
   - if "%platform%"=="x64"   set CMAKE_GENERATOR_NAME=Visual Studio 14 2015 Win64
-  - cmake -G "%CMAKE_GENERATOR_NAME%" -DCMAKE_BUILD_TYPE=%configuration% ..
+  - if "%platform%"=="x64"   set QTDIR="C:\Qt\5.7\msvc2015_64"
+  - set PATH=%PATH%;%QTDIR%\bin
+  - cmake -G "%CMAKE_GENERATOR_NAME%" -DCMAKE_BUILD_TYPE=%configuration% -DCMAKE_PREFIX_PATH="%QTDIR%" ..
   - cd ..
 
 build:
