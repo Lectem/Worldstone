@@ -20,7 +20,7 @@ Stream::~Stream()
 
 int Stream::getc()
 {
-    char val;
+    uint8_t val;
     this->read(&val, sizeof(char), 1);
     if (good())
         return val;
