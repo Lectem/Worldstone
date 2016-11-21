@@ -101,17 +101,25 @@ bool MpqFileStream::close()
 streamsize MpqFileStream::read(void* buffer, size_t size, size_t count)
 {
     DWORD readBytes = 0;
-    if (!SFileReadFile(file, buffer, static_cast<DWORD>(size * count), &readBytes, NULL)) {
-        const DWORD lastError = GetLastError();
-        if (lastError == ERROR_HANDLE_EOF)
-            setstate(eofbit);
-        else
-        {
-            setstate(failbit);
-            return -1;
+    streamsize readCount = 0;
+    while (count-- || !good())
+    {
+        if (!SFileReadFile(file, buffer, static_cast<DWORD>(size), &readBytes, NULL)) {
+            const DWORD lastError = GetLastError();
+            if (lastError == ERROR_HANDLE_EOF)
+                setstate(eofbit);
+            else
+            {
+                setstate(failbit);
+                return -1;
+            }
+        }
+        else {
+            buffer = static_cast<char*>(buffer) + size;
+            readCount++;
         }
     }
-    return readBytes;
+    return readCount;
 }
 
 long MpqFileStream::tell()
