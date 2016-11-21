@@ -30,14 +30,15 @@ void DC6::Decode(const char* filename)
     bool DC6::extractHeaders()
     {
         if (stream->read(&header, sizeof(header), 1) != 1) return false;
-        int framesNumber = header.directions * header.frames_per_dir;
+        size_t framesNumber = header.directions * header.frames_per_dir;
         frameHeaders.resize(framesNumber);
 
         framePointers.resize(framesNumber);
-        if (stream->read(framePointers.data(), sizeof(uint32_t), framesNumber) != framesNumber)
+        if (static_cast<size_t>(
+                stream->read(framePointers.data(), sizeof(uint32_t), framesNumber)) != framesNumber)
             return false;
 
-        for (int i = 0; i < framesNumber; ++i)
+        for (size_t i = 0; i < framesNumber; ++i)
         {
             FrameHeader& frameHeader = frameHeaders[i];
             stream->seek(framePointers[i], Stream::beg);
