@@ -23,6 +23,7 @@ void exportToPGM(const char* output, const uint8_t* data, int width, int height,
     if (file) {
         fmt::print(file, "P5 {} {} {}\n", width, height, maxVal);
         fwrite(data, static_cast<size_t>(bpp), static_cast<size_t>(width * height), file);
+        fclose(file);
     }
 }
 
@@ -41,6 +42,7 @@ void exportToPPM(const char* output, const uint8_t* data, int width, int height,
             fputc(colors[data[i]].g, file);
             fputc(colors[data[i]].b, file);
         }
+        fclose(file);
     }
 }
 }

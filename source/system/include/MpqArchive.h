@@ -18,7 +18,10 @@ class MpqArchive : public Archive
 {
     using HANDLE = void*; // Do not expose stormlib
 public:
+    MpqArchive() { setstate(badbit); }
     MpqArchive(const path& MpqFileName);
+    MpqArchive(MpqArchive&& toMove);
+    MpqArchive& operator=(MpqArchive&& toMove);
     ~MpqArchive() override;
 
     bool exists(const path& filePath) override;

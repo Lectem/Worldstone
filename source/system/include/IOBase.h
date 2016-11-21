@@ -29,9 +29,9 @@ protected:
 
     void setstate(iostate state) { _state = _state | state; }
 
+public:
     explicit operator bool() const { return !fail(); }
     bool operator!() const { return fail(); }
-public:
     bool good() const { return _state == goodbit; }
     bool fail() const { return (_state & (badbit | failbit)) != 0; }
     bool bad() const { return (_state & badbit) != 0; }

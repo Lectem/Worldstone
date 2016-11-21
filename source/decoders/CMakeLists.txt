@@ -8,7 +8,7 @@ target_include_directories(ws_decoders
 		PUBLIC include
 		PRIVATE src)
 target_link_libraries(ws_decoders
-		PUBLIC fmt spdlog
+		PUBLIC fmt spdlog WS::system
 		optimized enable_lto)
 target_set_warnings(ws_decoders
 		ENABLE ALL

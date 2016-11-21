@@ -28,6 +28,9 @@ protected:
     virtual bool unload()    = 0;
 
 public:
+    Archive()               = default;
+    Archive(const Archive&) = delete;
+    Archive& operator=(const Archive&) = delete;
     virtual ~Archive();
 
     virtual bool exists(const path& filePath)    = 0;

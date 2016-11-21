@@ -10,6 +10,19 @@
 namespace WorldStone
 {
 
+MpqArchive::MpqArchive(MpqArchive&& toMove)
+{
+    *this = std::move(toMove);
+}
+
+MpqArchive& MpqArchive::operator=(MpqArchive&& toMove)
+{
+    std::swap(mpqHandle, toMove.mpqHandle);
+    std::swap(mpqFileName, toMove.mpqFileName);
+    std::swap(_state, toMove._state);
+    return *this;
+}
+
 MpqArchive::MpqArchive(const Archive::path& MpqFileName) : mpqFileName(MpqFileName)
 {
     static_assert(std::is_same<MpqArchive::HANDLE, ::HANDLE>(),
@@ -87,7 +100,7 @@ MpqFileStream::~MpqFileStream()
 
 bool MpqFileStream::open(MpqArchive& archive, const path& filename)
 {
-    if (!SFileOpenFileEx(archive.getInternalHandle(), filename.c_str(), 0, &file))
+    if (!archive || !SFileOpenFileEx(archive.getInternalHandle(), filename.c_str(), 0, &file))
         setstate(failbit);
     return good();
 }

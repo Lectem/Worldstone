@@ -1,6 +1,8 @@
 #include <dc6.h>
 #include <fmt/format.h>
 
+using WorldStone::DC6;
+
 int main(int argc, char* argv[])
 {
     if (argc == 4) {
@@ -14,7 +16,7 @@ int main(int argc, char* argv[])
     {
         fmt::print("Usage : DC6extract file.dc6 palette.dat output\n");
         fmt::print(
-            "This tool will extract all frames of dc6 file to output{direction}{frame}.ppm\n");
+            "This tool will extract all frames of dc6 file to output[direction][frame].ppm\n");
     }
     return 0;
 }

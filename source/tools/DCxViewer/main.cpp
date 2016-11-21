@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include "DCxView.h"
 
 void DCxViewerApp::openMpq(const QUrl& mpqFileUrl)
 {
@@ -56,10 +57,21 @@ void DCxViewerApp::setFileList(QStringList & newMpqFilesList)
 void DCxViewerApp::fileActivated(const QString& fileName)
 {
     qDebug() << "activated " << fileName;
+    if (!mpqArchive) return;
+    Palette palette;
+    palette.Decode(
+        "E:\\progs\\PC\\diabloSS\\resources\\PaulSiramy\\dcc\\merge_dcc\\datas\\act1.dat");
+    DC6 dc6;
+    dc6.Decode(mpqArchive->open(fileName.toStdString()));
+    dc6.exportToPPM("test", palette);
 }
 
 int main(int argc, char *argv[])
 {
+    qmlRegisterType<QDC6Header>("DCxViewer", 1, 0, "QDC6Header");
+    qmlRegisterType<QDC6FrameHeader>("DCxViewer", 1, 0, "QDC6FrameHeader");
+    qmlRegisterType<QDC6>("DCxViewer", 1, 0, "QDC6");
+
     DCxViewerApp app(argc, argv);
     QStringList files;
     files.append("Item 1");

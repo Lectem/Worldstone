@@ -2,13 +2,17 @@
 
 #include <cstdio>
 #include <stdint.h>
+#include <FileStream.h>
 #include <memory>
 #include <type_traits>
 #include <vector>
 #include "palette.h"
 
+namespace WorldStone
+{
 class DC6
 {
+public:
     struct Header
     {
         int32_t  version;        ///< DC6 major version, usually 6
@@ -38,14 +42,18 @@ class DC6
     static_assert(sizeof(FrameHeader) == 8 * sizeof(uint32_t),
                   "DC6::FrameHeader struct needs to be packed");
 
-    FILE*                    file = nullptr;
+protected:
+    StreamPtr                stream = nullptr;
     Header                   header;
     std::vector<uint32_t>    framePointers;
     std::vector<FrameHeader> frameHeaders;
 
 public:
-    ~DC6();
     void Decode(const char* filename);
+    void Decode(StreamPtr&& streamPtr);
+
+    /// Resets the decoder and frees resources
+    void Reset() { *this = DC6{}; }
 
     bool extractHeaders();
     /**
@@ -57,3 +65,4 @@ public:
 
     void exportToPPM(const char* ppmFilenameBase, const Palette& palette) const;
 };
+}
