@@ -17,7 +17,7 @@ public:
     {
         int32_t  version;        ///< DC6 major version, usually 6
         int32_t  sub_version;    ///< DC6 minor version, usually 1
-        int32_t  zeros;          ///< Always 0 ? might be micro version
+        int32_t  zeros;          ///< Always 0 ? might be micro version or encoding
         uint8_t  pad_bytes[4];   ///< Always 0xEEEEEEEE or 0xCDCDCDCD
         uint32_t directions;     ///< Number of directions in this file
         uint32_t frames_per_dir; ///< Number of frames for each direction
@@ -56,6 +56,10 @@ public:
     void Reset() { *this = DC6{}; }
 
     bool extractHeaders();
+
+    const Header&                   getHeader() { return header; }
+    const std::vector<FrameHeader>& getFameHeaders() { return frameHeaders; }
+
     /**
      * Decompress the given frame
      * @param frameNumber The frame number in the file

@@ -9,8 +9,8 @@ find_package(Qt5 COMPONENTS Quick Widgets QUIET)
 find_package(Qt5QuickCompiler QUIET)
 
 if(Qt5_FOUND)
-	set(SRC_LIST main.cpp main.h DCxView.cpp DCxView.h)
-
+	set(SRC_LIST main.cpp DCxMainWindow.cpp DCxView.cpp)
+	set(HDR_LIST main.h DCxMainWindow.h DCxView.h)
 	if(Qt5QuickCompiler_FOUND)
 	qtquick_compiler_add_resources(RESOURCES main.qrc)
 	else()
@@ -18,7 +18,7 @@ if(Qt5_FOUND)
 	endif()
 
 
-	add_executable(DCxViewer WIN32 ${SRC_LIST} ${RESOURCES})
+	add_executable(DCxViewer WIN32 ${SRC_LIST} ${HDR_LIST} ${RESOURCES})
 	target_link_libraries(DCxViewer Qt5::Quick Qt5::Widgets WS::system WS::decoders)
 	message(STATUS "Found Qt5 at ${Qt5_DIR}, building DCxViewer.")
 else()
