@@ -58,17 +58,24 @@ void DC6::Decode(const char* filename)
 
     std::vector<uint8_t> DC6::decompressFrame(size_t frameNumber) const
     {
+        const FrameHeader& fHeader = frameHeaders[frameNumber];
+        // Allocate memory for the decoded data
+        std::vector<uint8_t> data(static_cast<size_t>(fHeader.width * fHeader.height));
+
+        decompressFrameIn(frameNumber, data.data());
+        return data;
+    }
+
+    void DC6::decompressFrameIn(size_t frameNumber, uint8_t* data) const
+    {
         assert(stream != nullptr);
         stream->seek(framePointers[frameNumber] + sizeof(FrameHeader), Stream::beg);
         const FrameHeader& fHeader = frameHeaders[frameNumber];
+        assert(fHeader.width > 0 && fHeader.height > 0);
 
-        // The block can't be bigger than 256 x 256 because of the compression
-        assert(fHeader.width > 0 && fHeader.width <= 256 && fHeader.height > 0 &&
-               fHeader.height <= 256);
-        // Allocate memory for the decoded data, init to 0
-        std::vector<uint8_t> data(static_cast<size_t>(fHeader.width * fHeader.height));
+        // TODO: figure if we should invert data here or let the renderer do it
+        // assert(!fHeader.flip);
 
-        assert(!fHeader.flip);
         // We're reading it bottom to top, but save data with the y axis from top to
         // bottom
         int x = 0, y = fHeader.height - 1;
@@ -103,8 +110,6 @@ void DC6::Decode(const char* filename)
             }
         }
         assert(fHeader.length == rawIndex);
-
-        return data;
     }
 
     void DC6::exportToPPM(const char* ppmFilenameBase, const Palette& palette) const

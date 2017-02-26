@@ -17,6 +17,8 @@ struct Palette
         uint8_t r, g, b;
     };
 
+    static const int colorCount = 256;
+
     void Decode(const char* filename);
     std::vector<Color> colors;
     bool               isValid() const { return _isValid; }
