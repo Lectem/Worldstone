@@ -13,6 +13,7 @@ private slots:
     void refreshMPQList();
     void browseForMPQ();
     void browseForListFile();
+    void browseForPalettesFolder();
 
 private:
     void               createActions();

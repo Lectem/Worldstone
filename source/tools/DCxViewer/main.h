@@ -15,6 +15,7 @@ class DCxViewerApp : public QApplication
 private:
     QString mpqFileName;
     QString listFileName;
+    QString                     palettesFolder;
     std::unique_ptr<MpqArchive> mpqArchive;
     QStringList                 mpqFiles;
 
@@ -29,6 +30,7 @@ public:
     void writeSettings();
 
     const QStringList& getFileList()const { return mpqFiles; };
+    const QString&     getPalettesFolder() const { return palettesFolder; };
     void setFileList(QStringList & newMpqFilesList);
     void updateMpqFileList();
     QString getMpqFileName() { return mpqFileName; }
@@ -43,8 +45,10 @@ public slots :
     void openMpq(const QUrl& mpqFileUrl);
     void addListFile(const QUrl& listFileUrl);
     void fileActivated(const QString& fileName);
+    void setPalettesFolder(const QUrl& folder);
 
 signals:
     void fileListUpdated();
     void requestDisplayDC6(const QString& fileName);
+    void paletteFolderChanged(const QString& newFolder);
 };

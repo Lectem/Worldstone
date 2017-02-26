@@ -27,7 +27,9 @@ void DCxViewerApp::readSettings()
     QSettings settings;
     mpqFileName  = settings.value("MPQFile", QString()).toString();
     listFileName = settings.value("Listfile", QString()).toString();
+    palettesFolder = settings.value("PaletteFolder", QString()).toString();
     if (!mpqFileName.isEmpty()) openMpq(mpqFileName);
+    if (!palettesFolder.isEmpty()) emit paletteFolderChanged(palettesFolder);
 }
 
 void DCxViewerApp::writeSettings()
@@ -35,6 +37,7 @@ void DCxViewerApp::writeSettings()
     QSettings settings;
     settings.setValue("MPQFile", mpqFileName);
     settings.setValue("Listfile", listFileName);
+    settings.setValue("PaletteFolder", palettesFolder);
 }
 
 void DCxViewerApp::openMpq(const QUrl& mpqFileUrl)
@@ -63,6 +66,15 @@ void DCxViewerApp::addListFile(const QUrl& listFileUrl)
         mpqArchive->addListFile(listFileName.toStdString());
         updateMpqFileList();
     }
+}
+
+void DCxViewerApp::setPalettesFolder(const QUrl& paletteFolderUrl)
+{
+    if (paletteFolderUrl.isLocalFile())
+        palettesFolder = paletteFolderUrl.toLocalFile();
+    else
+        palettesFolder = paletteFolderUrl.toString();
+    emit paletteFolderChanged(palettesFolder);
 }
 
 void DCxViewerApp::updateMpqFileList()
