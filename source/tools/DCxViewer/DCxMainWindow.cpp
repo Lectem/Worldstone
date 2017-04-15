@@ -25,6 +25,7 @@ DCxMainWindow::DCxMainWindow()
     dock = new QDockWidget(tr("File information"), this);
     dock->setFeatures(QDockWidget::DockWidgetFeature::DockWidgetMovable |
                       QDockWidget::DockWidgetFeature::DockWidgetFloatable);
+    dock->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
     DC6View* dc6view = new DC6View(this);
     dc6view->loadPalettes(DCxViewerApp::instance()->getPalettesFolder());
     dock->setWidget(dc6view);

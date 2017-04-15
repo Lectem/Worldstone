@@ -12,13 +12,17 @@ DC6View::DC6View(QWidget* parent, Qt::WindowFlags flags)
       frameHeaderInfo(new QLabel(this)),
       image(new QLabel(this)),
       frameSpinBox(new QSpinBox(this)),
-      directionSpinBox(new QSpinBox(this))
+      directionSpinBox(new QSpinBox(this)),
+      animationTimer(new QTimer(this)),
+      framerateSlider(new QSlider(Qt::Horizontal, this))
 {
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addWidget(headerInfo);
     layout->addWidget(frameInfo);
     layout->addWidget(frameHeaderInfo);
     layout->addWidget(image);
+    layout->addStretch();
+
     frameSpinBox->setRange(0, 0);
     frameSpinBox->setWrapping(true);
     layout->addWidget(new QLabel(tr("Frame"), frameSpinBox));
@@ -32,6 +36,21 @@ DC6View::DC6View(QWidget* parent, Qt::WindowFlags flags)
             [this] { refreshDC6Frame(); });
     connect(directionSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
             [this] { refreshDC6Frame(); });
+
+    connect(animationTimer, &QTimer::timeout, this, &DC6View::nextFrame);
+
+    frameSpinBox->installEventFilter(this);
+
+    layout->addWidget(framerateSlider);
+    connect(framerateSlider, &QSlider::valueChanged, [=](int newValue) {
+        animationTimer->setInterval(1000.0 / newValue);
+        animationTimer->start();
+    });
+    framerateSlider->setMinimum(1);
+    framerateSlider->setMaximum(120);
+    framerateSlider->setValue(5);
+
+    animationTimer->stop();
 }
 
 void DC6View::loadPalettes(const QString& paletteFolder)
@@ -41,6 +60,7 @@ void DC6View::loadPalettes(const QString& paletteFolder)
 
 void DC6View::displayDC6(const QString& fileName)
 {
+    animationTimer->stop();
     currentDC6 = std::make_unique<DC6>();
     DC6& dc6   = *currentDC6;
     dc6.Decode(DCxViewerApp::instance()->getFilePtr(fileName));
@@ -68,6 +88,12 @@ void DC6View::displayDC6(const QString& fileName)
         directionSpinBox->setSuffix("/" + QString::number(header.directions - 1));
         refreshDC6Frame();
     }
+    animationTimer->start();
+}
+
+void DC6View::nextFrame()
+{
+    frameSpinBox->setValue(frameSpinBox->value() + 1);
 }
 
 void DC6View::refreshDC6Frame()
@@ -90,7 +116,7 @@ void DC6View::refreshDC6Frame()
                         "<tr><td>size:     </td> <td>{}x{}</td></tr>"
                         "<tr><td>offset_x: </td> <td>{}   </td></tr>"
                         "<tr><td>offset_y: </td> <td>{}   </td></tr>"
-                        "<tr><td>flip:   </td> <td>{}   </td></tr>"
+                        "<tr><td>flip:     </td> <td>{}   </td></tr>"
                         "<tr><td>chunks:   </td> <td>{}   </td></tr>"
                         "</table>",
                         frameHeader.width, frameHeader.height, frameHeader.offset_x,
@@ -98,6 +124,7 @@ void DC6View::refreshDC6Frame()
         frameHeaderInfo->setText(qstr);
 
         // Display the image
+        // This costs way too much when playing the animation, but enough for now
 
         auto   data = currentDC6->decompressFrame(frame);
         QImage bmp(frameHeader.width, frameHeader.height, QImage::Format::Format_Indexed8);
@@ -128,4 +155,14 @@ void DC6View::refreshDC6Frame()
         frameHeaderInfo->hide();
         image->hide();
     }
+}
+
+bool DC6View::eventFilter(QObject* obj, QEvent* event)
+{
+    if (obj == frameSpinBox) {
+        if (event->type() == QEvent::FocusIn) {
+            animationTimer->stop();
+        }
+    }
+    return QObject::eventFilter(obj, event);
 }
