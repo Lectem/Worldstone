@@ -7,7 +7,8 @@ add_subdirectory(fmt EXCLUDE_FROM_ALL)
 add_subdirectory(spdlog EXCLUDE_FROM_ALL)
 target_compile_definitions(spdlog INTERFACE SPDLOG_FMT_EXTERNAL)
 
-
+# For now we are using a slightly modified version of StormLib because the
+# original CMakeLists.txt is not very `add_subdirectory friendly`
 add_subdirectory(StormLib EXCLUDE_FROM_ALL)
 target_set_warnings(storm DISABLE ALL)
 
