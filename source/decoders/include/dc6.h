@@ -49,8 +49,8 @@ protected:
     std::vector<FrameHeader> frameHeaders;
 
 public:
-    void Decode(const char* filename);
-    void Decode(StreamPtr&& streamPtr);
+    bool Decode(const char* filename);
+    bool Decode(StreamPtr&& streamPtr);
 
     /// Resets the decoder and frees resources
     void Reset() { *this = DC6{}; }
@@ -74,4 +74,4 @@ public:
 
     void exportToPPM(const char* ppmFilenameBase, const Palette& palette) const;
 };
-}
+} // namespace WorldStone

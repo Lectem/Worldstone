@@ -7,6 +7,8 @@
 #include <stdint.h>
 #include "palette.h"
 
+namespace WorldStone
+{
 namespace Utils
 {
 /**
@@ -31,4 +33,5 @@ void exportToPGM(const char* output, const uint8_t* data, int width, int height,
  */
 void exportToPPM(const char* output, const uint8_t* data, int width, int height,
                  const Palette& palette);
-}
+} // namespace Utils
+} // namespace WorldStone

@@ -63,7 +63,11 @@ void DC6View::displayDC6(const QString& fileName)
     animationTimer->stop();
     currentDC6 = std::make_unique<DC6>();
     DC6& dc6   = *currentDC6;
-    dc6.Decode(DCxViewerApp::instance()->getFilePtr(fileName));
+	if (!dc6.Decode(DCxViewerApp::instance()->getFilePtr(fileName)))
+	{
+		qDebug() << "Failed to decode " << fileName;
+		return;
+	}
     const DC6::Header& header = dc6.getHeader();
     const QString      qstr   = QString::fromStdString(
         fmt::format("<table>"

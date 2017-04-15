@@ -6,6 +6,8 @@
 #include <fmt/format.h>
 #include "palette.h"
 
+namespace WorldStone
+{
 namespace Utils
 {
 
@@ -45,4 +47,5 @@ void exportToPPM(const char* output, const uint8_t* data, int width, int height,
         fclose(file);
     }
 }
-}
+} // namespace Utils
+} // namespace WorldStone

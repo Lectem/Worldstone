@@ -5,6 +5,7 @@
 #include <dc6.h>
 
 using WorldStone::DC6;
+using WorldStone::Palette;
 
 class DC6View : public QWidget
 {

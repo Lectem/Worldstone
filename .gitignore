@@ -47,3 +47,6 @@ CTestTestfile.cmake
 *.dSYM/
 *.su
 
+# Misc
+
+resources/

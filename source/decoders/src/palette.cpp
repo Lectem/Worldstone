@@ -4,7 +4,8 @@
 
 #include "palette.h"
 #include <stdio.h>
-
+namespace WorldStone
+{
 void Palette::Decode(const char* filename)
 {
     FILE* file = fopen(filename, "rb");
@@ -21,3 +22,4 @@ void Palette::Decode(const char* filename)
         _isValid = true;
     }
 }
+} // namespace WorldStone
