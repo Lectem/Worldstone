@@ -9,7 +9,12 @@
 namespace WorldStone
 {
 /**
- * @brief Helper to load a Diablo 2 palette (.pal format)
+ * @brief Helper to load a Diablo 2 palette (.pal/.dat format)
+ *
+ * Diablo II uses 256 colors palettes to render images.
+ * Most of the time they are used in combination with colormaps to have different color variations
+ * of a same image.
+ *
  */
 struct Palette
 {
@@ -20,7 +25,7 @@ struct Palette
 
     static const int colorCount = 256;
 
-    void Decode(const char* filename);
+    void               Decode(const char* filename);
     std::vector<Color> colors;
     bool               isValid() const { return _isValid; }
 

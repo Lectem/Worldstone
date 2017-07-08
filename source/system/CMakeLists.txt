@@ -1,7 +1,15 @@
 project(WSsystem)
 
 set(system_sources src/MpqArchive.cpp src/FileStream.cpp src/_VTablesTU.cpp)
-set(system_headers include/Archive.h include/MpqArchive.h include/Stream.h include/IOBase.h include/FileStream.h src/FileStream.cpp)
+set(system_headers
+		include/Archive.h
+		include/IOBase.h
+		include/Log.h
+		include/MpqArchive.h
+		include/Stream.h
+		include/FileStream.h
+		src/FileStream.cpp
+)
 
 
 add_library(ws_system ${system_sources} ${system_headers})

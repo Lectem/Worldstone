@@ -33,7 +33,10 @@ bool DC6::Decode(StreamPtr&& streamPtr)
 
 bool DC6::extractHeaders()
 {
+    static_assert(std::is_trivially_copyable<Header>(), "DC6::Header must be trivially copyable");
+    static_assert(sizeof(Header) == 6 * sizeof(uint32_t), "DC6::Header struct needs to be packed");
     if (stream->read(&header, sizeof(header), 1) != 1) return false;
+
     size_t framesNumber = header.directions * header.frames_per_dir;
     frameHeaders.resize(framesNumber);
 
@@ -46,6 +49,11 @@ bool DC6::extractHeaders()
     {
         FrameHeader& frameHeader = frameHeaders[i];
         stream->seek(framePointers[i], Stream::beg);
+
+        static_assert(std::is_trivially_copyable<FrameHeader>(),
+                      "DC6::FrameHeader must be trivially copyable");
+        static_assert(sizeof(FrameHeader) == 8 * sizeof(uint32_t),
+                      "DC6::FrameHeader struct needs to be packed");
         if (stream->read(&frameHeader, sizeof(frameHeader), 1) != 1) return false;
     }
     return true;

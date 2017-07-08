@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cstdio>
 #include <stdint.h>
 #include <FileStream.h>
 #include <memory>
@@ -10,6 +9,17 @@
 
 namespace WorldStone
 {
+/**
+ * @brief Decoder for the DC6 image format
+ *
+ * The DC6 (Diablo Cel 6) format is a compressed sprite image format.
+ * It can store multiple directions and frames in a single file.
+ * A palette is used to generate the colors, but the file itself doesn't have any information about
+ * the palette to use, it is up to the user to know which one to use. @see WorldStone::Palette
+ *
+ * This format is mostly used for menu, items but also for some monsters (eg:Mephisto)
+ * This is an update of diablo 1 Cel format
+ */
 class DC6
 {
 public:
@@ -22,8 +32,6 @@ public:
         uint32_t directions;     ///< Number of directions in this file
         uint32_t frames_per_dir; ///< Number of frames for each direction
     };
-    static_assert(std::is_trivially_copyable<Header>(), "DC6::Header must be trivially copyable");
-    static_assert(sizeof(Header) == 6 * sizeof(uint32_t), "DC6::Header struct needs to be packed");
 
     struct FrameHeader
     {
@@ -37,10 +45,6 @@ public:
         int32_t next_block; ///< Pointer to the next frame
         int32_t length;     ///< Length of the frame in chunks
     };
-    static_assert(std::is_trivially_copyable<FrameHeader>(),
-                  "DC6::FrameHeader must be trivially copyable");
-    static_assert(sizeof(FrameHeader) == 8 * sizeof(uint32_t),
-                  "DC6::FrameHeader struct needs to be packed");
 
 protected:
     StreamPtr                stream = nullptr;
