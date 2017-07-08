@@ -5,8 +5,10 @@ if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
 endif()
 
 # CMake modules
-include("cmake/LTO.cmake")
-include("cmake/Warnings.cmake")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake")
+include(LTO)
+include(Warnings)
+include(RunFixupBundle)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
