@@ -22,12 +22,15 @@ MpqArchive& MpqArchive::operator=(MpqArchive&& toMove)
     std::swap(_state, toMove._state);
     return *this;
 }
-
-MpqArchive::MpqArchive(const Archive::path& MpqFileName) : mpqFileName(MpqFileName)
+MpqArchive::MpqArchive(const char* MpqFileName) : mpqFileName(MpqFileName)
 {
     static_assert(std::is_same<MpqArchive::HANDLE, ::HANDLE>(),
                   "Make sure we correctly defined HANDLE type");
     load();
+}
+
+MpqArchive::MpqArchive(const Archive::path& MpqFileName) : MpqArchive(MpqFileName.data())
+{
 }
 
 MpqArchive::~MpqArchive()
