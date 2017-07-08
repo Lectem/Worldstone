@@ -27,7 +27,7 @@ IncludeCategories:
     Priority:        3
 PointerAlignment: Left
 PenaltyExcessCharacter: 200 # for doxygen inline comments (or it would break before the member name) should be enough for the rest
-AllowShortFunctionsOnASingleLine: Inline
+AllowShortFunctionsOnASingleLine: All
 
 # Unchanged
 
