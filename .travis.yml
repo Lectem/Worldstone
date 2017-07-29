@@ -1,3 +1,4 @@
+dist: trusty
 sudo: false
 language: cpp
 
@@ -20,12 +21,12 @@ matrix:
       env: BUILD_TYPE=Release COMPILER_VER=6
     - os: linux
       compiler: clang
-      addons: {apt: {packages: [clang-3.8,libstdc++-6-dev] , sources: [ubuntu-toolchain-r-test,llvm-toolchain-precise-3.8]}}
-      env: BUILD_TYPE=Debug COMPILER_VER=3.8
+      addons: {apt: {packages: [clang-3.9,llvm-3.9-dev,libstdc++-6-dev] , sources: [ubuntu-toolchain-r-test,llvm-toolchain-precise-3.9]}}
+      env: BUILD_TYPE=Debug COMPILER_VER=3.9
     - os: linux
       compiler: clang
-      addons: {apt: {packages: [clang-3.8,libstdc++-6-dev] , sources: [ubuntu-toolchain-r-test,llvm-toolchain-precise-3.8]}}
-      env: BUILD_TYPE=Release COMPILER_VER=3.8
+      addons: {apt: {packages: [clang-3.9,llvm-3.9-dev,libstdc++-6-dev] , sources: [ubuntu-toolchain-r-test,llvm-toolchain-precise-3.9]}}
+      env: BUILD_TYPE=Release COMPILER_VER=3.9
 
 
 cache:
@@ -39,7 +40,7 @@ install:
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
       mkdir -p $HOME/.local
 
-      CMAKE_URL="http://cmake.org/files/v3.6/cmake-3.6.2-Linux-x86_64.tar.gz"
+      CMAKE_URL="http://cmake.org/files/v3.9/cmake-3.9.0-Linux-x86_64.tar.gz"
       if [ ! -e $HOME/.local/bin/cmake ]; then
           echo "CMake not found in the cache, get and extract it..."
           travis_retry curl -L ${CMAKE_URL} \
@@ -47,8 +48,10 @@ install:
       else
           echo "Using cached CMake"
       fi
-    else
-      if ! brew ls --version cmake &>/dev/null; then brew install cmake; fi
+    fi
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+      brew upgrade cmake || brew install cmake
     fi
 
 script:
