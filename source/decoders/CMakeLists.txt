@@ -1,4 +1,3 @@
-cmake_minimum_required(VERSION 3.6)
 project(decoders)
 
 set(DECODERS_SOURCES src/dc6.cpp src/palette.cpp src/utils.cpp)
@@ -8,8 +7,9 @@ target_include_directories(ws_decoders
 		PUBLIC include
 		PRIVATE src)
 target_link_libraries(ws_decoders
-		PUBLIC fmt spdlog WS::system
-		optimized enable_lto)
+    PUBLIC fmt spdlog WS::system
+)
+target_enable_lto(ws_decoders optimized)
 target_set_warnings(ws_decoders
 		ENABLE ALL
 		AS_ERROR ALL
