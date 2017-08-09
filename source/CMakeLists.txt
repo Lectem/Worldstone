@@ -3,6 +3,7 @@ add_subdirectory(system)
 
 add_executable(DC6extract tools/DC6extract.cpp)
 target_link_libraries(DC6extract
+    PUBLIC
     WS::decoders WS::system
 )
 target_enable_lto(DC6extract optimized)
@@ -16,6 +17,7 @@ target_set_warnings(DC6extract
 
 add_executable(MPQextract tools/MPQextract.cpp)
 target_link_libraries(MPQextract
+    PUBLIC
     WS::system
 )
 target_enable_lto(MPQextract optimized)
