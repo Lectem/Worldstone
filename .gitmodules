@@ -7,3 +7,6 @@
 [submodule "external/StormLib"]
 	path = external/StormLib
 	url = https://github.com/Lectem/StormLib.git
+[submodule "external/doctest"]
+	path = external/doctest
+	url = https://github.com/onqtam/doctest.git
