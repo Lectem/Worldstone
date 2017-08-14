@@ -32,9 +32,13 @@ Just started, so there's only the basic C++ tree, and a simple DC6 decoder.
 
 ### Configuration
 
-You can tweak the configuration using the following CMake variable (I suggest using cmake-gui)
-* ENABLE_LTO : Use link time optimization on non debug builds if available
+You can tweak the configuration using the following CMake variables (I suggest using ccmake or cmake-gui)
 * CMAKE_PREFIX_PATH : You might need to add your Qt path to this variable
+* ENABLE_LTO : Use link time optimization on non debug builds if available
+* ENABLE_WARNINGS_SETTINGS : Set to false to remove warning flags added by the project
+* BUILD_TESTING : Disable all testing features
+* WS_BUILD_TESTS : Disable Worldstone tests
+* WS_USE_DOXYGEN : Should we (try to) add a doc target
 
 ### On Windows
 
