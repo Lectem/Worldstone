@@ -33,3 +33,5 @@ target_set_warnings(ws_system
 
 # Always prefer to use namespaced aliases
 add_library(WS::system ALIAS ws_system)
+
+add_subdirectory(tests)
