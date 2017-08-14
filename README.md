@@ -1,4 +1,8 @@
-# Worldstone  [![Build Status](https://travis-ci.org/Lectem/Worldstone.svg?branch=master)](https://travis-ci.org/Lectem/Worldstone)[![Build status](https://ci.appveyor.com/api/projects/status/537k5bthitwtplta/branch/master?svg=true)](https://ci.appveyor.com/project/Lectem/Worldstone/branch/master)
+# Worldstone
+[![Build Status](https://travis-ci.org/Lectem/Worldstone.svg?branch=master)](https://travis-ci.org/Lectem/Worldstone)
+[![Build status](https://ci.appveyor.com/api/projects/status/537k5bthitwtplta/branch/master?svg=true)](https://ci.appveyor.com/project/Lectem/Worldstone/branch/master)
+[![Pull requests](https://img.shields.io/github/issues-pr-raw/Lectem/Worldstone.svg)](https://github.com/Lectem/Worldstone/pulls)
+[![Opened issues](https://img.shields.io/github/issues-raw/Lectem/Worldstone.svg)](https://github.com/Lectem/Worldstone/issues)
 
 Diablo 2 tools and engine reimplementation in modern c++.
 
