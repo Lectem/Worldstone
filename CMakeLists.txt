@@ -59,7 +59,9 @@ add_subdirectory(source)
 if(WS_BUILD_TESTS)
     # Let the user add options to the test runner if needed
     set(TEST_RUNNER_PARAMS "--force-colors=true" CACHE STRING "Options to add to our test runners commands")
-    list(APPEND CUSTOM_COVERAGE_EXCLUDE "/test/") # Exclude test folders from coverage
+    # Exclude test folders from coverage, keep in sync with .codecov.yml
+    list(APPEND CUSTOM_COVERAGE_EXCLUDE "/tests/")
+
     # You can setup some custom variables and add them to the CTestCustom.cmake.in template to have custom ctest settings
     # For example, you can exclude some directories from the coverage reports such as third-parties and tests
     configure_file(

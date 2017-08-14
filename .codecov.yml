@@ -1,0 +1,5 @@
+# Please keep in sync with our CMake CUSTOM_COVERAGE_EXCLUDE and CTestCustom.cmake
+ignore:
+  - "external"                  # Ignore any third-parties
+  - "*/tests/*"                 # Exclude tests from coverage
+  - "*/CMakeFiles/CMakeTmp/*"   # Exclude try_compile sources
