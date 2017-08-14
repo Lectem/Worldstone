@@ -39,6 +39,11 @@ cmake_dependent_option(WS_BUILD_TESTS
     "BUILD_TESTING" OFF # Stay coherent with CTest variables
 )
 
+# Let the user add options to the test runner if needed
+set(TEST_RUNNER_PARAMS "--force-colors=true" CACHE STRING "Options to add to our test runners commands")
+
+# Global project setup
+
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 find_lto(CXX)
 
@@ -57,8 +62,6 @@ add_subdirectory(source)
 #===========#
 
 if(WS_BUILD_TESTS)
-    # Let the user add options to the test runner if needed
-    set(TEST_RUNNER_PARAMS "--force-colors=true" CACHE STRING "Options to add to our test runners commands")
     # Exclude test folders from coverage, keep in sync with .codecov.yml
     list(APPEND CUSTOM_COVERAGE_EXCLUDE "/tests/")
 
