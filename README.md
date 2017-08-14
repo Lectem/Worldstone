@@ -16,7 +16,8 @@ Just started, so there's only the basic C++ tree, and a simple DC6 decoder.
   - GCC 6.0 - tested (5.0 should work)
   - clang 3.8 with libc++ or libstdc++-5(only 6 is tested) - tested
   - MSVC 14 (Visual 2015) - tested
-  - QT 5.x for the tools
+* Bzip2 for Stormlib(libbz2-dev on debian/ubuntu)
+* QT 5.x for the tools
   
 ### Copy-paste from command line (in the project directory):
 
