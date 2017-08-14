@@ -1,6 +1,8 @@
 # Worldstone
-[![Build Status](https://travis-ci.org/Lectem/Worldstone.svg?branch=master)](https://travis-ci.org/Lectem/Worldstone)
-[![Build status](https://ci.appveyor.com/api/projects/status/537k5bthitwtplta/branch/master?svg=true)](https://ci.appveyor.com/project/Lectem/Worldstone/branch/master)
+[![Travis build Status](https://travis-ci.org/Lectem/Worldstone.svg?branch=master)](https://travis-ci.org/Lectem/Worldstone)
+[![Appveyor build status](https://ci.appveyor.com/api/projects/status/537k5bthitwtplta/branch/master?svg=true)](https://ci.appveyor.com/project/Lectem/Worldstone/branch/master)
+[![Coverage](https://codecov.io/gh/Lectem/Worldstone/branch/master/graph/badge.svg)](https://codecov.io/gh/Lectem/Worldstone)
+[![CDash dashboard](https://img.shields.io/badge/CDash-Access-blue.svg)](http://my.cdash.org/index.php?project=Worldstone)
 [![Pull requests](https://img.shields.io/github/issues-pr-raw/Lectem/Worldstone.svg)](https://github.com/Lectem/Worldstone/pulls)
 [![Opened issues](https://img.shields.io/github/issues-raw/Lectem/Worldstone.svg)](https://github.com/Lectem/Worldstone/issues)
 

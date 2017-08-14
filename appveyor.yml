@@ -41,3 +41,8 @@ build:
   project: build/Worldstone.sln
   parallel: true
   verbosity: minimal
+
+test_script:
+  - cd build
+  - ctest -C %configuration% .
+  - cd ..
