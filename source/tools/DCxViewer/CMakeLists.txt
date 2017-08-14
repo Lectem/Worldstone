@@ -1,7 +1,3 @@
-cmake_minimum_required(VERSION 3.1)
-
-project(DCxViewer CXX)
-
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -21,6 +17,8 @@ if(Qt5_FOUND)
 	add_executable(DCxViewer WIN32 ${SRC_LIST} ${HDR_LIST} ${RESOURCES})
 	target_link_libraries(DCxViewer Qt5::Quick Qt5::Widgets WS::system WS::decoders)
 	run_fixup(DCxViewer "" "")
+	set_target_properties(DCxViewer PROPERTIES FOLDER ${PROJECT_NAME})
+
 	message(STATUS "Found Qt5 at ${Qt5_DIR}, building DCxViewer.")
 else()
 	message(WARNING "Will not build DCxViewer since Qt5 can't be found. Please add your Qt5 path (For example C:/Qt/5.7/msvc2015_64 on windows) to CMAKE_PREFIX_PATH")
