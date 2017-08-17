@@ -16,7 +16,11 @@ if(Qt5_FOUND)
 
 	add_executable(DCxViewer WIN32 ${SRC_LIST} ${HDR_LIST} ${RESOURCES})
 	target_link_libraries(DCxViewer Qt5::Quick Qt5::Widgets WS::system WS::decoders)
-	run_fixup(DCxViewer "" "")
+
+	get_target_property(QtCore_location Qt5::Core LOCATION)
+	get_filename_component(QtCore_directory ${QtCore_location} DIRECTORY)
+	run_fixup(DCxViewer "" ${QtCore_directory})
+
 	set_target_properties(DCxViewer PROPERTIES FOLDER ${PROJECT_NAME})
 
 	message(STATUS "Found Qt5 at ${Qt5_DIR}, building DCxViewer.")
