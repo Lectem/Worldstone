@@ -29,4 +29,6 @@ target_set_warnings(storm DISABLE ALL)
 #Add new external (non-interface) targets to this list
 set_target_properties(fmt storm PROPERTIES FOLDER "external")
 
+find_package(SDL2)# Not REQUIRED until we really use it and add it to CI
+
 set(BUILD_TESTING ${BUILD_TESTING_BCKP} CACHE BOOL "Build tests (default variable for CTest)" FORCE) #Set it back to its past value
