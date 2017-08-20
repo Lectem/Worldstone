@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdint.h>
-#include <FileStream.h>
+#include <Stream.h>
 #include <memory>
 #include <type_traits>
 #include <vector>

@@ -1,4 +1,5 @@
 #include "main.h"
+#include <FileStream.h>
 #include <QtWidgets>
 #include "DCxMainWindow.h"
 
@@ -27,9 +28,9 @@ void DCxViewerApp::readSettings()
     QSettings settings;
     mpqFileName  = settings.value("MPQFile", QString()).toString();
     listFileName = settings.value("Listfile", QString()).toString();
-    palettesFolder = settings.value("PaletteFolder", QString()).toString();
+    paletteFile  = settings.value("PaletteFile", QString()).toString();
     if (!mpqFileName.isEmpty()) openMpq(mpqFileName);
-    if (!palettesFolder.isEmpty()) emit paletteFolderChanged(palettesFolder);
+    if (!paletteFile.isEmpty()) emit paletteFileChanged(paletteFile);
 }
 
 void DCxViewerApp::writeSettings()
@@ -37,7 +38,7 @@ void DCxViewerApp::writeSettings()
     QSettings settings;
     settings.setValue("MPQFile", mpqFileName);
     settings.setValue("Listfile", listFileName);
-    settings.setValue("PaletteFolder", palettesFolder);
+    settings.setValue("PaletteFile", paletteFile);
 }
 
 void DCxViewerApp::openMpq(const QUrl& mpqFileUrl)
@@ -68,19 +69,19 @@ void DCxViewerApp::addListFile(const QUrl& listFileUrl)
     }
 }
 
-void DCxViewerApp::setPalettesFolder(const QUrl& paletteFolderUrl)
+void DCxViewerApp::setPaletteFile(const QUrl& paletteUrl)
 {
-    if (paletteFolderUrl.isLocalFile())
-        palettesFolder = paletteFolderUrl.toLocalFile();
+    if (paletteUrl.isLocalFile())
+        paletteFile = paletteUrl.toLocalFile();
     else
-        palettesFolder = paletteFolderUrl.toString();
-    emit paletteFolderChanged(palettesFolder);
+        paletteFile = paletteUrl.toString();
+    emit paletteFileChanged(paletteFile);
 }
 
 void DCxViewerApp::updateMpqFileList()
 {
     if (!mpqArchive)return;
-    std::vector<std::string> files = mpqArchive->findFiles();
+    std::vector<MpqArchive::path> files = mpqArchive->findFiles();
     mpqFiles.clear();
     emit fileListUpdated();
     for (std::string & file : files)
@@ -93,6 +94,19 @@ void DCxViewerApp::setFileList(QStringList & newMpqFilesList)
 {
     mpqFiles.swap(newMpqFilesList);
     emit fileListUpdated();
+}
+
+WorldStone::StreamPtr DCxViewerApp::getFilePtr(const QString& fileName)
+{
+    WorldStone::StreamPtr stream;
+    QString               fileNameBackslashes = fileName;
+    fileNameBackslashes.replace('/', '\\');
+    stream = mpqArchive->open(fileNameBackslashes.toStdString());
+    if (!stream) {
+        stream = std::make_unique<WorldStone::FileStream>(fileName.toStdString());
+        if (stream->fail()) stream = nullptr;
+    }
+    return stream;
 }
 
 void DCxViewerApp::fileActivated(const QString& fileName)

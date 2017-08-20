@@ -51,7 +51,7 @@ std::vector<MpqArchive::path> MpqArchive::findFiles(const path& searchMask)
     std::vector<path> list;
     SFILE_FIND_DATA findFileData;
     HANDLE findHandle = SFileFindFirstFile(mpqHandle, searchMask.c_str(), &findFileData, NULL);
-
+    if (!findHandle) return {};
     do {
         list.emplace_back(findFileData.cFileName);
     }
@@ -88,7 +88,8 @@ bool MpqArchive::exists(const path& filePath)
 
 StreamPtr MpqArchive::open(const path& filePath)
 {
-    return std::make_unique<MpqFileStream>(*this, filePath);
+    StreamPtr tmp = std::make_unique<MpqFileStream>(*this, filePath);
+    return tmp->good() ? std::move(tmp) : nullptr;
 }
 
 MpqFileStream::MpqFileStream(MpqArchive& archive, const path& filename)

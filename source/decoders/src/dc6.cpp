@@ -3,6 +3,7 @@
 //
 
 #include "dc6.h"
+#include <FileStream.h>
 #include <fmt/format.h>
 #include "palette.h"
 #include "utils.h"

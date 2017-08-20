@@ -17,7 +17,7 @@ DCxMainWindow::DCxMainWindow()
 
     connect(mpqFileList, &QListWidget::currentItemChanged,
             [](QListWidgetItem* current, QListWidgetItem* previous) {
-                DCxViewerApp::instance()->fileActivated(current->text());
+                if (current) DCxViewerApp::instance()->fileActivated(current->text());
             });
     dock->setWidget(mpqFileList);
     addDockWidget(Qt::LeftDockWidgetArea, dock);
@@ -26,21 +26,19 @@ DCxMainWindow::DCxMainWindow()
     dock->setFeatures(QDockWidget::DockWidgetFeature::DockWidgetMovable |
                       QDockWidget::DockWidgetFeature::DockWidgetFloatable);
     dock->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-    DC6View* dc6view = new DC6View(this);
-    dc6view->loadPalettes(DCxViewerApp::instance()->getPalettesFolder());
-    dock->setWidget(dc6view);
-    connect(DCxViewerApp::instance(), &DCxViewerApp::requestDisplayDC6, dc6view,
-            &DC6View::displayDC6);
 
-    connect(DCxViewerApp::instance(), &DCxViewerApp::paletteFolderChanged, dc6view,
-            &DC6View::loadPalettes);
+    dc6View = new DC6View(this);
+
+    dock->setWidget(dc6View);
+    connect(DCxViewerApp::instance(), &DCxViewerApp::requestDisplayDC6, dc6View,
+            &DC6View::displayDC6);
 
     addDockWidget(Qt::RightDockWidgetArea, dock);
 
     readSettings();
     connect(DCxViewerApp::instance(), &DCxViewerApp::fileListUpdated, this,
             &DCxMainWindow::refreshMPQList);
-
+    connect(this, &DCxMainWindow::palettesListUpdated, dc6View, &DC6View::palettesListUpdated);
     refreshMPQList();
 }
 
@@ -73,7 +71,7 @@ void DCxMainWindow::createActions()
     QMenu* menu = menuBar()->addMenu(tr("&File"));
     menu->addAction(tr("&Open MPQ file"), this, &DCxMainWindow::browseForMPQ, QKeySequence::Open);
     menu->addAction(tr("&Add a listfile"), this, &DCxMainWindow::browseForListFile);
-    menu->addAction(tr("Choose &palettes folder"), this, &DCxMainWindow::browseForPalettesFolder);
+    menu->addAction(tr("Choose a custom &palette"), this, &DCxMainWindow::browseForPaletteFile);
     menu->addAction(tr("&Close"), this, &QWidget::close, QKeySequence::Close);
 }
 
@@ -82,6 +80,9 @@ void DCxMainWindow::refreshMPQList()
     if (mpqFileList) {
         mpqFileList->clear();
         mpqFileList->addItems(DCxViewerApp::instance()->getFileList());
+        QStringList paletteFiles =
+            DCxViewerApp::instance()->getFileList().filter(".dat", Qt::CaseInsensitive);
+        emit palettesListUpdated(paletteFiles);
     }
 }
 
@@ -98,8 +99,9 @@ void DCxMainWindow::browseForListFile()
     if (!fileName.isEmpty()) DCxViewerApp::instance()->addListFile(fileName);
 }
 
-void DCxMainWindow::browseForPalettesFolder()
+void DCxMainWindow::browseForPaletteFile()
 {
-    QString fileName = QFileDialog::getExistingDirectory(this, tr("Choose palettes folder"));
-    if (!fileName.isEmpty()) DCxViewerApp::instance()->setPalettesFolder(fileName);
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Choose a custom palette file"), {},
+                                                    tr("Palette files (*.dat)", "All files (*)"));
+    if (!fileName.isEmpty()) DCxViewerApp::instance()->setPaletteFile(fileName);
 }

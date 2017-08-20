@@ -7,6 +7,7 @@
 
 DC6View::DC6View(QWidget* parent, Qt::WindowFlags flags)
     : QWidget(parent, flags),
+      paletteSelector(new QListWidget(this)),
       headerInfo(new QLabel(this)),
       frameInfo(new QLabel(this)),
       frameHeaderInfo(new QLabel(this)),
@@ -43,19 +44,45 @@ DC6View::DC6View(QWidget* parent, Qt::WindowFlags flags)
 
     layout->addWidget(framerateSlider);
     connect(framerateSlider, &QSlider::valueChanged, [=](int newValue) {
-        animationTimer->setInterval(1000.0 / newValue);
-        animationTimer->start();
+        if (newValue) {
+            animationTimer->setInterval(1000.0 / newValue);
+            animationTimer->start();
+        }
+        else
+            animationTimer->stop();
     });
-    framerateSlider->setMinimum(1);
+    framerateSlider->setMinimum(0);
     framerateSlider->setMaximum(120);
     framerateSlider->setValue(5);
 
     animationTimer->stop();
+
+    paletteSelector->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+    paletteLabel = new QLabel(tr("Palettes"), paletteSelector);
+    layout->addWidget(paletteLabel);
+    loadPalette(DCxViewerApp::instance()->getPaletteFile());
+    connect(paletteSelector, &QListWidget::itemActivated, [this](QListWidgetItem* item) {
+        DCxViewerApp::instance()->setPaletteFile(QUrl::fromLocalFile(item->text()));
+    });
+    connect(DCxViewerApp::instance(), &DCxViewerApp::paletteFileChanged,
+            [this](const QString& paletteFile) { loadPalette(paletteFile); });
+    layout->addWidget(paletteSelector);
 }
 
-void DC6View::loadPalettes(const QString& paletteFolder)
+void DC6View::loadPalette(const QString& paletteFile)
 {
-    palette.Decode((paletteFolder + "/pal.dat").toUtf8());
+    WorldStone::StreamPtr stream = DCxViewerApp::instance()->getFilePtr(paletteFile);
+    if (stream) {
+        paletteLabel->setText(QString("Palettes (Current=%1)").arg(paletteFile));
+        palette.Decode(stream.get());
+    }
+    refreshDC6Frame();
+}
+
+void DC6View::palettesListUpdated(const QStringList& palettesList)
+{
+    paletteSelector->clear();
+    paletteSelector->addItems(palettesList);
 }
 
 void DC6View::displayDC6(const QString& fileName)
@@ -92,7 +119,7 @@ void DC6View::displayDC6(const QString& fileName)
         directionSpinBox->setSuffix("/" + QString::number(header.directions - 1));
         refreshDC6Frame();
     }
-    animationTimer->start();
+    if (framerateSlider->value() > 0) animationTimer->start();
 }
 
 void DC6View::nextFrame()

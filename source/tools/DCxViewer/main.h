@@ -15,7 +15,7 @@ class DCxViewerApp : public QApplication
 private:
     QString mpqFileName;
     QString listFileName;
-    QString                     palettesFolder;
+    QString                     paletteFile; //< The opened palette
     std::unique_ptr<MpqArchive> mpqArchive;
     QStringList                 mpqFiles;
 
@@ -30,25 +30,22 @@ public:
     void writeSettings();
 
     const QStringList& getFileList()const { return mpqFiles; };
-    const QString&     getPalettesFolder() const { return palettesFolder; };
+    const QString&     getPaletteFile() const { return paletteFile; };
     void setFileList(QStringList & newMpqFilesList);
     void updateMpqFileList();
     QString getMpqFileName() { return mpqFileName; }
     /// @warning Be careful not to read multiple files at the same time, it is not supported by
     /// StormLib
-    WorldStone::StreamPtr getFilePtr(const QString& fileName)
-    {
-        return mpqArchive->open(fileName.toStdString());
-    }
+    WorldStone::StreamPtr getFilePtr(const QString& fileName);
 
 public slots :
     void openMpq(const QUrl& mpqFileUrl);
     void addListFile(const QUrl& listFileUrl);
     void fileActivated(const QString& fileName);
-    void setPalettesFolder(const QUrl& folder);
+    void setPaletteFile(const QUrl& folder);
 
 signals:
     void fileListUpdated();
     void requestDisplayDC6(const QString& fileName);
-    void paletteFolderChanged(const QString& newFolder);
+    void paletteFileChanged(const QString& newFolder);
 };

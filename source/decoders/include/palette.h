@@ -5,7 +5,9 @@
 #pragma once
 
 #include <cstdint>
+#include <Stream.h>
 #include <vector>
+
 namespace WorldStone
 {
 /**
@@ -26,6 +28,7 @@ struct Palette
     static const int colorCount = 256;
 
     void               Decode(const char* filename);
+    void Decode(Stream* file);
     std::vector<Color> colors;
     bool               isValid() const { return _isValid; }
 
