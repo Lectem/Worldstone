@@ -8,7 +8,6 @@
 
 namespace WorldStone
 {
-using streamsize = std::streamsize;
 
 class Stream : public IOBase
 {
@@ -22,7 +21,7 @@ public:
     static const seekdir cur = std::ios_base::cur;
     static const seekdir end = std::ios_base::end;
 
-    virtual streamsize read(void* buffer, size_t size, size_t count) = 0;
+    virtual size_t read(void* buffer, size_t size) = 0;
     virtual int  getc();
     virtual long tell() = 0;
     virtual bool seek(long offset, seekdir origin) = 0;

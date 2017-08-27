@@ -3,6 +3,7 @@
 //
 
 #include "FileStream.h"
+#include <assert.h>
 
 namespace WorldStone
 {
@@ -27,23 +28,26 @@ bool FileStream::open(const path& filename)
 bool FileStream::close()
 {
     if (!file || fclose(file)) setstate(failbit);
+    file = nullptr;
     return good();
 }
 
-streamsize FileStream::read(void* buffer, size_t size, size_t count)
+size_t FileStream::read(void* buffer, size_t size)
 {
-    const size_t readSize = fread(buffer, size, count, file);
-    if (readSize != count) {
-        if (feof(file))
+    assert(is_open());
+    const size_t readSize = fread(buffer, sizeof(char), size, file);
+    if (readSize != size) {
+        if (feof(file)) {
             setstate(eofbit);
-        else
-            setstate(failbit);
+        }
+        setstate(failbit);
     }
-    return static_cast<streamsize>(readSize);
+    return readSize;
 }
 
 long FileStream::tell()
 {
+    assert(is_open());
     return ftell(file);
 }
 
@@ -53,6 +57,7 @@ static_assert(FileStream::cur == SEEK_CUR, "");
 static_assert(FileStream::end == SEEK_END, "");
 bool FileStream::seek(long offset, Stream::seekdir origin)
 {
+    assert(is_open());
     if (fseek(file, offset, origin)) setstate(failbit);
     return good();
 }
@@ -68,5 +73,11 @@ long FileStream::size()
     // invalid
     if (curPos != -1 && !seek(curPos, beg)) setstate(failbit);
     return size;
+}
+
+int FileStream::getc()
+{
+    // TODO : call stdlib getc for better perf
+    return Stream::getc();
 }
 }

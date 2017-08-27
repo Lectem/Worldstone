@@ -112,31 +112,23 @@ bool MpqFileStream::open(MpqArchive& archive, const path& filename)
 bool MpqFileStream::close()
 {
     if (!(file && SFileCloseFile(file))) setstate(failbit);
+    file = nullptr;
     return good();
 }
 
-streamsize MpqFileStream::read(void* buffer, size_t size, size_t count)
+size_t MpqFileStream::read(void* buffer, size_t size)
 {
     DWORD readBytes = 0;
-    streamsize readCount = 0;
-    while (count-- || !good())
-    {
-        if (!SFileReadFile(file, buffer, static_cast<DWORD>(size), &readBytes, NULL)) {
-            const DWORD lastError = GetLastError();
-            if (lastError == ERROR_HANDLE_EOF)
-                setstate(eofbit);
-            else
-            {
-                setstate(failbit);
-                return -1;
-            }
+
+    bool success = SFileReadFile(file, buffer, static_cast<DWORD>(size), &readBytes, nullptr);
+    if (!success) {
+        const DWORD lastError = GetLastError();
+        if (lastError == ERROR_HANDLE_EOF) {
+            setstate(eofbit);
         }
-        else {
-            buffer = static_cast<char*>(buffer) + size;
-            readCount++;
-        }
+        setstate(failbit);
     }
-    return readCount;
+    return readBytes;
 }
 
 long MpqFileStream::tell()

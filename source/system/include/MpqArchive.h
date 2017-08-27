@@ -52,13 +52,15 @@ class MpqFileStream : public Stream
 
     HANDLE file = nullptr;
 
+protected:
+    MpqFileStream() = default; // Needed to make tests easier
 public:
     MpqFileStream(MpqArchive& archive, const path& filename);
     bool open(MpqArchive& archive, const path& filename);
     bool is_open() const { return file != nullptr; }
     bool close();
 
-    streamsize read(void* buffer, size_t size, size_t count) override;
+    size_t read(void* buffer, size_t size) override;
 
     long tell() override;
 

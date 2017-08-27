@@ -36,15 +36,15 @@ bool DC6::extractHeaders()
 {
     static_assert(std::is_trivially_copyable<Header>(), "DC6::Header must be trivially copyable");
     static_assert(sizeof(Header) == 6 * sizeof(uint32_t), "DC6::Header struct needs to be packed");
-    if (stream->read(&header, sizeof(header), 1) != 1) return false;
+    stream->read(&header, sizeof(header));
+    if (stream->fail()) return false;
 
     size_t framesNumber = header.directions * header.frames_per_dir;
     frameHeaders.resize(framesNumber);
 
     framePointers.resize(framesNumber);
-    if (static_cast<size_t>(stream->read(framePointers.data(), sizeof(uint32_t), framesNumber)) !=
-        framesNumber)
-        return false;
+    stream->read(framePointers.data(), sizeof(uint32_t) * framesNumber);
+    if (stream->fail()) return false;
 
     for (size_t i = 0; i < framesNumber; ++i)
     {
@@ -55,7 +55,8 @@ bool DC6::extractHeaders()
                       "DC6::FrameHeader must be trivially copyable");
         static_assert(sizeof(FrameHeader) == 8 * sizeof(uint32_t),
                       "DC6::FrameHeader struct needs to be packed");
-        if (stream->read(&frameHeader, sizeof(frameHeader), 1) != 1) return false;
+        stream->read(&frameHeader, sizeof(frameHeader));
+        if (stream->fail()) return false;
     }
     return true;
 }

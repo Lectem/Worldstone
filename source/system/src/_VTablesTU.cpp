@@ -21,7 +21,7 @@ Stream::~Stream()
 int Stream::getc()
 {
     uint8_t val;
-    this->read(&val, sizeof(char), 1);
+    this->read(&val, sizeof(char));
     if (good())
         return val;
     else

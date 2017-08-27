@@ -25,7 +25,7 @@ void Palette::Decode(Stream* file)
             colors[i].g = static_cast<uint8_t>(file->getc());
             colors[i].r = static_cast<uint8_t>(file->getc());
         }
-        _isValid = true;
+        _isValid = file->good();
     }
 }
 } // namespace WorldStone
