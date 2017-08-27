@@ -148,4 +148,11 @@ bool MpqFileStream::seek(long offset, Stream::seekdir origin)
         setstate(failbit);
     return good();
 }
+
+long MpqFileStream::size()
+{
+    DWORD sizeLower32bits = SFileGetFileSize(file, nullptr);
+    if (sizeLower32bits == SFILE_INVALID_SIZE) setstate(failbit);
+    return static_cast<long>(sizeLower32bits);
+}
 }

@@ -58,7 +58,7 @@ static_assert(FileStream::end == SEEK_END, "");
 bool FileStream::seek(long offset, Stream::seekdir origin)
 {
     assert(is_open());
-    if (fseek(file, offset, origin)) setstate(failbit);
+    if (fseek(file, offset, origin) != 0) setstate(failbit);
     return good();
 }
 

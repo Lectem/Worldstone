@@ -63,6 +63,11 @@ public:
     size_t read(void* buffer, size_t size) override;
 
     long tell() override;
+    /**
+     * Compute the size of the file
+     * @return the size of the file, or a negative value on error
+     */
+    long size();
 
     /**
      * @warning offset value must fit in 32bits
