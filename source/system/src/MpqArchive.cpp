@@ -10,10 +10,7 @@
 namespace WorldStone
 {
 
-MpqArchive::MpqArchive(MpqArchive&& toMove)
-{
-    *this = std::move(toMove);
-}
+MpqArchive::MpqArchive(MpqArchive&& toMove) { *this = std::move(toMove); }
 
 MpqArchive& MpqArchive::operator=(MpqArchive&& toMove)
 {
@@ -29,33 +26,27 @@ MpqArchive::MpqArchive(const char* MpqFileName) : mpqFileName(MpqFileName)
     load();
 }
 
-MpqArchive::MpqArchive(const Archive::path& MpqFileName) : MpqArchive(MpqFileName.data())
-{
-}
+MpqArchive::MpqArchive(const Archive::path& MpqFileName) : MpqArchive(MpqFileName.data()) {}
 
-MpqArchive::~MpqArchive()
-{
-    unload();
-}
+MpqArchive::~MpqArchive() { unload(); }
 
 void MpqArchive::addListFile(const path& listFilePAth)
 {
     if (!mpqHandle) return;
-    if (SFileAddListFile(mpqHandle, listFilePAth.c_str()) != ERROR_SUCCESS)
-        setstate(failbit);
+    if (SFileAddListFile(mpqHandle, listFilePAth.c_str()) != ERROR_SUCCESS) setstate(failbit);
 }
 
 std::vector<MpqArchive::path> MpqArchive::findFiles(const path& searchMask)
 {
-    if (!mpqHandle) return{};
+    if (!mpqHandle) return {};
     std::vector<path> list;
-    SFILE_FIND_DATA findFileData;
-    HANDLE findHandle = SFileFindFirstFile(mpqHandle, searchMask.c_str(), &findFileData, NULL);
+    SFILE_FIND_DATA   findFileData;
+    HANDLE findHandle = SFileFindFirstFile(mpqHandle, searchMask.c_str(), &findFileData, nullptr);
     if (!findHandle) return {};
-    do {
+    do
+    {
         list.emplace_back(findFileData.cFileName);
-    }
-    while (SFileFindNextFile(findHandle, &findFileData));
+    } while (SFileFindNextFile(findHandle, &findFileData));
 
     SFileFindClose(findHandle);
     return list;
@@ -69,10 +60,7 @@ bool MpqArchive::load()
     return good();
 }
 
-bool MpqArchive::is_loaded()
-{
-    return mpqHandle != nullptr;
-}
+bool MpqArchive::is_loaded() { return mpqHandle != nullptr; }
 
 bool MpqArchive::unload()
 {
@@ -81,10 +69,7 @@ bool MpqArchive::unload()
     return good();
 }
 
-bool MpqArchive::exists(const path& filePath)
-{
-    return SFileHasFile(mpqHandle, filePath.c_str());
-}
+bool MpqArchive::exists(const path& filePath) { return SFileHasFile(mpqHandle, filePath.c_str()); }
 
 StreamPtr MpqArchive::open(const path& filePath)
 {
@@ -92,15 +77,9 @@ StreamPtr MpqArchive::open(const path& filePath)
     return tmp->good() ? std::move(tmp) : nullptr;
 }
 
-MpqFileStream::MpqFileStream(MpqArchive& archive, const path& filename)
-{
-    open(archive, filename);
-}
+MpqFileStream::MpqFileStream(MpqArchive& archive, const path& filename) { open(archive, filename); }
 
-MpqFileStream::~MpqFileStream()
-{
-    close();
-}
+MpqFileStream::~MpqFileStream() { close(); }
 
 bool MpqFileStream::open(MpqArchive& archive, const path& filename)
 {
@@ -133,7 +112,7 @@ size_t MpqFileStream::read(void* buffer, size_t size)
 
 long MpqFileStream::tell()
 {
-    const DWORD size = SFileSetFilePointer(file, 0, NULL, FILE_CURRENT);
+    const DWORD size = SFileSetFilePointer(file, 0, nullptr, FILE_CURRENT);
     if (size == SFILE_INVALID_SIZE) setstate(failbit);
     return static_cast<long>(size);
 }
