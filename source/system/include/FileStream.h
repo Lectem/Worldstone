@@ -10,9 +10,9 @@ namespace WorldStone
 {
 
 /**
- * Wrapper around POSIX file io, same as ifstream but without iostream formatting
+ * @brief Wrapper around POSIX file io, same as ifstream but without iostream formatting
  */
-class FileStream : public Stream
+class FileStream : public IStream
 {
     FILE* file = nullptr;
 
@@ -33,7 +33,7 @@ public:
      * @note    This will call tell/seek multiple times, hence can be slow
      * @warning If the current position is invalid, the new position might be EOF
      */
-    long   size();
+    long   size() override;
     size_t read(void* buffer, size_t size) override;
     int getc() override;
 };

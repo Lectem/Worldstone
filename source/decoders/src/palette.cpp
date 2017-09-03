@@ -14,7 +14,7 @@ void Palette::Decode(const char* filename)
     Decode(&str);
 }
 
-void Palette::Decode(Stream* file)
+void Palette::Decode(IStream* file)
 {
     if (file && file->good()) {
         colors.resize(colorCount);

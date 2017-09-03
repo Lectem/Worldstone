@@ -121,7 +121,7 @@ long MpqFileStream::tell()
 static_assert(MpqFileStream::beg == FILE_BEGIN, "");
 static_assert(MpqFileStream::cur == FILE_CURRENT, "");
 static_assert(MpqFileStream::end == FILE_END, "");
-bool MpqFileStream::seek(long offset, Stream::seekdir origin)
+bool MpqFileStream::seek(long offset, IStream::seekdir origin)
 {
     if (SFileSetFilePointer(file, static_cast<LONG>(offset), nullptr, origin) == SFILE_INVALID_SIZE)
         setstate(failbit);

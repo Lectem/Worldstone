@@ -4,22 +4,22 @@
 
 #pragma once
 
+#include <vector>
 #include "Archive.h"
 #include "Stream.h"
-#include <vector>
 
 namespace WorldStone
 {
 
 /**
- * A wrapper to manage MPQ archives
+ * @brief A wrapper to manage MPQ archives
  */
 class MpqArchive : public Archive
 {
     using HANDLE = void*; // Do not expose stormlib
 public:
     MpqArchive() { setstate(badbit); }
-    MpqArchive(const char *MpqFileName);
+    MpqArchive(const char* MpqFileName);
     MpqArchive(const path& MpqFileName);
     MpqArchive(MpqArchive&& toMove);
     MpqArchive& operator=(MpqArchive&& toMove);
@@ -43,10 +43,9 @@ private:
 };
 
 /**
- * A MPQ file stream
- *
+ * @brief A file from a MpqArchive
  */
-class MpqFileStream : public Stream
+class MpqFileStream : public IStream
 {
     using HANDLE = void*;
 
@@ -63,11 +62,7 @@ public:
     size_t read(void* buffer, size_t size) override;
 
     long tell() override;
-    /**
-     * Compute the size of the file
-     * @return the size of the file, or a negative value on error
-     */
-    long size();
+    long size() override;
 
     /**
      * @warning offset value must fit in 32bits

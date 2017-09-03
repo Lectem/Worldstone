@@ -49,7 +49,7 @@ bool DC6::extractHeaders()
     for (size_t i = 0; i < framesNumber; ++i)
     {
         FrameHeader& frameHeader = frameHeaders[i];
-        stream->seek(framePointers[i], Stream::beg);
+        stream->seek(framePointers[i], IStream::beg);
 
         static_assert(std::is_trivially_copyable<FrameHeader>(),
                       "DC6::FrameHeader must be trivially copyable");
@@ -74,7 +74,7 @@ std::vector<uint8_t> DC6::decompressFrame(size_t frameNumber) const
 void DC6::decompressFrameIn(size_t frameNumber, uint8_t* data) const
 {
     assert(stream != nullptr);
-    stream->seek(framePointers[frameNumber] + sizeof(FrameHeader), Stream::beg);
+    stream->seek(framePointers[frameNumber] + sizeof(FrameHeader), IStream::beg);
     const FrameHeader& fHeader = frameHeaders[frameNumber];
     assert(fHeader.width > 0 && fHeader.height > 0);
 

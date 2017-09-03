@@ -28,7 +28,7 @@ struct Palette
     static const int colorCount = 256;
 
     void               Decode(const char* filename);
-    void Decode(Stream* file);
+    void Decode(IStream* file);
     std::vector<Color> colors;
     bool               isValid() const { return _isValid; }
 

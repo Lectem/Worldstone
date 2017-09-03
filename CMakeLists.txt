@@ -84,6 +84,8 @@ if(WS_USE_DOXYGEN AND ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} VERSION_GREA
     )
     if(DOXYGEN_FOUND)
         set(DOXYGEN_USE_MDFILE_AS_MAINPAGE README.md)
+        set(DOXYGEN_JAVADOC_AUTOBRIEF YES)
+        set(DOXYGEN_SOURCE_BROWSER YES)
         doxygen_add_docs(
             doc
             README.md source

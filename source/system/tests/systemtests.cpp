@@ -8,6 +8,9 @@ using WorldStone::FileStream;
 using WorldStone::MpqArchive;
 using WorldStone::MpqFileStream;
 
+/**
+ * @cond TEST
+ */
 namespace test_helpers
 {
 
@@ -30,7 +33,7 @@ typedef doctest::Types<WorldStone::FileStream, test_helpers::MpqFileWrapper> str
 TYPE_TO_STRING(WorldStone::FileStream);
 TYPE_TO_STRING(test_helpers::MpqFileWrapper);
 
-TEST_CASE_TEMPLATE("  Scenario: Filestreams", StreamType, stream_types)
+TEST_CASE_TEMPLATE("  Scenario: Read-only filestreams", StreamType, stream_types)
 {
     GIVEN("A file that does not exist")
     {
@@ -95,7 +98,7 @@ TEST_CASE_TEMPLATE("  Scenario: Filestreams", StreamType, stream_types)
                 }
                 AND_WHEN("We read more than the whole file")
                 {
-                    char                   buffer[256] = {};
+                    char buffer[256] = {};
                     CHECK(fileSize * 2 < 256);
                     size_t readCount = stream.read(buffer, fileSize * 2);
                     THEN("EOF is reached and correct number of bytes read is reported")
@@ -107,7 +110,7 @@ TEST_CASE_TEMPLATE("  Scenario: Filestreams", StreamType, stream_types)
                 }
                 AND_WHEN("You seek past the end of file")
                 {
-                    stream.seek(10, WorldStone::Stream::end);
+                    stream.seek(10, WorldStone::IStream::end);
                     THEN("There is no failure") // That's the case for fseek since you can start
                                                 // writing at a given offset
                     {
@@ -118,10 +121,14 @@ TEST_CASE_TEMPLATE("  Scenario: Filestreams", StreamType, stream_types)
                 }
                 AND_WHEN("You seek before the file beginning")
                 {
-                    stream.seek(-1, WorldStone::Stream::beg);
+                    stream.seek(-1, WorldStone::IStream::beg);
                     THEN("Fail flag is set") { WARN(stream.fail()); }
                 }
             }
         }
     }
 }
+
+/**
+ * @endcond TEST
+ */

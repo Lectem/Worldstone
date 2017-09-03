@@ -8,15 +8,9 @@
 namespace WorldStone
 {
 
-FileStream::FileStream(const path& filename)
-{
-    open(filename);
-}
+FileStream::FileStream(const path& filename) { open(filename); }
 
-FileStream::~FileStream()
-{
-    close();
-}
+FileStream::~FileStream() { close(); }
 
 bool FileStream::open(const path& filename)
 {
@@ -55,7 +49,7 @@ long FileStream::tell()
 static_assert(FileStream::beg == SEEK_SET, "");
 static_assert(FileStream::cur == SEEK_CUR, "");
 static_assert(FileStream::end == SEEK_END, "");
-bool FileStream::seek(long offset, Stream::seekdir origin)
+bool FileStream::seek(long offset, IStream::seekdir origin)
 {
     assert(is_open());
     if (fseek(file, offset, origin) != 0) setstate(failbit);
@@ -78,6 +72,6 @@ long FileStream::size()
 int FileStream::getc()
 {
     // TODO : call stdlib getc for better perf
-    return Stream::getc();
+    return IStream::getc();
 }
 }

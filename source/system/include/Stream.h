@@ -1,6 +1,8 @@
-//
-// Created by Lectem on 11/11/2016.
-//
+/**
+ * @file Stream.h
+ * @author Lectem
+ * @date 11/11/2016.
+ */
 #pragma once
 
 #include <memory>
@@ -9,25 +11,63 @@
 namespace WorldStone
 {
 
-class Stream : public IOBase
+/**
+ * @brief An interface for a stream of data.
+ *
+ * While it can be used to abstract many types of streams, file streams are
+ * usually created through an @see Archive.
+ *
+ * @test @ref systemtests.cpp
+ */
+class IStream : public IOBase
 {
+protected:
+    static const iostate eofbit = std::ios_base::eofbit;
 
 public:
-    static const iostate eofbit = std::ios_base::eofbit;
+    /// True if the end of the stream was reached during the last read operation
     bool                 eof() const { return (_state & eofbit) != 0; }
 
-    using seekdir            = std::ios_base::seekdir;
-    static const seekdir beg = std::ios_base::beg;
-    static const seekdir cur = std::ios_base::cur;
-    static const seekdir end = std::ios_base::end;
+    using seekdir = std::ios_base::seekdir; ///< Used as reference for @ref seek @see beg cur end
+    static const seekdir beg = std::ios_base::beg; ///< Beginning of the stream
+    static const seekdir cur = std::ios_base::cur; ///< Current position of the stream
+    static const seekdir end = std::ios_base::end; ///< End of the stream, not always supported
 
+    /**
+     * Compute the size of the file.
+     * @return the size of the file, or a negative value on error
+     */
+    virtual long size() = 0;
+    /**
+     * Read data from the stream.
+     * @param buffer Pointer to a block of memory to fill. Must be at least 'size' bytes large.
+     * @param size   Number of bytes to copy
+     * @return       The number of bytes successfully read. If less than 'size', EOF was reached or
+     * an error occured.
+     */
     virtual size_t read(void* buffer, size_t size) = 0;
-    virtual int  getc();
+    /**
+     * Read one byte from the stream.
+     * @return The next byte to read from the stream, or a negative value on failure.
+     */
+    virtual int getc();
+    /**
+     * Return the current position of the stream pointer
+     * @return The offset in bytes to the currently pointed position. A negative value on failure.
+     * @note The @ref seek method can be used to restore a position.
+     */
     virtual long tell() = 0;
+    /**
+     * Change the pointer of the stream to a given position
+     * @param offset The new position relative to the given reference position 'origin'.
+     * @param origin Arbitrary reference to a position in the stream.
+     * @return true on success, false if an error occured or an invalid position was given.
+     * @see seekdir values : beg cur end
+     */
     virtual bool seek(long offset, seekdir origin) = 0;
 
-    virtual ~Stream();
+    virtual ~IStream();
 };
 
-using StreamPtr = std::unique_ptr<Stream>;
+using StreamPtr = std::unique_ptr<IStream>;
 }

@@ -10,7 +10,8 @@ namespace WorldStone
 {
 
 /**
- * Base class to build archives.
+ * @brief Base class to use/build archives.
+ *
  * Archives are file/resource containers that provide basic I/O support.
  * It can be implemented as a basic filesystem to read disks, compressed archives, databases.
  * You can view this as an abstraction in the form of a directory

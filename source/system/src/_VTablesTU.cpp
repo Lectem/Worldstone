@@ -11,14 +11,10 @@
 
 namespace WorldStone
 {
-Archive::~Archive()
-{
-}
-Stream::~Stream()
-{
-}
+Archive::~Archive() {}
+IStream::~IStream() {}
 
-int Stream::getc()
+int IStream::getc()
 {
     uint8_t val;
     this->read(&val, sizeof(char));
