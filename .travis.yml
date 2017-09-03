@@ -41,8 +41,16 @@ matrix:
       env: BUILD_TYPE=Debug COMPILER_VER=4.0 USE_ASAN=1
     - os: linux
       compiler: clang
+      addons: *clang4
+      env: BUILD_TYPE=Release COMPILER_VER=4.0 USE_UBSAN=1
+    - os: linux
+      compiler: clang
       addons: &clang5 {apt: {packages: [clang-5.0,libstdc++-6-dev] , sources: [ubuntu-toolchain-r-test,llvm-toolchain-trusty-5.0]}}
       env: BUILD_TYPE=Debug COMPILER_VER=5.0 USE_ASAN=1
+    - os: linux
+      compiler: clang
+      addons: *clang5
+      env: BUILD_TYPE=Release COMPILER_VER=5.0 USE_UBSAN=1
 
 cache:
   directories:
