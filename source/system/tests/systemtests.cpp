@@ -7,6 +7,7 @@
 using WorldStone::FileStream;
 using WorldStone::MpqArchive;
 using WorldStone::MpqFileStream;
+using WorldStone::StreamPtr;
 
 /**
  * @cond TEST
@@ -40,14 +41,15 @@ TEST_CASE_TEMPLATE("  Scenario: Read-only filestreams", StreamType, stream_types
         const char* invalidFileName = "does-not-exist-file";
         WHEN("Trying to open it")
         {
-            StreamType stream{invalidFileName};
+            StreamType           stream{invalidFileName};
+            WorldStone::IStream& streamRef = stream; // Test it through the interface
             THEN("File is not opened and stream is invalid")
             {
-                REQUIRE_FALSE(stream.is_open());
-                CHECK_FALSE(stream.good());
-                CHECK_FALSE(stream.bad());
-                CHECK(stream.fail());
-                CHECK_FALSE(stream.eof());
+                REQUIRE_FALSE(stream.is_open()); // Not in IStream, but present for files
+                CHECK_FALSE(streamRef.good());
+                CHECK_FALSE(streamRef.bad());
+                CHECK(streamRef.fail());
+                CHECK_FALSE(streamRef.eof());
             }
             // Do not try to call anything else since it causes system API to exit the application.
             // We do not let the user call read if the file is invalid by design for performance
@@ -60,16 +62,17 @@ TEST_CASE_TEMPLATE("  Scenario: Read-only filestreams", StreamType, stream_types
         const char* filename = "test.txt";
         WHEN("Opening the file containing \"test\"")
         {
-            StreamType stream{filename};
+            StreamType           stream{filename};
+            WorldStone::IStream& streamRef = stream; // Test it through the interface
             THEN("File is opened and stream is valid")
             {
-                REQUIRE(stream.is_open());
-                CHECK(stream.good());
-                CHECK_FALSE(stream.bad());
-                CHECK_FALSE(stream.fail());
-                CHECK_FALSE(stream.eof());
-                CHECK(stream.tell() == 0);
-                const size_t fileSize    = stream.size();
+                REQUIRE(stream.is_open()); // Not in IStream, but present for files
+                CHECK(streamRef.good());
+                CHECK_FALSE(streamRef.bad());
+                CHECK_FALSE(streamRef.fail());
+                CHECK_FALSE(streamRef.eof());
+                CHECK(streamRef.tell() == 0);
+                const size_t fileSize    = streamRef.size();
                 const char*  fileContent = "test";
                 CHECK(fileSize == strlen(fileContent));
 
@@ -77,21 +80,21 @@ TEST_CASE_TEMPLATE("  Scenario: Read-only filestreams", StreamType, stream_types
                 {
                     char buffer[256] = {};
                     CHECK(fileSize < 256);
-                    stream.read(buffer, fileSize);
+                    streamRef.read(buffer, fileSize);
                     THEN("The buffer contains the same things as the file")
                     {
                         CHECK(!strcmp("test", buffer));
-                        CHECK_FALSE(stream.eof());
-                        CHECK(stream.tell() == fileSize);
+                        CHECK_FALSE(streamRef.eof());
+                        CHECK(streamRef.tell() == fileSize);
                         AND_WHEN("We read more")
                         {
-                            stream.read(buffer, 1);
+                            streamRef.read(buffer, 1);
                             THEN("EOF and fail flags are set")
                             {
-                                CHECK(stream.eof());
-                                CHECK(stream.fail());
-                                CHECK_FALSE(stream.bad());
-                                CHECK_FALSE(stream.good());
+                                CHECK(streamRef.eof());
+                                CHECK(streamRef.fail());
+                                CHECK_FALSE(streamRef.bad());
+                                CHECK_FALSE(streamRef.good());
                             }
                         }
                     }
@@ -100,29 +103,29 @@ TEST_CASE_TEMPLATE("  Scenario: Read-only filestreams", StreamType, stream_types
                 {
                     char buffer[256] = {};
                     CHECK(fileSize * 2 < 256);
-                    size_t readCount = stream.read(buffer, fileSize * 2);
+                    size_t readCount = streamRef.read(buffer, fileSize * 2);
                     THEN("EOF is reached and correct number of bytes read is reported")
                     {
-                        CHECK(readCount ==
-                              fileSize); // We know the content of the file is exactly "test"
+                        // We know the content of the file is exactly "test"
+                        CHECK(readCount == fileSize);
                         CHECK(strncmp("test", buffer, fileSize) == 0);
                     }
                 }
                 AND_WHEN("You seek past the end of file")
                 {
-                    stream.seek(10, WorldStone::IStream::end);
+                    streamRef.seek(10, WorldStone::IStream::end);
                     THEN("There is no failure") // That's the case for fseek since you can start
                                                 // writing at a given offset
                     {
-                        CHECK_FALSE(stream.fail());
-                        CHECK_FALSE(stream.bad());
-                        CHECK(stream.good());
+                        CHECK_FALSE(streamRef.fail());
+                        CHECK_FALSE(streamRef.bad());
+                        CHECK(streamRef.good());
                     }
                 }
                 AND_WHEN("You seek before the file beginning")
                 {
-                    stream.seek(-1, WorldStone::IStream::beg);
-                    THEN("Fail flag is set") { WARN(stream.fail()); }
+                    streamRef.seek(-1, WorldStone::IStream::beg);
+                    THEN("Fail flag is set") { WARN(streamRef.fail()); }
                 }
             }
         }
