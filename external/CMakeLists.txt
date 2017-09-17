@@ -1,5 +1,8 @@
 project(external C CXX)
 
+set(BUILD_SHARED_LIBS_BCKP ${BUILD_SHARED_LIBS})
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "Force disable of shared libraries" FORCE)
+
 set(BUILD_TESTING_BCKP ${BUILD_TESTING})
 set(BUILD_TESTING OFF CACHE BOOL "Force disable of tests for external dependencies" FORCE)
 
@@ -23,6 +26,7 @@ target_include_directories(
 
 # For now we are using a slightly modified version of StormLib because the
 # original CMakeLists.txt is not very `add_subdirectory friendly`
+option(BUILD_DYNAMIC_MODULE OFF) # God oh god why. Will fix, see https://github.com/ladislav-zezula/StormLib/issues/114
 add_subdirectory(StormLib EXCLUDE_FROM_ALL)
 target_set_warnings(storm DISABLE ALL)
 
@@ -32,3 +36,4 @@ set_target_properties(fmt storm PROPERTIES FOLDER "external")
 find_package(SDL2)# Not REQUIRED until we really use it and add it to CI
 
 set(BUILD_TESTING ${BUILD_TESTING_BCKP} CACHE BOOL "Build tests (default variable for CTest)" FORCE) #Set it back to its past value
+set(BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS_BCKP} CACHE BOOL "Cause all libraries to be built shared unless the library was explicitly added as a static library." FORCE)
