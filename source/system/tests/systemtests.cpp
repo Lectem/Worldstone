@@ -125,7 +125,7 @@ TEST_CASE_TEMPLATE("  Scenario: Read-only filestreams", StreamType, stream_types
                 AND_WHEN("You seek before the file beginning")
                 {
                     streamRef.seek(-1, WorldStone::IStream::beg);
-                    THEN("Fail flag is set") { WARN(streamRef.fail()); }
+                    THEN("Fail flag is set") { CHECK(streamRef.fail()); }
                 }
             }
         }
