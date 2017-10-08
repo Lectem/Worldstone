@@ -8,13 +8,14 @@ set(BUILD_TESTING OFF CACHE BOOL "Force disable of tests for external dependenci
 
 set(CUSTOM_COVERAGE_EXCLUDE ${CUSTOM_COVERAGE_EXCLUDE} "external" PARENT_SCOPE) # Replaced in CTestCustom.cmake.in
 
-
 #Use fmtlib for formatting
 add_subdirectory(fmt EXCLUDE_FROM_ALL)
+add_library(external::fmt ALIAS fmt)
 
 #Use spdlog for logging, and tell it to use our version of fmtlib
 add_subdirectory(spdlog EXCLUDE_FROM_ALL)
 target_compile_definitions(spdlog INTERFACE SPDLOG_FMT_EXTERNAL)
+add_library(external::spdlog ALIAS spdlog)
 
 #Doctest for unit tests
 add_library(doctest INTERFACE)
@@ -23,12 +24,14 @@ target_include_directories(
     INTERFACE
     doctest/doctest # note : will expose the parts/ folder...
 )
+add_library(external::doctest ALIAS doctest)
 
 # For now we are using a slightly modified version of StormLib because the
 # original CMakeLists.txt is not very `add_subdirectory friendly`
 option(BUILD_DYNAMIC_MODULE OFF) # God oh god why. Will fix, see https://github.com/ladislav-zezula/StormLib/issues/114
 add_subdirectory(StormLib EXCLUDE_FROM_ALL)
 target_set_warnings(storm DISABLE ALL)
+add_library(external::storm ALIAS storm)
 
 #Add new external (non-interface) targets to this list
 set_target_properties(fmt storm PROPERTIES FOLDER "external")

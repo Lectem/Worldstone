@@ -1,6 +1,6 @@
 
-add_executable(ws_systemtest systemtests.cpp)
-target_link_libraries(ws_systemtest doctest WS::system)
+add_executable(ws_systemtest main.cpp FileStreamTests.cpp BitStreamTests.cpp)
+target_link_libraries(ws_systemtest external::doctest WS::system)
 
 add_test(
     NAME WS.systemtest

@@ -1,7 +1,7 @@
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <FileStream.h>
 #include <MpqArchive.h>
 #include <fstream>
+#include <string.h>
 #include "doctest.h"
 
 using WorldStone::FileStream;

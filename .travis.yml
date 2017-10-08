@@ -10,6 +10,8 @@ env:
   - BUILD_TYPE=Release
 
 matrix:
+  allow_failures:
+    - os: osx
   include:
     - os: linux
       compiler: gcc

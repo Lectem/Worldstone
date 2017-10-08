@@ -3,6 +3,7 @@ project(WSsystem)
 set(system_sources
     src/MpqArchive.cpp
     src/FileStream.cpp
+    src/BitStream.cpp
     src/_VTablesTU.cpp
 )
 set(system_headers
@@ -12,6 +13,8 @@ set(system_headers
     include/MpqArchive.h
     include/Stream.h
     include/FileStream.h
+    include/BitStream.h
+    include/SystemUtils.h
     src/FileStream.cpp
 )
 
@@ -21,8 +24,8 @@ target_include_directories(ws_system
     PUBLIC include
     PRIVATE src)
 target_link_libraries(ws_system
-    PUBLIC fmt spdlog
-    PRIVATE storm
+    PUBLIC external::fmt external::spdlog
+    PRIVATE external::storm
 )
 target_enable_lto(ws_system optimized)
 target_set_warnings(ws_system

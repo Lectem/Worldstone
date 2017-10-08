@@ -1,3 +1,7 @@
+Core
+
+ * MemoryStream
+
 Loading
 
  * [x] MPQ files

@@ -1,3 +1,10 @@
+09/18/2017
+
+- Not use the GSL
+  * Creates too many warnings (conversion, weaktables...)
+  * Interface does not match the standard library (size() returns signed values)
+  * Might need to re-evaluate this decision later
+  * Some performance concerns
 
 12/08/2016
 
