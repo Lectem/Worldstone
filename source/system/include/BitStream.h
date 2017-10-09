@@ -35,7 +35,10 @@ class BitStream : public IOBase
 
 public:
     /// Creates a bitstream from raw memory
-    BitStream(const byte* inputBuffer, size_t size) : buffer(inputBuffer), bufferSize(size) {}
+    BitStream(const void* inputBuffer, size_t size)
+        : buffer(static_cast<const byte*>(inputBuffer)), bufferSize(size)
+    {
+    }
 
     /// Returns the current position in bits
     size_t tell() { return currentBitPosition; }
