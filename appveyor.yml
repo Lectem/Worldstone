@@ -44,5 +44,5 @@ build:
 
 test_script:
   - cd build
-  - ctest -C %configuration% .
+  - ctest -VV -C %configuration% .
   - cd ..
