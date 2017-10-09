@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.8.2)
 
 if(POLICY CMP0069)
     cmake_policy(SET CMP0069 NEW) # When INTERPROCEDURAL_OPTIMIZATION is set, give an error if IPO is not supported
@@ -53,6 +53,7 @@ add_subdirectory(external EXCLUDE_FROM_ALL)
 # We want at least c++14
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# TODO : replace by target_compile_features(xxx PRIVATE cxx_std_14) now that we use 3.8.2
 
 # Delegate the target setup to source/CMakeLists.txt
 add_subdirectory(source)
