@@ -13,7 +13,12 @@ set(SRC_LIST main.cpp)
 set(HDR_LIST main.h)
 
 add_executable(RendererApp WIN32 ${SRC_LIST} ${HDR_LIST})
-target_link_libraries(RendererApp WS::system WS::decoders SDL2::SDL2)
+target_link_libraries(RendererApp
+    PUBLIC
+        WS::system
+        WS::decoders
+        SDL2::SDL2
+)
 
 target_enable_lto(RendererApp optimized)
 
