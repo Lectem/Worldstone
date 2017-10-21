@@ -30,5 +30,6 @@ target_set_warnings(MPQextract
 set_target_properties(DC6extract MPQextract PROPERTIES FOLDER ${PROJECT_NAME})
 
 add_subdirectory(DCxViewer)
+add_subdirectory(RendererApp)
 
 set_directory_properties(PROPERTIES VS_STARTUP_PROJECT DC6extract)
