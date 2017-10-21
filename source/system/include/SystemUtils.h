@@ -31,7 +31,7 @@ inline SignedResult signExtend(const InputType value)
     {
         SignedResult x : NbBits;
     } s;
-    return s.x = value;
+    return s.x = static_cast<SignedResult>(value);
 }
 
 #if 0

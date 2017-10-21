@@ -59,17 +59,31 @@ public:
         // clang-format on
     };
 
+    struct FrameHeader
+    {
+        uint32_t variable0;
+        uint32_t width;
+        uint32_t height;
+        int32_t  xoffset;
+        int32_t  yoffset;
+        uint32_t optional_bytes;
+        uint32_t coded_bytes;
+        bool     frame_bottom_up;
+    };
+
     struct Direction
     {
         DirectionHeader header;
+        std::vector<FrameHeader> frameHeaders;
     };
 
-protected:
     /** An array that maps an encoded 4-bit size to the real size in bits.
      *  The values are { 0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 20, 24, 26, 28, 30, 32 }
      */
-    static const int bitsWidthTable[16];
+    static constexpr unsigned bitsWidthTable[16] = {0,  1,  2,  4,  6,  8,  10, 12,
+                                                    14, 16, 20, 24, 26, 28, 30, 32};
 
+protected:
     StreamPtr stream = nullptr;
     Header    header;
     /* Offset of each direction header in the file, follows the @ref Header
