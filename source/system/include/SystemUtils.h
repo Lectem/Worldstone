@@ -5,9 +5,12 @@
  */
 #pragma once
 
+#include <stddef.h>
 #include <stdint.h>
 #include <limits.h>
 #include <type_traits>
+
+#define WS_UNUSED(x) (void)x
 
 namespace WorldStone
 {
@@ -53,5 +56,22 @@ inline SignedResult signExtendS(InputType value)
     return valWithoutSignBit - signBit * signBitMask;
 }
 #endif
+
+/** Reverse the order of the bits in an bitset value
+ * @param bits The bits in a type that support bitset operators
+ * @param nbBits Number of bits to reverse, if you want to treat uint64_t as uint32_t for example
+ */
+template<typename T>
+T reverseBits(T bits, size_t nbBits = sizeof(T) * CHAR_BIT)
+{
+    T tmp = 0;
+    for (size_t bitIndex = 0; bitIndex < nbBits; bitIndex++)
+    {
+        tmp <<= 1;
+        tmp |= bits & 1;
+        bits >>= 1;
+    }
+    return tmp;
+}
 } // namespace Utils
 } // namespace WorldStone

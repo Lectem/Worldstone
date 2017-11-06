@@ -8,6 +8,7 @@ set(DECODERS_SOURCES
 )
 
 set(DECODERS_HEADERS
+    include/AABB.h
     include/dc6.h
     include/dcc.h
     include/utils.h

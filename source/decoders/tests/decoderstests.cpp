@@ -36,6 +36,11 @@ TEST_CASE("DCC decoding")
     CHECK_EQ(dir0.header.yoffset_bits          ,       5);
     CHECK_EQ(dir0.header.optional_bytes_bits   ,       0);
     CHECK_EQ(dir0.header.coded_bytes_bits      ,       9);
+
+    CHECK_EQ(dir0.extents.xMin, -51);
+    CHECK_EQ(dir0.extents.yMin,-178);
+    CHECK_EQ(dir0.extents.xMax, 143);
+    CHECK_EQ(dir0.extents.yMax,  45);
     // clang-format on
 }
 

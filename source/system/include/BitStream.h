@@ -7,10 +7,10 @@
 #include <stdint.h>
 #include <SystemUtils.h>
 #include <algorithm>
+#include <assert.h>
 #include <climits>
 #include <type_traits>
 #include "IOBase.h"
-
 namespace WorldStone
 {
 
@@ -38,9 +38,12 @@ class BitStream : public IOBase
 
 public:
     /// Creates a bitstream from raw memory
-    BitStream(const void* inputBuffer, size_t size)
-        : buffer(static_cast<const byte*>(inputBuffer)), bufferSize(size)
+    BitStream(const void* inputBuffer, size_t sizeInBytes, size_t bitPosition = 0)
+        : buffer(static_cast<const byte*>(inputBuffer)),
+          bufferSize(sizeInBytes),
+          currentBitPosition(bitPosition)
     {
+        assert(currentBitPosition * CHAR_BIT <= sizeInBytes);
     }
 
     /// Returns the current position in bits
@@ -48,7 +51,11 @@ public:
     /// Set the current position, in bits
     void setPosition(size_t newPosition) { currentBitPosition = newPosition; }
     /// Skips the next nbBits bits
-    void skip(size_t nbBits) { currentBitPosition += nbBits; }
+    void skip(size_t nbBits)
+    {
+        assert(currentBitPosition + nbBits <= sizeInBits());
+        currentBitPosition += nbBits;
+    }
 
     void alignToByte()
     {

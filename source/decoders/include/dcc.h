@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <AABB.h>
 #include <FileStream.h>
 #include <memory>
 #include <type_traits>
@@ -22,6 +23,8 @@ namespace WorldStone
  */
 class DCC
 {
+    using Extents = AABB<int32_t>;
+
 public:
     /// The header of the file, contains global information about the encoded image
     struct Header
@@ -38,10 +41,13 @@ public:
         uint32_t final_dc6_size;
     };
 
-    /**Represents a direction header
+    /** Represents a direction header.
+     *
+     * Some fields encode the size of various FrameHeader members using DCC::bitsWidthTable.
      * @note While the struct uses bitfields with the same sizes as the DCC format,
      *       it is only for documenation purposes, do not try to fwrite/fread it.
      *       (bitfields layout is implementation defined)
+     *
      */
     struct DirectionHeader
     {
@@ -49,18 +55,20 @@ public:
         uint32_t outsize_coded;
         bool compressColorEncoding   : 1;
         bool compressEqualCells      : 1;
-        uint32_t variable0_bits      : 4;
-        uint32_t width_bits          : 4;
-        uint32_t height_bits         : 4;
-        uint32_t xoffset_bits        : 4;
-        uint32_t yoffset_bits        : 4;
-        uint32_t optional_bytes_bits : 4;
-        uint32_t coded_bytes_bits    : 4;
+        uint32_t variable0_bits      : 4; ///< Endcoded size in bits of FrameHeader::variable0
+        uint32_t width_bits          : 4; ///< Endcoded size in bits of FrameHeader::width
+        uint32_t height_bits         : 4; ///< Endcoded size in bits of FrameHeader::height
+        uint32_t xoffset_bits        : 4; ///< Endcoded size in bits of FrameHeader::xoffset
+        uint32_t yoffset_bits        : 4; ///< Endcoded size in bits of FrameHeader::yoffset
+        uint32_t optional_bytes_bits : 4; ///< Endcoded size in bits of FrameHeader::optional_bytes
+        uint32_t coded_bytes_bits    : 4; ///< Endcoded size in bits of FrameHeader::coded_bytes
         // clang-format on
     };
 
     struct FrameHeader
     {
+        ///@name Values in file
+        ///@{
         uint32_t variable0;
         uint32_t width;
         uint32_t height;
@@ -69,12 +77,31 @@ public:
         uint32_t optional_bytes;
         uint32_t coded_bytes;
         bool     frame_bottom_up;
+        ///@}
+
+        /** Extent of this frame image in the pixel buffer.
+         * Boundaries are included
+         */
+        Extents extents;
     };
 
     struct Direction
     {
+        ///@name Values in file
+        ///@{
         DirectionHeader header;
         std::vector<FrameHeader> frameHeaders;
+        ///@}
+
+        Extents extents;
+
+        ///@note Requires that the frame extents are already computed
+        void computeDirExtents()
+        {
+            extents.initializeForExtension();
+            for (const FrameHeader& frame : frameHeaders)
+                extents.extend(frame.extents);
+        }
     };
 
     /** An array that maps an encoded 4-bit size to the real size in bits.
@@ -104,8 +131,9 @@ public:
     void Reset() { *this = DCC{}; }
 
     bool extractHeaderAndOffsets();
+
     bool readDirection(Direction& outDir, uint32_t dirIndex);
 
-    const Header& getHeader() { return header; }
+    const Header& getHeader() const { return header; }
 };
 } // namespace WorldStone
