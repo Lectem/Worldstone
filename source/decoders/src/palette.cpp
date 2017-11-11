@@ -8,16 +8,15 @@
 namespace WorldStone
 {
 
-void Palette::Decode(const char* filename)
+void Palette::decode(const char* filename)
 {
     FileStream str{filename};
-    Decode(&str);
+    decode(&str);
 }
 
-void Palette::Decode(IStream* file)
+void Palette::decode(IStream* file)
 {
     if (file && file->good()) {
-        colors.resize(colorCount);
         for (size_t i = 0; i < colorCount; i++)
         {
             // order is BGR, not RGB
@@ -25,7 +24,7 @@ void Palette::Decode(IStream* file)
             colors[i].g = static_cast<uint8_t>(file->getc());
             colors[i].r = static_cast<uint8_t>(file->getc());
         }
-        _isValid = file->good();
+        valid = file->good();
     }
 }
 } // namespace WorldStone

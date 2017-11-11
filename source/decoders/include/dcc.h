@@ -29,16 +29,16 @@ public:
     /// The header of the file, contains global information about the encoded image
     struct Header
     {
-        uint8_t signature;      ///< Magic number for DCC files, must be 0x74
-        uint8_t version;        ///< DCC major version, usually 6
-        uint8_t directions;     ///< Number of directions in this file, max 32
-        uint8_t frames_per_dir; ///< Frames number for each direction(0-255? Max seen in-game is 200)
-        uint8_t  padding0[3];   ///< Some padding, might actually still be frames_per_dir
-        uint32_t tag;           ///< Seems to be always 1 ?
+        uint8_t  signature;    ///< Magic number for DCC files, must be 0x74
+        uint8_t  version;      ///< DCC major version, usually 6
+        uint8_t  directions;   ///< Number of directions in this file, max 32
+        uint8_t  framesPerDir; ///< Frames number for each direction(0-255? Max seen in-game is 200)
+        uint8_t  padding0[3];  ///< Some padding, might actually still be framesPerDir
+        uint32_t tag;          ///< Seems to be always 1 ?
 
         /// Size of the decoded image in bytes
-        ///(outsize_coded for all directions) + directions*frames_per_dir*4 + 24
-        uint32_t final_dc6_size;
+        ///(outsizeCoded for all directions) + directions*framesPerDir*4 + 24
+        uint32_t finalDc6Size;
     };
 
     /** Represents a direction header.
@@ -52,16 +52,16 @@ public:
     struct DirectionHeader
     {
         // clang-format off
-        uint32_t outsize_coded;
-        bool compressColorEncoding   : 1;
-        bool compressEqualCells      : 1;
-        uint32_t variable0_bits      : 4; ///< Endcoded size in bits of FrameHeader::variable0
-        uint32_t width_bits          : 4; ///< Endcoded size in bits of FrameHeader::width
-        uint32_t height_bits         : 4; ///< Endcoded size in bits of FrameHeader::height
-        uint32_t xoffset_bits        : 4; ///< Endcoded size in bits of FrameHeader::xoffset
-        uint32_t yoffset_bits        : 4; ///< Endcoded size in bits of FrameHeader::yoffset
-        uint32_t optional_bytes_bits : 4; ///< Endcoded size in bits of FrameHeader::optional_bytes
-        uint32_t coded_bytes_bits    : 4; ///< Endcoded size in bits of FrameHeader::coded_bytes
+        uint32_t outsizeCoded;
+        bool compressColorEncoding : 1;
+        bool compressEqualCells    : 1;
+        uint32_t variable0Bits     : 4; ///< Endcoded size in bits of FrameHeader::variable0
+        uint32_t widthBits         : 4; ///< Endcoded size in bits of FrameHeader::width
+        uint32_t heightBits        : 4; ///< Endcoded size in bits of FrameHeader::height
+        uint32_t xoffsetBits       : 4; ///< Endcoded size in bits of FrameHeader::xoffset
+        uint32_t yoffsetBits       : 4; ///< Endcoded size in bits of FrameHeader::yoffset
+        uint32_t optionalBytesBits : 4; ///< Endcoded size in bits of FrameHeader::optionalBytes
+        uint32_t codedBytesBits    : 4; ///< Endcoded size in bits of FrameHeader::codedBytes
         // clang-format on
     };
 
@@ -74,9 +74,9 @@ public:
         uint32_t height;
         int32_t  xoffset;
         int32_t  yoffset;
-        uint32_t optional_bytes;
-        uint32_t coded_bytes;
-        bool     frame_bottom_up;
+        uint32_t optionalBytes;
+        uint32_t codedBytes;
+        bool     frameBottomUp;
         ///@}
 
         /** Extent of this frame image in the pixel buffer.
@@ -124,11 +124,11 @@ protected:
     size_t getDirectionSize(uint32_t dirIndex);
 
 public:
-    bool Decode(const char* filename);
-    bool Decode(StreamPtr&& streamPtr);
+    bool decode(const char* filename);
+    bool decode(StreamPtr&& streamPtr);
 
     /// Resets the decoder and frees resources
-    void Reset() { *this = DCC{}; }
+    void reset() { *this = DCC{}; }
 
     bool extractHeaderAndOffsets();
 

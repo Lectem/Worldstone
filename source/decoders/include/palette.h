@@ -6,7 +6,7 @@
 
 #include <cstdint>
 #include <Stream.h>
-#include <vector>
+#include <array>
 
 namespace WorldStone
 {
@@ -26,13 +26,13 @@ struct Palette
     };
 
     static const int colorCount = 256;
+    std::array<Color, colorCount> colors;
 
-    void               Decode(const char* filename);
-    void Decode(IStream* file);
-    std::vector<Color> colors;
-    bool               isValid() const { return _isValid; }
+    void decode(const char* filename);
+    void decode(IStream* file);
+    bool isValid() const { return valid; }
 
 private:
-    bool _isValid = false;
+    bool valid = false;
 };
 } // namespace WorldStone

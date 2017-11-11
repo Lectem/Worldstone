@@ -26,11 +26,11 @@ public:
     struct Header
     {
         int32_t  version;        ///< DC6 major version, usually 6
-        int32_t  sub_version;    ///< DC6 minor version, usually 1
+        int32_t  subVersion;     ///< DC6 minor version, usually 1
         int32_t  zeros;          ///< Always 0 ? might be micro version or encoding
         uint8_t  termination[4]; ///< Always 0xEEEEEEEE or 0xCDCDCDCD
         uint32_t directions;     ///< Number of directions in this file
-        uint32_t frames_per_dir; ///< Number of frames for each direction
+        uint32_t framesPerDir;   ///< Number of frames for each direction
     };
 
     struct FrameHeader
@@ -38,11 +38,10 @@ public:
         int32_t flip;     ///< Default (false) means scanlines are from bottom to top
         int32_t width;    ///< Width in pixels
         int32_t height;   ///< Height in pixels
-        int32_t offset_x; ///< Horizontal offset for left edge of the frame
-        int32_t offset_y; ///< Vertical offset for bottom(top if flipped) edge ofthe
-                          /// frame.
+        int32_t offsetX;  ///< Horizontal offset for left edge of the frame
+        int32_t offsetY;  ///< Vertical offset for bottom(top if flipped) edge of the frame.
         int32_t zeros;
-        int32_t next_block; ///< Pointer to the next frame
+        int32_t nextBlock;  ///< Pointer to the next frame
         int32_t length;     ///< Length of the frame in chunks
     };
 
@@ -53,11 +52,11 @@ protected:
     std::vector<FrameHeader> frameHeaders;
 
 public:
-    bool Decode(const char* filename);
-    bool Decode(StreamPtr&& streamPtr);
+    bool decode(const char* filename);
+    bool decode(StreamPtr&& streamPtr);
 
     /// Resets the decoder and frees resources
-    void Reset() { *this = DC6{}; }
+    void reset() { *this = DC6{}; }
 
     bool extractHeaders();
 

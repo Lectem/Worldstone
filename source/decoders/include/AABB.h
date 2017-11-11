@@ -15,12 +15,15 @@ struct AABB
     T xMax;
     T yMax;
 
+    T width() const { return xMax - xMin; }
+    T height() const { return yMax - yMin; }
+
     void maximize()
     {
-        xMin = std::numeric_limits<decltype(xMin)>::lowest();
-        yMin = std::numeric_limits<decltype(yMin)>::lowest();
-        xMax = std::numeric_limits<decltype(xMax)>::max();
-        yMax = std::numeric_limits<decltype(yMax)>::max();
+        xMin = std::numeric_limits<T>::lowest();
+        yMin = std::numeric_limits<T>::lowest();
+        xMax = std::numeric_limits<T>::max();
+        yMax = std::numeric_limits<T>::max();
     }
 
     void initializeForExtension() { *this = AABB::getInitializedForExtension(); }
@@ -42,10 +45,8 @@ struct AABB
      */
     static constexpr AABB getInitializedForExtension()
     {
-        return {std::numeric_limits<decltype(xMin)>::max(),
-                std::numeric_limits<decltype(xMin)>::max(),
-                std::numeric_limits<decltype(yMax)>::lowest(),
-                std::numeric_limits<decltype(yMax)>::lowest()};
+        return {std::numeric_limits<T>::max(), std::numeric_limits<T>::max(),
+                std::numeric_limits<T>::lowest(), std::numeric_limits<T>::lowest()};
     }
 };
 }

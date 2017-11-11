@@ -53,7 +53,7 @@ static constexpr readSignedPtrType readSignedPtrs[16] = {
     &BitStream::readSigned<DCC::bitsWidthTable[14]>,
     &BitStream::readSigned<DCC::bitsWidthTable[15]>};
 
-bool DCC::Decode(const char* filename)
+bool DCC::decode(const char* filename)
 {
     assert(!stream);
     stream = std::make_unique<FileStream>(filename);
@@ -63,7 +63,7 @@ bool DCC::Decode(const char* filename)
     return false;
 }
 
-bool DCC::Decode(StreamPtr&& streamPtr)
+bool DCC::decode(StreamPtr&& streamPtr)
 {
     assert(!stream);
     stream = std::move(streamPtr);
@@ -82,10 +82,10 @@ bool DCC::extractHeaderAndOffsets()
     stream->readRaw(header.signature);
     stream->readRaw(header.version);
     stream->readRaw(header.directions);
-    stream->readRaw(header.frames_per_dir);
+    stream->readRaw(header.framesPerDir);
     stream->readRaw(header.padding0);
     stream->readRaw(header.tag);            // TODO : ENDIAN
-    stream->readRaw(header.final_dc6_size); // TODO : ENDIAN
+    stream->readRaw(header.finalDc6Size);   // TODO : ENDIAN
 
     assert(header.padding0[0] == 0 && header.padding0[1] == 0 && header.padding0[2] == 0 &&
            "Assumed there are 255 frames max, but Paul Siramy's doc mentions 256 as max ?");
@@ -106,16 +106,16 @@ size_t DCC::getDirectionSize(uint32_t dirIndex)
 
 static bool readDirHeader(DCC::DirectionHeader& dirHeader, BitStream& bitStream)
 {
-    dirHeader.outsize_coded         = bitStream.readUnsigned<32>();
+    dirHeader.outsizeCoded          = bitStream.readUnsigned<32>();
     dirHeader.compressColorEncoding = bitStream.readBool();
     dirHeader.compressEqualCells    = bitStream.readBool();
-    dirHeader.variable0_bits        = bitStream.readUnsigned<4>();
-    dirHeader.width_bits            = bitStream.readUnsigned<4>();
-    dirHeader.height_bits           = bitStream.readUnsigned<4>();
-    dirHeader.xoffset_bits          = bitStream.readUnsigned<4>();
-    dirHeader.yoffset_bits          = bitStream.readUnsigned<4>();
-    dirHeader.optional_bytes_bits   = bitStream.readUnsigned<4>();
-    dirHeader.coded_bytes_bits      = bitStream.readUnsigned<4>();
+    dirHeader.variable0Bits         = bitStream.readUnsigned<4>();
+    dirHeader.widthBits             = bitStream.readUnsigned<4>();
+    dirHeader.heightBits            = bitStream.readUnsigned<4>();
+    dirHeader.xoffsetBits           = bitStream.readUnsigned<4>();
+    dirHeader.yoffsetBits           = bitStream.readUnsigned<4>();
+    dirHeader.optionalBytesBits     = bitStream.readUnsigned<4>();
+    dirHeader.codedBytesBits        = bitStream.readUnsigned<4>();
     return bitStream.good();
 }
 
@@ -129,22 +129,22 @@ static bool readFrameHeaders(uint8_t nbFrames, DCC::Direction& outDir, BitStream
     {
         // We are using member function pointers here because we would have one indirection
         // From looking up the size anyway, so we might as well call the template instance directly
-        frameHeader.variable0 = (bitStream.*readUnsignedPtrs[dirHeader.variable0_bits])();
-        frameHeader.width     = (bitStream.*readUnsignedPtrs[dirHeader.width_bits])();
-        frameHeader.height    = (bitStream.*readUnsignedPtrs[dirHeader.height_bits])();
-        frameHeader.xoffset   = (bitStream.*readSignedPtrs[dirHeader.xoffset_bits])();
-        frameHeader.yoffset   = (bitStream.*readSignedPtrs[dirHeader.yoffset_bits])();
+        frameHeader.variable0 = (bitStream.*readUnsignedPtrs[dirHeader.variable0Bits])();
+        frameHeader.width     = (bitStream.*readUnsignedPtrs[dirHeader.widthBits])();
+        frameHeader.height    = (bitStream.*readUnsignedPtrs[dirHeader.heightBits])();
+        frameHeader.xoffset   = (bitStream.*readSignedPtrs[dirHeader.xoffsetBits])();
+        frameHeader.yoffset   = (bitStream.*readSignedPtrs[dirHeader.yoffsetBits])();
 
-        frameHeader.optional_bytes = (bitStream.*readUnsignedPtrs[dirHeader.optional_bytes_bits])();
-        frameHeader.coded_bytes     = (bitStream.*readUnsignedPtrs[dirHeader.coded_bytes_bits])();
-        frameHeader.frame_bottom_up = bitStream.readBool();
+        frameHeader.optionalBytes = (bitStream.*readUnsignedPtrs[dirHeader.optionalBytesBits])();
+        frameHeader.codedBytes    = (bitStream.*readUnsignedPtrs[dirHeader.codedBytesBits])();
+        frameHeader.frameBottomUp = bitStream.readBool();
 
         assert(frameHeader.width < 0x700000);
         assert(frameHeader.height < 0x700000);
         frameHeader.extents.xMin = frameHeader.xoffset;
         frameHeader.extents.xMax = frameHeader.xoffset + int32_t(frameHeader.width) - 1;
 
-        if (frameHeader.frame_bottom_up) {
+        if (frameHeader.frameBottomUp) {
             frameHeader.extents.yMin = frameHeader.yoffset;
             frameHeader.extents.yMax = frameHeader.yoffset + int32_t(frameHeader.height) - 1;
         }
@@ -158,9 +158,9 @@ static bool readFrameHeaders(uint8_t nbFrames, DCC::Direction& outDir, BitStream
     // Handle optional data
     for (DCC::FrameHeader& frameHeader : outDir.frameHeaders)
     {
-        if (frameHeader.optional_bytes) {
+        if (frameHeader.optionalBytes) {
             bitStream.alignToByte();
-            bitStream.skip(frameHeader.optional_bytes * CHAR_BIT);
+            bitStream.skip(frameHeader.optionalBytes * CHAR_BIT);
         }
     }
     return bitStream.good();
@@ -179,7 +179,7 @@ bool DCC::readDirection(Direction& outDir, uint32_t dirIndex)
     DirectionHeader& dirHeader = outDir.header;
     if (!readDirHeader(dirHeader, bitStream)) return false;
 
-    if (!readFrameHeaders(header.frames_per_dir, outDir, bitStream)) return false;
+    if (!readFrameHeaders(header.framesPerDir, outDir, bitStream)) return false;
 
     outDir.computeDirExtents();
 
@@ -249,6 +249,12 @@ bool DCC::readDirection(Direction& outDir, uint32_t dirIndex)
     WS_UNUSED(rawPixelCodesBitStream);
     WS_UNUSED(pixelCodesAndDisplacementBitStream);
     WS_UNUSED(pixelBuffer);
+
+    const int32_t dirWidth  = outDir.extents.width();
+    const int32_t dirHeight = outDir.extents.height();
+    WS_UNUSED(dirWidth);
+    WS_UNUSED(dirHeight);
+
     return bitStream.good();
 }
 } // namespace WorldStone
