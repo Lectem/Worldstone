@@ -141,17 +141,17 @@ static bool readFrameHeaders(uint8_t nbFrames, DCC::Direction& outDir, BitStream
 
         assert(frameHeader.width < 0x700000);
         assert(frameHeader.height < 0x700000);
-        frameHeader.extents.xMin = frameHeader.xoffset;
-        frameHeader.extents.xMax = frameHeader.xoffset + int32_t(frameHeader.width) - 1;
+        frameHeader.extents.xLower = frameHeader.xoffset;
+        frameHeader.extents.xUpper = frameHeader.xoffset + int32_t(frameHeader.width);
 
         if (frameHeader.frameBottomUp) {
-            frameHeader.extents.yMin = frameHeader.yoffset;
-            frameHeader.extents.yMax = frameHeader.yoffset + int32_t(frameHeader.height) - 1;
+            frameHeader.extents.yLower = frameHeader.yoffset;
+            frameHeader.extents.yUpper = frameHeader.yoffset + int32_t(frameHeader.height);
         }
         else // top-down
         {
-            frameHeader.extents.yMin = frameHeader.yoffset - int32_t(frameHeader.height) + 1;
-            frameHeader.extents.yMax = frameHeader.yoffset;
+            frameHeader.extents.yLower = frameHeader.yoffset - int32_t(frameHeader.height) + 1;
+            frameHeader.extents.yUpper = frameHeader.yoffset + 1;
         }
     }
 

@@ -20,6 +20,7 @@ namespace WorldStone
  *
  * This format is usually used with COF files, which describe the animations and blending of
  * multiple DCC files.
+ * @test{Decoders,DCC_BaalSpirit}
  */
 class DCC
 {
