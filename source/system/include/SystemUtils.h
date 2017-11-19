@@ -17,10 +17,11 @@ namespace WorldStone
 namespace Utils
 {
 
-/** Convert a N-bits 2's complement signed value to a @ref SignedResult value
+/** Convert a N-bits 2's complement signed value to a SignedResult value
  * @tparam SignedResult Type of the result, must be signed.
  * @tparam NbBits The size in bits of value. Value must be between > 1.
  * @param value The original value, 2's complement on @ref NbBits bits.
+ * @test{System,SignExtend}
  */
 template<typename SignedResult, unsigned NbBits, typename InputType>
 inline SignedResult signExtend(const InputType value)
@@ -38,7 +39,7 @@ inline SignedResult signExtend(const InputType value)
 }
 
 #if 0
-/// Safe version of signExtend that does not rely on implementation defined unions.
+// Safe version of signExtend that does not rely on implementation defined unions.
 template <typename SignedResult, unsigned NbBits, typename InputType>
 inline SignedResult signExtendS(InputType value)
 {

@@ -35,3 +35,65 @@ target_link_libraries(hello_world
         Qt5::Core     # No need to add external, already in its own namespace
 )
 ```
+
+# Doxygen
+
+## Comments and commands style
+
+Use C-style comments if the comments is on multiple lines:
+
+```cpp
+/**This is a brief comment.
+ * @param a This is a param description
+ *
+ * A longer description of this item.
+ */
+void foo(int a);
+```
+
+You can use C++-style comments for one-liners:
+```cpp
+/// A function that does nothing
+void bar(){}
+
+struct IntegerStruct
+{
+    int value; //< The value of the integer
+};
+```
+
+Use the 'at' character for commands:
+
+```cpp
+/// @brief Some brief description.
+```
+
+## Tests
+
+Some Doxygen ALIASES are used for tests.
+
+The tested function or class must use the `@test{Module,TestShortName}` command.
+**Module** and **TestShortName** must not contain whitespaces
+
+The tests are documented using the `@testimpl{TestedObject,TestShortName}` or `@testimpl{TestShortName}`(in case of multiple elements being tested at once).
+**TestedObject** will be used to create a "see also" block linking to the tested object/function.
+
+### Example:
+
+```cpp
+/////////////// Header ////////////////////
+
+/**A class representing a file stream
+ * @test{System,RO_filestream}
+ * @test{System,WO_filestream}
+ */
+class FileStream;
+
+//////////////// Test /////////////////////
+
+///@testimpl{FileStream,RO_filestream}
+TEST_CASE("Read-only filestream");
+
+///@testimpl{FileStream,WO_filestream}
+TEST_CASE("Write-only filestream");
+```

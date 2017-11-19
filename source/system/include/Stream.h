@@ -17,7 +17,7 @@ namespace WorldStone
  * While it can be used to abstract many types of streams, file streams are
  * usually created through an @see Archive.
  *
- * @test Read-only files : @ref systemtests.cpp
+ * @test{System,RO_filestreams}
  */
 class IStream : public IOBase
 {

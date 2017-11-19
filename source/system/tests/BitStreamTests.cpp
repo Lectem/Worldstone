@@ -1,3 +1,6 @@
+/**
+ * @file BitStreamTests.cpp
+ */
 #include <BitStream.h>
 #include <SystemUtils.h>
 #include "doctest.h"
@@ -5,14 +8,12 @@
 using WorldStone::BitStream;
 using WorldStone::Utils::signExtend;
 
-/**
- * @cond TEST
+/**Test that SignExtend is giving the right values
+ * @testimpl{WorldStone::Utils::signExtend(),SignExtend}
  */
-
-// Required for bitstream signed integer read
-// clang-format off
 TEST_CASE("SignExtend")
 {
+// clang-format off
     SUBCASE("Positive input")
     {
         CHECK_EQ(signExtend<int32_t,13>(         0),          0);
@@ -32,9 +33,12 @@ TEST_CASE("SignExtend")
         CHECK_EQ(signExtend<int32_t, 3>(      0x07),         -1);
         CHECK_EQ(signExtend<int32_t, 9>(     0x1CE),        -50);
     }
-}
 // clang-format on
+}
 
+/**Test the Bitstream usage in read-only.
+ * @testimpl{WorldStone::BitStream,RO_bitstream}
+ */
 TEST_CASE("BitStream read.")
 {
     const char buffer[] = {0x01, 0x23, 0x45, 0x67, (char)0x89, (char)0xAB, (char)0xCD, (char)0xEF};
@@ -68,7 +72,3 @@ TEST_CASE("BitStream read.")
 
     CHECK(bitstream.good());
 }
-
-/**
- * @endcond TEST
- */

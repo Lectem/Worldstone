@@ -27,6 +27,7 @@ namespace WorldStone
  * @warning As this class acts as a view, the buffer must outlive the usage of this class.
  * @todo Add some bounds checking and set io flags on error
  * @todo Implement a MemoryStream class
+ * @test{System,RO_bitstream}
  */
 
 class BitStream : public IOBase
