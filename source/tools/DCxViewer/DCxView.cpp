@@ -74,7 +74,7 @@ void DC6View::loadPalette(const QString& paletteFile)
     WorldStone::StreamPtr stream = DCxViewerApp::instance()->getFilePtr(paletteFile);
     if (stream) {
         paletteLabel->setText(QString("Palettes (Current=%1)").arg(paletteFile));
-        palette.Decode(stream.get());
+        palette.decode(stream.get());
     }
     refreshDC6Frame();
 }
@@ -90,11 +90,10 @@ void DC6View::displayDC6(const QString& fileName)
     animationTimer->stop();
     currentDC6 = std::make_unique<DC6>();
     DC6& dc6   = *currentDC6;
-	if (!dc6.Decode(DCxViewerApp::instance()->getFilePtr(fileName)))
-	{
-		qDebug() << "Failed to decode " << fileName;
-		return;
-	}
+    if (!dc6.decode(DCxViewerApp::instance()->getFilePtr(fileName))) {
+        qDebug() << "Failed to decode " << fileName;
+        return;
+    }
     const DC6::Header& header = dc6.getHeader();
     const QString      qstr   = QString::fromStdString(
         fmt::format("<table>"
@@ -102,18 +101,18 @@ void DC6View::displayDC6(const QString& fileName)
                     "<tr><td>Directions:    </td> <td>{}   </td></tr>"
                     "<tr><td>Frames per dir:</td> <td>{}   </td></tr>"
                     "</table>",
-                    header.version, header.sub_version, header.directions, header.frames_per_dir));
+                    header.version, header.subVersion, header.directions, header.framesPerDir));
     headerInfo->setText(qstr);
 
-    if (!header.directions || !header.frames_per_dir) {
+    if (!header.directions || !header.framesPerDir) {
         frameSpinBox->hide();
         directionSpinBox->hide();
     }
     else
     {
         frameSpinBox->setValue(0);
-        frameSpinBox->setMaximum(header.frames_per_dir - 1);
-        frameSpinBox->setSuffix("/" + QString::number(header.frames_per_dir - 1));
+        frameSpinBox->setMaximum(header.framesPerDir - 1);
+        frameSpinBox->setSuffix("/" + QString::number(header.framesPerDir - 1));
         directionSpinBox->setValue(0);
         directionSpinBox->setMaximum(header.directions - 1);
         directionSpinBox->setSuffix("/" + QString::number(header.directions - 1));
@@ -137,7 +136,7 @@ void DC6View::refreshDC6Frame()
         auto& frameHeaders = currentDC6->getFameHeaders();
 
         const DC6::Header& header      = currentDC6->getHeader();
-        size_t             frame       = dir * header.frames_per_dir + frameInDir;
+        size_t             frame       = dir * header.framesPerDir + frameInDir;
         auto&              frameHeader = frameHeaders[frame];
 
         // Display frame header information
@@ -145,13 +144,13 @@ void DC6View::refreshDC6Frame()
         const QString qstr = QString::fromStdString(
             fmt::format("<table>"
                         "<tr><td>size:     </td> <td>{}x{}</td></tr>"
-                        "<tr><td>offset_x: </td> <td>{}   </td></tr>"
-                        "<tr><td>offset_y: </td> <td>{}   </td></tr>"
+                        "<tr><td>offsetX: </td> <td>{}   </td></tr>"
+                        "<tr><td>offsetY: </td> <td>{}   </td></tr>"
                         "<tr><td>flip:     </td> <td>{}   </td></tr>"
                         "<tr><td>chunks:   </td> <td>{}   </td></tr>"
                         "</table>",
-                        frameHeader.width, frameHeader.height, frameHeader.offset_x,
-                        frameHeader.offset_y, (bool)frameHeader.flip, frameHeader.length));
+                        frameHeader.width, frameHeader.height, frameHeader.offsetX,
+                        frameHeader.offsetY, (bool)frameHeader.flip, frameHeader.length));
         frameHeaderInfo->setText(qstr);
 
         // Display the image

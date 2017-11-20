@@ -1,3 +1,6 @@
+/**
+ * @file BitStreamTests.cpp
+ */
 #include <BitStream.h>
 #include <SystemUtils.h>
 #include "doctest.h"
@@ -5,14 +8,12 @@
 using WorldStone::BitStream;
 using WorldStone::Utils::signExtend;
 
-/**
- * @cond TEST
+/**Test that SignExtend is giving the right values
+ * @testimpl{WorldStone::Utils::signExtend(),SignExtend}
  */
-
-// Required for bitstream signed integer read
-// clang-format off
 TEST_CASE("SignExtend")
 {
+// clang-format off
     SUBCASE("Positive input")
     {
         CHECK_EQ(signExtend<int32_t,13>(         0),          0);
@@ -32,9 +33,12 @@ TEST_CASE("SignExtend")
         CHECK_EQ(signExtend<int32_t, 3>(      0x07),         -1);
         CHECK_EQ(signExtend<int32_t, 9>(     0x1CE),        -50);
     }
-}
 // clang-format on
+}
 
+/**Test the Bitstream usage in read-only.
+ * @testimpl{WorldStone::BitStream,RO_bitstream}
+ */
 TEST_CASE("BitStream read.")
 {
     const char buffer[] = {0x01, 0x23, 0x45, 0x67, (char)0x89, (char)0xAB, (char)0xCD, (char)0xEF};
@@ -42,6 +46,7 @@ TEST_CASE("BitStream read.")
     CHECK_EQ(bitstream.sizeInBytes(), sizeof(buffer));
     CHECK_EQ(bitstream.sizeInBits(), sizeof(buffer) * CHAR_BIT);
     // clang-format off
+    CHECK_EQ(bitstream.readUnsigned< 0>(),                     0);
     CHECK_EQ(bitstream.readUnsigned< 8>(),                  0x01);
     CHECK_EQ(bitstream.readUnsigned<16>(),                0x4523); // Little endian
     CHECK_EQ(bitstream.readUnsigned< 3>(),          0x67 & 0b111);
@@ -50,8 +55,20 @@ TEST_CASE("BitStream read.")
     CHECK_EQ(bitstream.readUnsigned< 2>(), (0xCDAB >> 13) & 0b11);
     CHECK_EQ(bitstream.readUnsigned< 9>(),        0xEFCDAB >> 15);
     // clang-format on
-}
 
-/**
- * @endcond TEST
- */
+    bitstream.setPosition(0);
+    CHECK(bitstream.readBit());
+    CHECK_FALSE(bitstream.readBit());
+    CHECK_EQ(bitstream.tell(), 2);
+    CHECK_EQ(bitstream.read0Bits(), 0);
+    CHECK_EQ(bitstream.tell(), 2);
+
+    bitstream.skip(6);
+    CHECK_EQ(bitstream.readSigned<0>(), 0);
+    CHECK_EQ(bitstream.readSigned<1>(), 0); // Always return 0
+    CHECK_EQ(bitstream.tell(), 2 + 6 + 1);
+    bitstream.alignToByte();
+    CHECK_EQ(bitstream.tell(), 16);
+
+    CHECK(bitstream.good());
+}

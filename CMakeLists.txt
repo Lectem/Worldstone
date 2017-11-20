@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.8.2)
 
 if(POLICY CMP0069)
     cmake_policy(SET CMP0069 NEW) # When INTERPROCEDURAL_OPTIMIZATION is set, give an error if IPO is not supported
@@ -53,6 +53,7 @@ add_subdirectory(external EXCLUDE_FROM_ALL)
 # We want at least c++14
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# TODO : replace by target_compile_features(xxx PRIVATE cxx_std_14) now that we use 3.8.2
 
 # Delegate the target setup to source/CMakeLists.txt
 add_subdirectory(source)
@@ -86,9 +87,25 @@ if(WS_USE_DOXYGEN AND ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} VERSION_GREA
         set(DOXYGEN_USE_MDFILE_AS_MAINPAGE README.md)
         set(DOXYGEN_JAVADOC_AUTOBRIEF YES)
         set(DOXYGEN_SOURCE_BROWSER YES)
+        set(DOXYGEN_GENERATE_TREEVIEW YES)
+        # Doxygen macros
+        set(DOXYGEN_MACRO_EXPANSION YES)
+        set(DOXYGEN_EXPAND_ONLY_PREDEF YES)
+        set(DOXYGEN_PREDEFINED [[TYPE_TO_STRING(x)=""]])
+        # Custom commands
+        # The following will expand to
+        set(DOXYGEN_ALIASES
+            # Using \t instead of spaces because of https://gitlab.kitware.com/cmake/cmake/issues/17489
+            #test{2}="@xrefitem	\1_tests	\"Tests\"	\"\1:TestsList\"	@ref	TEST_\2	\"\2\""
+            ;test{2}="@xrefitem\t\\1_tests\t\\\"Tests\\\"\t\\\"\\1:TestsList\\\"\t@ref\tTEST_\\2\t\\\"\\2\\\""
+            #testimpl{1}="@anchor	TEST_\1"
+            ;testimpl{1}="@anchor\tTEST_\\1"
+            #testimpl{2}="@anchor	TEST_\2	@sa	\1"
+            ;testimpl{2}="@anchor\tTEST_\\2\t@sa\t\\1"
+        )
         doxygen_add_docs(
             doc
-            README.md source
+            README.md source doc
             COMMENT "Generate man pages"
         )
     endif()

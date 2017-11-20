@@ -2,12 +2,15 @@ project(decoders)
 
 set(DECODERS_SOURCES
     src/dc6.cpp
+    src/dcc.cpp
     src/palette.cpp
     src/utils.cpp
 )
 
 set(DECODERS_HEADERS
+    include/AABB.h
     include/dc6.h
+    include/dcc.h
     include/utils.h
     include/palette.h
 )
@@ -29,3 +32,5 @@ target_set_warnings(ws_decoders
 
 
 add_library(WS::decoders ALIAS ws_decoders)
+
+add_subdirectory(tests)

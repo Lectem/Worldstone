@@ -39,7 +39,7 @@ void exportToPPM(const char* output, const uint8_t* data, int width, int height,
         fmt::print(file, "P6 {} {} 255\n", width, height);
         for (size_t i = 0; i < static_cast<size_t>(width * height); ++i)
         {
-            const std::vector<Palette::Color>& colors = palette.colors;
+            const auto& colors = palette.colors;
             fputc(colors[data[i]].r, file);
             fputc(colors[data[i]].g, file);
             fputc(colors[data[i]].b, file);

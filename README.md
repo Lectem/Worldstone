@@ -16,14 +16,14 @@ Just started, so there's only the basic C++ tree, and a simple DC6 decoder.
 
 ## Building
 
-### Prerequises
+### Prerequisites
 * CMake 3.6 or higher
 * A C++14 compiler
   - GCC 6.0 - tested (5.0 should work)
   - clang 3.8 with libc++ or libstdc++-5(only 6 is tested) - tested
   - MSVC 14 (Visual 2015) - tested
 * Bzip2 for Stormlib(libbz2-dev on debian/ubuntu)
-* QT 5.x for the tools
+* QT 5.x (only for the tools)
   
 ### Copy-paste from command line (in the project directory):
 

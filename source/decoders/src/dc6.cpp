@@ -12,7 +12,7 @@
 
 namespace WorldStone
 {
-bool DC6::Decode(const char* filename)
+bool DC6::decode(const char* filename)
 {
     assert(!stream);
     stream = std::make_unique<FileStream>(filename);
@@ -22,7 +22,7 @@ bool DC6::Decode(const char* filename)
     return false;
 }
 
-bool DC6::Decode(StreamPtr&& streamPtr)
+bool DC6::decode(StreamPtr&& streamPtr)
 {
     assert(!stream);
     stream = std::move(streamPtr);
@@ -39,7 +39,7 @@ bool DC6::extractHeaders()
     stream->read(&header, sizeof(header));
     if (stream->fail()) return false;
 
-    size_t framesNumber = header.directions * header.frames_per_dir;
+    size_t framesNumber = header.directions * header.framesPerDir;
     frameHeaders.resize(framesNumber);
 
     framePointers.resize(framesNumber);
@@ -120,9 +120,9 @@ void DC6::exportToPPM(const char* ppmFilenameBase, const Palette& palette) const
 {
     for (uint32_t dir = 0; dir < header.directions; ++dir)
     {
-        for (size_t frameInDir = 0; frameInDir < header.frames_per_dir; ++frameInDir)
+        for (size_t frameInDir = 0; frameInDir < header.framesPerDir; ++frameInDir)
         {
-            size_t frame = dir * header.frames_per_dir + frameInDir;
+            size_t frame = dir * header.framesPerDir + frameInDir;
             auto   data  = decompressFrame(frame);
             Utils::exportToPPM(fmt::format("{}{}-{}.ppm", ppmFilenameBase, dir, frameInDir).c_str(),
                                data.data(), frameHeaders[frame].width, frameHeaders[frame].height,

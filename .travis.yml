@@ -10,8 +10,8 @@ env:
   - BUILD_TYPE=Release
 
 matrix:
-  allow_failures:
-    - os: osx
+#  allow_failures:
+#    - os: osx
   include:
     - os: linux
       compiler: gcc
@@ -79,7 +79,7 @@ install:
     fi
   - |
     if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
-      brew upgrade cmake || brew install cmake
+      brew update && brew upgrade cmake || brew install cmake
     fi
 
 script:

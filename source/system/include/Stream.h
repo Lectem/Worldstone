@@ -17,7 +17,7 @@ namespace WorldStone
  * While it can be used to abstract many types of streams, file streams are
  * usually created through an @see Archive.
  *
- * @test Read-only files : @ref systemtests.cpp
+ * @test{System,RO_filestreams}
  */
 class IStream : public IOBase
 {
@@ -46,6 +46,14 @@ public:
      * an error occured.
      */
     virtual size_t read(void* buffer, size_t size) = 0;
+
+    template<typename T>
+    bool readRaw(T& out)
+    {
+        static_assert(std::is_trivially_copyable<T>::value,
+                      "The type must be trivially copyable to access it as byte storage");
+        return sizeof(out) == read(&out, sizeof(out));
+    }
     /**
      * Read one byte from the stream.
      * @return The next byte to read from the stream, or a negative value on failure.

@@ -1,3 +1,7 @@
+/**
+* @file FileStreamTests.cpp
+*/
+
 #include <FileStream.h>
 #include <MpqArchive.h>
 #include <fstream>
@@ -9,9 +13,6 @@ using WorldStone::MpqArchive;
 using WorldStone::MpqFileStream;
 using WorldStone::StreamPtr;
 
-/**
- * @cond TEST
- */
 namespace test_helpers
 {
 
@@ -31,10 +32,12 @@ public:
 };
 }
 typedef doctest::Types<WorldStone::FileStream, test_helpers::MpqFileWrapper> stream_types;
+
 TYPE_TO_STRING(WorldStone::FileStream);
 TYPE_TO_STRING(test_helpers::MpqFileWrapper);
 
-TEST_CASE_TEMPLATE("  Scenario: Read-only filestreams", StreamType, stream_types)
+/// @testimpl{WorldStone::IStream,RO_filestreams}
+SCENARIO_TEMPLATE("Read-only filestreams", StreamType, stream_types)
 {
     GIVEN("A file that does not exist")
     {
@@ -131,7 +134,3 @@ TEST_CASE_TEMPLATE("  Scenario: Read-only filestreams", StreamType, stream_types
         }
     }
 }
-
-/**
- * @endcond TEST
- */
