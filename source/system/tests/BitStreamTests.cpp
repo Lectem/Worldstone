@@ -6,35 +6,6 @@
 #include "doctest.h"
 
 using WorldStone::BitStream;
-using WorldStone::Utils::signExtend;
-
-/**Test that SignExtend is giving the right values
- * @testimpl{WorldStone::Utils::signExtend(),SignExtend}
- */
-TEST_CASE("SignExtend")
-{
-// clang-format off
-    SUBCASE("Positive input")
-    {
-        CHECK(signExtend<int32_t,13>(         0) ==          0);
-        CHECK(signExtend<int32_t,32>(0x16641337) == 0x16641337);
-        CHECK(signExtend<int32_t,32>(0x7FFFFFFF) == 0x7FFFFFFF);
-        CHECK(signExtend<int32_t, 2>(      0b11) ==         -1);
-    }
-    SUBCASE("Negative input")
-    {
-        CHECK(signExtend<int32_t, 5>(   0b10110) ==        -10);
-        CHECK(signExtend<int32_t, 8>(      0xFF) ==         -1);
-        CHECK(signExtend<int32_t,32>(0xFFFFFFFF) ==         -1);
-        CHECK(signExtend<int32_t,32>(0xDEADBEEF) == 0xDEADBEEF);
-        CHECK(signExtend<int32_t,16>(0xDEADBEEF) == 0xFFFFBEEF);
-        CHECK(signExtend<int32_t,16>(0x16641337) ==     0x1337);
-        CHECK(signExtend<int32_t, 8>(      0x80) ==       -128);
-        CHECK(signExtend<int32_t, 3>(      0x07) ==         -1);
-        CHECK(signExtend<int32_t, 9>(     0x1CE) ==        -50);
-    }
-// clang-format on
-}
 
 /**Test the Bitstream usage in read-only.
  * @testimpl{WorldStone::BitStream,RO_bitstream}

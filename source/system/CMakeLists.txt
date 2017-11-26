@@ -1,21 +1,21 @@
 project(WSsystem)
 
 set(system_sources
-    src/MpqArchive.cpp
-    src/FileStream.cpp
     src/BitStream.cpp
+    src/FileStream.cpp
+    src/MpqArchive.cpp
     src/_VTablesTU.cpp
 )
 set(system_headers
     include/Archive.h
+    include/BitStream.h
+    include/FileStream.h
     include/IOBase.h
     include/Log.h
     include/MpqArchive.h
+    include/Platform.h
     include/Stream.h
-    include/FileStream.h
-    include/BitStream.h
     include/SystemUtils.h
-    src/FileStream.cpp
 )
 
 

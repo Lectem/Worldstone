@@ -1,6 +1,7 @@
-//
-// Created by Lectem on 12/11/2016.
-//
+/**
+ * @file FileStream.h
+ * @author Lectem
+ */
 
 #pragma once
 
@@ -27,8 +28,7 @@ public:
     long tell() override;
     bool seek(long offset, seekdir origin) override;
 
-    /**
-     * Computes the size of the file
+    /** Computes the size of the file.
      * @return  The size of the file on success, -1 on error
      * @note    This will call tell/seek multiple times, hence can be slow
      * @warning If the current position is invalid, the new position might be EOF

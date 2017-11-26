@@ -7,9 +7,12 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <bitset>
 #include <limits.h>
 #include <type_traits>
+#include "Platform.h"
 
+/// Mark a variable as unused to shut warnings when it is unused on purpose.
 #define WS_UNUSED(x) (void)x
 
 namespace WorldStone
@@ -17,7 +20,7 @@ namespace WorldStone
 namespace Utils
 {
 
-/** Convert a N-bits 2's complement signed value to a SignedResult value
+/** Convert a N-bits 2's complement signed value to a SignedResult value.
  * @tparam SignedResult Type of the result, must be signed.
  * @tparam NbBits The size in bits of value. Value must be between > 1.
  * @param value The original value, 2's complement on @ref NbBits bits.
@@ -58,13 +61,32 @@ inline SignedResult signExtendS(InputType value)
 }
 #endif
 
-/** Reverse the order of the bits in an bitset value
+/** Reverse the order of the bits in an bitset value.
  * @param bits The bits in a type that support bitset operators
- * @param nbBits Number of bits to reverse, if you want to treat uint64_t as uint32_t for example
+ * @test{System,ReverseBits}
  */
 template<typename T>
-T reverseBits(T bits, size_t nbBits = sizeof(T) * CHAR_BIT)
+inline T reverseBits(T bits)
 {
+    constexpr size_t nbBits = sizeof(T) * CHAR_BIT;
+#if defined(WS_CLANG)
+    switch (nbBits)
+    {
+#if __has_builtin(__builtin_bitreverse8)
+    case 8: return __builtin_bitreverse8(bits);
+#endif
+#if __has_builtin(__builtin_bitreverse16)
+    case 16: return __builtin_bitreverse16(bits);
+#endif
+#if __has_builtin(__builtin_bitreverse32)
+    case 32: return __builtin_bitreverse32(bits);
+#endif
+#if __has_builtin(__builtin_bitreverse64)
+    case 64: return __builtin_bitreverse64(bits);
+#endif
+    default: break;
+    }
+#endif
     T tmp = 0;
     for (size_t bitIndex = 0; bitIndex < nbBits; bitIndex++)
     {
@@ -74,5 +96,47 @@ T reverseBits(T bits, size_t nbBits = sizeof(T) * CHAR_BIT)
     }
     return tmp;
 }
+
+/** Counts the number of bits set to 1.
+ * @test{System,PopCount}
+ */
+inline uint16_t popCount(uint16_t value)
+{
+#if defined(WS_GCC_FAMILY)
+    return uint16_t(__builtin_popcount(value));
+#elif defined(WS_MSC)
+    return __popcnt16(value);
+#else
+    std::bitset<16> bset = value;
+    return uint16_t(bset.count());
+#endif
+}
+
+/// @overload uint32_t popCount(uint32_t value)
+inline uint32_t popCount(uint32_t value)
+{
+#if defined(WS_GCC_FAMILY)
+    return uint32_t(__builtin_popcount(value));
+#elif defined(WS_MSC)
+    return __popcnt(value);
+#else
+    std::bitset<32> bset = value;
+    return uint32_t(bset.count());
+#endif
+}
+
+/// @overload uint64_t popCount(uint64_t value)
+inline uint64_t popCount(uint64_t value)
+{
+#if defined(WS_GCC_FAMILY)
+    return uint64_t(__builtin_popcountll(value));
+#elif defined(WS_MSC)
+    return __popcnt64(value);
+#else
+    std::bitset<64> bset = value;
+    return uint64_t(bset.count());
+#endif
+}
+
 } // namespace Utils
 } // namespace WorldStone

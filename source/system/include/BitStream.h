@@ -38,6 +38,8 @@ class BitStream : public IOBase
     size_t currentBitPosition = 0;
 
 public:
+    BitStream() = default;
+
     /// Creates a bitstream from raw memory
     BitStream(const void* inputBuffer, size_t sizeInBytes, size_t bitPosition = 0)
         : buffer(static_cast<const byte*>(inputBuffer)),
