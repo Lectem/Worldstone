@@ -1,3 +1,10 @@
+11/26/2017
+- Use CHECK and == for unit test instead of CHECK_EQ when possible
+  * Visually easier to understand, we're used to see ==
+  * Some libraries do not provide CHECK_EQ equivalents (harder to switch if needed)
+  * Can still use CHECK_FALSE : easier to see than just using CHECK(!expression)
+  * In some cases doctest can't evaluate the expressions, so still have to use CHECK_EQ...
+
 09/18/2017
 
 - Not use the GSL

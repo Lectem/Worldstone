@@ -85,34 +85,37 @@ public:
 
     /** Reads an unsigned value of variable bit size
      * @tparam NbBits The number of bits to read from the stream
+     * @tparam RetType The type of the value to return, must be at least NbBits bits big.
      * @note This function has not been optimized.
      *       We could do so by having special cases based on NbBits
      *       or simply keeping currentBytesPos/bitPosInCurrentByte in the class.
      *       But is it worth it ?
      */
-    template<unsigned NbBits>
-    uint32_t          readUnsigned()
+    template<unsigned NbBits, typename RetType = uint32_t>
+    RetType           readUnsigned()
     {
-        uint32_t value               = 0;
-        size_t   currentBytesPos     = currentBitPosition / 8;
-        size_t   bitPosInCurrentByte = currentBitPosition % 8;
+        static_assert(std::is_unsigned<RetType>::value, "You must return an unsigned type !");
+        static_assert(NbBits <= sizeof(RetType) * CHAR_BIT, "RetType is too small!");
+        RetType value           = 0;
+        size_t  curBytesPos     = currentBitPosition / 8;
+        size_t  bitPosInCurByte = currentBitPosition % 8;
         currentBitPosition += NbBits;
         // The following variable is needed because we are reading a little endian input.
-        size_t currentDestBitPosition = 0;
-        while (currentDestBitPosition < NbBits)
+        size_t curDestBitPosition = 0;
+        while (curDestBitPosition < NbBits)
         {
             // How many bits we can read in this byte ?
-            size_t bytesToReadInCurrentByte =
-                std::min(CHAR_BIT - bitPosInCurrentByte, NbBits - currentDestBitPosition);
-            uint32_t mask = (1U << bytesToReadInCurrentByte) - 1;
+            const size_t bytesToReadInCurByte =
+                std::min(CHAR_BIT - bitPosInCurByte, NbBits - curDestBitPosition);
+            const RetType mask = RetType((1U << bytesToReadInCurByte) - 1U);
             // The bits we got from the current byte
-            uint32_t inBits = (uint32_t(buffer[currentBytesPos++]) >> bitPosInCurrentByte) & mask;
+            const RetType inBits = (RetType(buffer[curBytesPos++]) >> bitPosInCurByte) & mask;
             // Place them at the right position
-            value |= inBits << currentDestBitPosition;
-            currentDestBitPosition += bytesToReadInCurrentByte;
+            value |= inBits << curDestBitPosition;
+            curDestBitPosition += bytesToReadInCurByte;
             // Next time we start at the beginning of the byte, perhaps we could optimize by
             // Treating the first byte as a special case ?
-            bitPosInCurrentByte = 0;
+            bitPosInCurByte = 0;
         }
         return value;
     }
