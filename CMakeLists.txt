@@ -24,7 +24,7 @@ include(CMakeDependentOption)# This is a really useful scripts that creates opti
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake")
 include(LTO)
 include(Warnings)
-include(RunFixupBundle)
+include(CopyDllsForDebug)
 include(Coverage)
 
 ###############

@@ -19,7 +19,7 @@ if(Qt5_FOUND)
 
 	get_target_property(QtCore_location Qt5::Core LOCATION)
 	get_filename_component(QtCore_directory ${QtCore_location} DIRECTORY)
-	run_fixup(DCxViewer "" ${QtCore_directory})
+	copy_dlls_for_debug(DCxViewer "" ${QtCore_directory})
 
 	set_target_properties(DCxViewer PROPERTIES FOLDER ${PROJECT_NAME})
 

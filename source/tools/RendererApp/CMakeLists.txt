@@ -30,4 +30,4 @@ target_set_warnings(RendererApp
 
 get_target_property(SDL2_location SDL2::SDL2 LOCATION)
 get_filename_component(SDL2_directory ${SDL2_location} DIRECTORY)
-run_fixup(RendererApp "" "${SDL2_directory}")
+copy_dlls_for_debug(RendererApp "" "${SDL2_directory}")
