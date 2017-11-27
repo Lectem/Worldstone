@@ -58,7 +58,7 @@ protected:
 
 public:
     BaseApp() { init(); }
-    ~BaseApp() { shutdown(); }
+    virtual ~BaseApp();
 
     void run()
     {
