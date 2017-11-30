@@ -98,6 +98,7 @@ inline T reverseBits(T bits)
 }
 
 /** Counts the number of bits set to 1.
+ * Aka population count / Hamming weight.
  * @test{System,PopCount}
  */
 inline uint16_t popCount(uint16_t value)
