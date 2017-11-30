@@ -29,3 +29,9 @@
 #ifdef WS_MSC
 #include <intrin.h>
 #endif
+
+#if defined(__x86_64__) || defined(_WIN64)
+#define WS_64BITS
+#else
+#define WS_32BITS
+#endif

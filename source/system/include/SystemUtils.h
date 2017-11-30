@@ -131,7 +131,7 @@ inline uint64_t popCount(uint64_t value)
 {
 #if defined(WS_GCC_FAMILY)
     return uint64_t(__builtin_popcountll(value));
-#elif defined(WS_MSC)
+#elif defined(WS_MSC) && defined(WS_64BITS)
     return __popcnt64(value);
 #else
     std::bitset<64> bset = value;
