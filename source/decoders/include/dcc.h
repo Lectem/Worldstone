@@ -54,8 +54,8 @@ public:
     {
         // clang-format off
         uint32_t outsizeCoded;
-        bool compressColorEncoding : 1;
-        bool compressEqualCells    : 1;
+        bool hasRawPixelEncoding   : 1; ///< Do we have a direction supporting the raw pixel encoding ?
+        bool compressEqualCells    : 1; ///< Do we have a stream for the equal cells optimization ?
         uint32_t variable0Bits     : 4; ///< Endcoded size in bits of FrameHeader::variable0
         uint32_t widthBits         : 4; ///< Endcoded size in bits of FrameHeader::width
         uint32_t heightBits        : 4; ///< Endcoded size in bits of FrameHeader::height
@@ -114,8 +114,8 @@ public:
 protected:
     StreamPtr stream = nullptr;
     Header    header;
-    /* Offset of each direction header in the file, follows the @ref Header
-     * Actually olds directions+1 values, the last one being the size of the file
+    /** Offset of each direction header in the file, follows the @ref Header.
+     * Actually holds directions+1 values, the last one being the size of the file
      * It lets us compute the size of a direction by substracting the next offset by the current
      * one.
      */
