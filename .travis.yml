@@ -1,5 +1,5 @@
 dist: trusty
-sudo: false
+sudo: required
 language: cpp
 
 os:
@@ -40,7 +40,7 @@ matrix:
     - os: linux
       compiler: clang
       addons: &clang4 {apt: {packages: [clang-4.0,libstdc++-6-dev] , sources: [ubuntu-toolchain-r-test,llvm-toolchain-trusty-4.0]}}
-      env: BUILD_TYPE=Debug COMPILER_VER=4.0 USE_ASAN=1
+      env: BUILD_TYPE=Debug COMPILER_VER=4.0 USE_ASAN=1 LSAN_OPTIONS=verbosity=1:log_threads=1
     - os: linux
       compiler: clang
       addons: *clang4
@@ -48,7 +48,7 @@ matrix:
     - os: linux
       compiler: clang
       addons: &clang5 {apt: {packages: [clang-5.0,libstdc++-6-dev] , sources: [ubuntu-toolchain-r-test,llvm-toolchain-trusty-5.0]}}
-      env: BUILD_TYPE=Debug COMPILER_VER=5.0 USE_ASAN=1
+      env: BUILD_TYPE=Debug COMPILER_VER=5.0 USE_ASAN=1 LSAN_OPTIONS=verbosity=1:log_threads=1
     - os: linux
       compiler: clang
       addons: *clang5
