@@ -12,7 +12,8 @@ It is written in modern C++ and aims to be portable/cross-platform.
 
 ## Status of the project 
 
-Just started, so there's only the basic C++ tree, and a simple DC6 decoder.
+DC6 and DCC decoders are now working.
+Work is progressing slowly. While not reflected in the repo, a lot of documentation has been gathered for future work !
 
 ## Building
 
