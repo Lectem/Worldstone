@@ -4,6 +4,7 @@
 
 #include "dcc.h"
 #include <BitStream.h>
+#include <array>
 #include <assert.h>
 #include <fmt/format.h>
 #include "palette.h"
@@ -181,7 +182,8 @@ struct Cell
 // Each pixel buffer entry contains 4 pixels codes
 struct PixelBufferEntry
 {
-    uint8_t values[4];
+    static constexpr size_t nbValues = 4;
+    uint8_t                 values[nbValues];
 };
 
 struct FrameData
@@ -264,7 +266,7 @@ struct DirectionData
     BitStreamView pixelMaskBitStream;
     BitStreamView rawPixelUsageBitStream;
     BitStreamView rawPixelCodesBitStream;
-    BitStreamView pixelCodesAndDisplacementBitStream;
+    BitStreamView pixelCodesDisplacementBitStream;
 
     size_t nbFrames;
     size_t nbPixelBufferCellsX;
@@ -320,7 +322,7 @@ struct DirectionData
         bitStream.skip(rawPixelCodesBitStreamSize);
 
         // Note : goes until the end of the direction
-        pixelCodesAndDisplacementBitStream =
+        pixelCodesDisplacementBitStream =
             bitStream.createSubView(bitStream.bufferSizeInBits() - bitStream.tell());
 
         const size_t dirWidth  = size_t(dir.extents.width());
@@ -342,149 +344,163 @@ struct DirectionData
     }
 };
 
+using PixelCodesStack = std::array<uint8_t, PixelBufferEntry::nbValues>;
+/**
+ * @return the number of pixels codes decoded from the stream
+ */
+int decodePixelCodesStack(DirectionData& data, uint8_t pixelMask, PixelCodesStack& pixelCodesStack)
+{
+    const uint16_t nbPixelsInMask = Utils::popCount(uint16_t(pixelMask));
+
+    // Is the cell encoded in the raw stream ?
+    bool decodeRaw = data.rawPixelUsageBitStream.bufferSizeInBits() > 0 &&
+                     data.rawPixelUsageBitStream.readBool();
+
+    uint8_t lastPixelCode = 0;
+    size_t  curPixelIdx   = 0;
+    for (curPixelIdx = 0; curPixelIdx < nbPixelsInMask; curPixelIdx++)
+    {
+        uint8_t& curPixelCode = pixelCodesStack[curPixelIdx];
+        if (decodeRaw) {
+            // Read the value of the code directly from rawPixelCodesBitStream
+            curPixelCode = data.rawPixelCodesBitStream.readUnsigned<8, uint8_t>();
+        }
+        else
+        {
+            // Read the value of the code incrementally from pixelCodesDisplacementBitStream
+            curPixelCode = lastPixelCode;
+            uint8_t pixelDisplacement;
+            do
+            {
+                pixelDisplacement = data.pixelCodesDisplacementBitStream.readUnsigned<4, uint8_t>();
+                curPixelCode += pixelDisplacement;
+            } while (pixelDisplacement == 0xF);
+        }
+        // Stop decoding if we encounter twice the same pixel code.
+        // It also means that this pixel code is discarded.
+        if (curPixelCode == lastPixelCode) {
+            // Note : We discard the pixel by putting a 0 but it doesn't matter anyway since we only
+            // use nbPixelsDecoded values later when popping the stack
+            curPixelCode = 0;
+            break;
+        }
+        else
+        {
+            lastPixelCode = curPixelCode;
+        }
+    }
+    return int(curPixelIdx);
+}
+
+void decodeFrameStage1(DirectionData& data, FrameData& frameData, std::vector<size_t>& pixelBuffer,
+                       std::vector<PixelBufferEntry>& pbEntries)
+{
+    // Offset in terms of cells for this frame
+    const size_t frameCellOffsetX = frameData.offsetX / 4;
+    const size_t frameCellOffsetY = frameData.offsetY / 4;
+
+    // For each cell of this frame (not the same number as the pixel buffer cells ! )
+    for (size_t y = 0; y < frameData.nbCellsY; y++)
+    {
+        const size_t curCellY = frameCellOffsetY + y;
+        for (size_t x = 0; x < frameData.nbCellsX; x++)
+        {
+            const size_t curCellX = frameCellOffsetX + x;
+
+            const size_t curPbCellIndex    = curCellX + curCellY * data.nbPixelBufferCellsX;
+            const size_t curFrameCellIndex = x + y * frameData.nbCellsX;
+
+            size_t& lastPixelEntryIndexForCell = pixelBuffer[curPbCellIndex];
+
+            bool    sameAsPreviousCell = false; // By default always decode the cell
+            uint8_t pixelMask          = 0x0F;  // Default pixel mask
+
+            // Check if this cell is equal to the previous one
+            if (lastPixelEntryIndexForCell < pbEntries.size()) {
+                // Check if we have to reuse the previous values
+                if (data.dirRef.header.compressEqualCells) {
+                    // If true, the cell is the same as the previous one or transparent.
+                    // Which actually mean the same thing : skip the decoding of this cell
+                    sameAsPreviousCell = data.equalCellBitStream.readBool();
+                }
+                if (!sameAsPreviousCell) {
+                    pixelMask = data.pixelMaskBitStream.readUnsigned<4, uint8_t>();
+                }
+            }
+            // Store the fact that we skipped this cell for the 2nd phase
+            frameData.cellSameAsPrevious[curFrameCellIndex] = sameAsPreviousCell;
+            if (!sameAsPreviousCell) {
+                // Pixel buffer entries are encoded as a stack in the stream which means the
+                // last value decoded is actually the 1st value with a bit in the mask.
+                PixelCodesStack pixelCodesStack;
+                int nbPixelsDecoded = decodePixelCodesStack(data, pixelMask, pixelCodesStack);
+
+                PixelBufferEntry previousEntryForCell;
+                if (lastPixelEntryIndexForCell < pbEntries.size()) {
+                    previousEntryForCell = pbEntries[lastPixelEntryIndexForCell];
+                }
+                else
+                {
+                    // No need for previousEntryForCell if it doesn't exist, as the mask is 0xF
+                    assert(pixelMask == 0xF);
+                }
+
+                // Finalize the decoding of the pixel buffer entry
+                PixelBufferEntry newEntry;
+
+                int curIndex = nbPixelsDecoded - 1;
+                for (size_t i = 0; i < PixelBufferEntry::nbValues; i++)
+                {
+                    // Pop a value if bit set in the mask
+                    if (pixelMask & (1u << i)) {
+                        uint8_t pixelCode;
+                        if (curIndex >= 0) {
+                            pixelCode = pixelCodesStack[size_t(curIndex--)];
+                        }
+                        else
+                        {
+                            pixelCode = 0;
+                        }
+                        // Store the actual values instead of the codes
+                        newEntry.values[i] = data.codeToPixelValue[pixelCode];
+                    }
+                    // If not set, use the previous value for this entry
+                    else
+                    {
+                        newEntry.values[i] = previousEntryForCell.values[i];
+                    }
+                }
+                // Update the pixel buffer cell information
+                lastPixelEntryIndexForCell = pbEntries.size();
+                // Add the new entry for use in the 2nd stage
+                pbEntries.push_back(newEntry);
+            }
+        }
+    }
+}
+
 void decodeDirectionStage1(DirectionData& data, std::vector<PixelBufferEntry>& pbEntries)
 {
-    // Create the pixel buffer and its cells.
-    // For each cell we have a PixelBufferEntry index that points to the last entry for this
-    // cell
-    constexpr size_t    invalidIndex = std::numeric_limits<size_t>::max();
-    std::vector<size_t> pixelBuffer(data.nbPixelBufferCellsX * data.nbPixelBufferCellsY,
-                                    invalidIndex);
+    // For each cell store a PixelBufferEntry index that points to the last entry for this cell
+    // This will be used to retrieve values from the previous frame
+    constexpr size_t    invalidIndex       = std::numeric_limits<size_t>::max();
+    const size_t        pixelBufferNbCells = data.nbPixelBufferCellsX * data.nbPixelBufferCellsY;
+    std::vector<size_t> pixelBuffer(pixelBufferNbCells, invalidIndex);
 
     // 1st phase of decoding : fill the pixel buffer
+    // We actually fill a buffer of entries as to avoid storing empty entries
     for (size_t frameIndex = 0; frameIndex < data.nbFrames; ++frameIndex)
     {
         FrameData& frameData            = data.framesData[frameIndex];
         frameData.firstPixelBufferEntry = pbEntries.size();
-
-        // Create the cells for this frame
-        const size_t frameCellOffsetX = frameData.offsetX / 4;
-        const size_t frameCellOffsetY = frameData.offsetY / 4;
-
-        // For each cell of this frame (not the same number as the pixel buffer cells ! )
-        for (size_t y = 0; y < frameData.nbCellsY; y++)
-        {
-            const size_t curCellY = frameCellOffsetY + y;
-            for (size_t x = 0; x < frameData.nbCellsX; x++)
-            {
-
-                const size_t curCellX          = frameCellOffsetX + x;
-                const size_t curpbCellIndex    = curCellX + curCellY * data.nbPixelBufferCellsX;
-                const size_t curFrameCellIndex = x + y * frameData.nbCellsX;
-
-                size_t& lastPixelEntryIndexForCell = pixelBuffer[curpbCellIndex];
-
-                bool    sameAsPreviousCell = false; // By default always decode the cell
-                uint8_t pixelMask          = 0x0F;  // Default pixel mask
-
-                // Check if this cell is equal to the previous one
-                if (lastPixelEntryIndexForCell < pbEntries.size()) {
-                    // Check if we have to reuse the previous values
-                    if (data.dirRef.header.compressEqualCells) {
-                        // If true, it means the cell is the same as the previous one, or
-                        // transparent Which mean the same thing : skip the decoding of this
-                        // cell
-                        sameAsPreviousCell = data.equalCellBitStream.readBool();
-                    }
-                    if (!sameAsPreviousCell) {
-                        pixelMask = data.pixelMaskBitStream.readUnsigned<4, uint8_t>();
-                    }
-                }
-                // Store the fact that we skipped this cell for the 2nd phase
-                frameData.cellSameAsPrevious[curFrameCellIndex] = sameAsPreviousCell;
-                if (!sameAsPreviousCell) {
-                    // Decode this cell pixel codes
-
-                    const uint16_t nbPixelsInMask = Utils::popCount(uint16_t(pixelMask));
-
-                    bool decodeRaw = data.rawPixelUsageBitStream.bufferSizeInBits() > 0 &&
-                                     data.rawPixelUsageBitStream.readBool();
-
-                    // We need to use a stack to decode the codes for this cell
-                    // The last value decoded is the first, etc...
-                    uint8_t cellPixelCodesStack[4] = {0, 0, 0, 0};
-                    uint8_t lastPixelCode          = 0;
-                    int     curPixelIdx            = 0;
-                    for (curPixelIdx = 0; curPixelIdx < nbPixelsInMask; curPixelIdx++)
-                    {
-                        uint8_t& curPixelCode = cellPixelCodesStack[curPixelIdx];
-                        if (decodeRaw) {
-                            // Read the value of the code directly from rawPixelCodesBitStream
-                            curPixelCode = data.rawPixelCodesBitStream.readUnsigned<8, uint8_t>();
-                        }
-                        else
-                        {
-                            // Read the value of the code incrementally from
-                            // pixelCodesAndDisplacementBitStream
-                            curPixelCode = lastPixelCode;
-                            uint8_t pixelDisplacement;
-                            do
-                            {
-                                pixelDisplacement = data.pixelCodesAndDisplacementBitStream
-                                                        .readUnsigned<4, uint8_t>();
-                                curPixelCode += pixelDisplacement;
-                            } while (pixelDisplacement == 0xF);
-                        }
-                        // Stop decoding if we encounter twice the same pixel code.
-                        // It also means that this pixel code is discarded.
-                        if (curPixelCode == lastPixelCode) {
-                            // Note : We discard the pixel by putting a 0 but it doesn't matter
-                            // anyway since we only use nbPixelsDecoded values later when
-                            // popping the stack
-                            curPixelCode = 0;
-                            break;
-                        }
-                        else
-                        {
-                            lastPixelCode = curPixelCode;
-                        }
-                    }
-
-                    const size_t     previousEntryIndexForCell = lastPixelEntryIndexForCell;
-                    PixelBufferEntry previousEntryForCell;
-                    if (previousEntryIndexForCell < pbEntries.size()) {
-                        previousEntryForCell = pbEntries[previousEntryIndexForCell];
-                    }
-                    else
-                    {
-                        // We will not need previousEntryForCell if it doesn't exist,
-                        // as the mask is 0xF
-                        assert(pixelMask == 0xF);
-                    }
-
-                    PixelBufferEntry newEntry;
-                    int              curIndex = curPixelIdx - 1;
-                    for (size_t i = 0; i < 4; i++)
-                    {
-                        // Pop a value if bit set in the mask
-                        if (pixelMask & (1u << i)) {
-                            uint8_t pixelCode;
-                            if (curIndex >= 0) {
-                                pixelCode = cellPixelCodesStack[curIndex--];
-                            }
-                            else
-                                pixelCode = 0;
-                            // Store the actual values instead of the codes
-                            newEntry.values[i] = data.codeToPixelValue[pixelCode];
-                        }
-                        // If not set, use the previous value for this entry
-                        else
-                        {
-                            newEntry.values[i] = previousEntryForCell.values[i];
-                        }
-                    }
-                    lastPixelEntryIndexForCell = pbEntries.size();
-                    pbEntries.push_back(newEntry);
-                }
-            }
-        }
+        decodeFrameStage1(data, frameData, pixelBuffer, pbEntries);
     }
 }
 
 void decodeDirectionStage2(DirectionData& data, const std::vector<PixelBufferEntry>& pbEntries)
 {
     // This is the reason why we need to stages, we don't have the offset of this bitstream
-    BitStreamView& pixelCodeIndices = data.pixelCodesAndDisplacementBitStream;
+    BitStreamView& pixelCodeIndices = data.pixelCodesDisplacementBitStream;
 
     const size_t pbWidth            = size_t(data.dirRef.extents.width());
     const size_t pbHeight           = size_t(data.dirRef.extents.height());
@@ -621,8 +637,8 @@ bool DCC::readDirection(Direction& outDir, uint32_t dirIndex)
     assert(data.rawPixelUsageBitStream.tell() == data.rawPixelUsageBitStream.sizeInBits());
     assert(data.rawPixelCodesBitStream.tell() == data.rawPixelCodesBitStream.sizeInBits());
     // This exact stream size is not known, so check if we at least are in the last byte
-    assert(data.pixelCodesAndDisplacementBitStream.bitPositionInBuffer() + 7_z >=
-           data.pixelCodesAndDisplacementBitStream.bufferSizeInBits());
+    assert(data.pixelCodesDisplacementBitStream.bitPositionInBuffer() + 7_z >=
+           data.pixelCodesDisplacementBitStream.bufferSizeInBits());
 
     return bitStream.good();
 }
