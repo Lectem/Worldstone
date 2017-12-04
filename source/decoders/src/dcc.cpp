@@ -542,7 +542,7 @@ void decodeDirectionStage2(DirectionData& data, const std::vector<PixelBufferEnt
                         // buffer for all frames we would not need to clear this (it would be
                         // initialized to 0 before writing any value to the frame pixels) But we
                         // would then need to copy values if the size matched
-                        for (int row = 0; row < frameCell.height; ++row)
+                        for (size_t row = 0; row < frameCell.height; ++row)
                         {
                             memset(pixels + pixelIndex, 0, frameCell.width);
                             pixelIndex += pbStride; // Next line
@@ -561,7 +561,7 @@ void decodeDirectionStage2(DirectionData& data, const std::vector<PixelBufferEnt
                     if (pixelValues[0] == pixelValues[1]) {
                         // This means we only got one pixel code, so fill the cell with it
 
-                        for (int row = 0; row < frameCell.height; ++row)
+                        for (size_t row = 0; row < frameCell.height; ++row)
                         {
                             memset(pixels + pixelIndex, pixelValues[0], frameCell.width);
                             pixelIndex += pbStride; // Next line
