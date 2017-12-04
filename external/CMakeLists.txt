@@ -26,9 +26,6 @@ target_include_directories(
 )
 add_library(external::doctest ALIAS doctest)
 
-# For now we are using a slightly modified version of StormLib because the
-# original CMakeLists.txt is not very `add_subdirectory friendly`
-option(BUILD_DYNAMIC_MODULE OFF) # God oh god why. Will fix, see https://github.com/ladislav-zezula/StormLib/issues/114
 add_subdirectory(StormLib EXCLUDE_FROM_ALL)
 target_set_warnings(storm DISABLE ALL)
 add_library(external::storm ALIAS storm)

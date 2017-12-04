@@ -6,7 +6,7 @@
 	url = https://github.com/gabime/spdlog.git
 [submodule "external/StormLib"]
 	path = external/StormLib
-	url = https://github.com/Lectem/StormLib.git
+	url = https://github.com/ladislav-zezula/StormLib.git
 [submodule "external/doctest"]
 	path = external/doctest
 	url = https://github.com/onqtam/doctest.git
