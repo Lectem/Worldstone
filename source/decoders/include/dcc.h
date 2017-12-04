@@ -1,3 +1,6 @@
+/**@file dcc.h
+ * Implementation of a DCC file decoder
+ */
 #pragma once
 
 #include <stdint.h>

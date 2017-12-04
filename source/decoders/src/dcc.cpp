@@ -1,6 +1,9 @@
-//
-// Created by Lectem.
-//
+/**@internal
+ * @file dcc.cpp
+ * @author Lectem.
+ * Thanks to Bilian Belchev and Paul Siramy for their DCC file format documentation, upon which this
+ * decoder is hugely based
+ */
 
 #include "dcc.h"
 #include <BitStream.h>
@@ -597,6 +600,8 @@ void decodeDirectionStage2(DirectionData& data, const std::vector<PixelBufferEnt
             pbCellPosY += frameData.cellHeights[cellY];
         }
 // Done decoding this frame !
+
+/// Set to 1 to export the frames to the grayscale PPM format
 #define DEBUG_EXPORT_PPM 0
 #if DEBUG_EXPORT_PPM
         Utils::exportToPGM(fmt::format("test{}.ppm", frameIndex).c_str(), pixels, int(pbStride),
@@ -644,3 +649,5 @@ bool DCC::readDirection(Direction& outDir, uint32_t dirIndex)
 }
 
 } // namespace WorldStone
+
+/// @endinternal

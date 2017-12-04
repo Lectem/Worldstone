@@ -9,8 +9,7 @@ using WorldStone::DCC;
 
 /**Try to decode BaalSpirit.dcc.
  * This is the DCC file with the biggest number of frames (but only 1 direction).
- * @relates WorldStone::DCC
- * @test This is a test
+ * @testimpl{WorldStone::DCC,DCC_BaalSpirit}
  */
 TEST_CASE("DCC decoding BaalSpirit.dcc")
 {
