@@ -35,3 +35,14 @@
 #else
 #define WS_32BITS
 #endif
+
+/**
+ * Types support
+ */
+#include <stddef.h>
+#include <stdint.h>
+
+/**User litteral for size_t (ie: size_t s = 10_z)
+ * @return The integer value as a size_t
+ */
+constexpr size_t operator"" _z(unsigned long long int n) { return n; }
