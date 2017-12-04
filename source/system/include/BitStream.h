@@ -30,55 +30,74 @@ namespace WorldStone
  * @test{System,RO_bitstream}
  */
 
-class BitStream : public IOBase
+class BitStreamView : public IOBase
 {
     using byte = char;
-    const byte* buffer = nullptr;
-    size_t bufferSize = 0;
-    size_t currentBitPosition = 0;
+    size_t      size               = 0;       ///< Size of the bitstream in bits
+    size_t      firstBitOffset     = 0;       ///< Position of the first bit in the first byte
+    size_t      currentBitPosition = 0;       ///< Current absolute position in the buffer, in bits
+    const byte* buffer             = nullptr; ///< The buffer we are reading from
 
 public:
-    BitStream() = default;
-
+    BitStreamView() = default;
     /// Creates a bitstream from raw memory
-    BitStream(const void* inputBuffer, size_t sizeInBytes, size_t bitPosition = 0)
-        : buffer(static_cast<const byte*>(inputBuffer)),
-          bufferSize(sizeInBytes),
-          currentBitPosition(bitPosition)
+    BitStreamView(const void* inputBuffer, size_t sizeInBits, size_t firstBitOffsetInBuffer = 0)
+        : size(sizeInBits),
+          firstBitOffset(firstBitOffsetInBuffer),
+          currentBitPosition(firstBitOffsetInBuffer),
+          buffer(static_cast<const byte*>(inputBuffer))
     {
-        assert(currentBitPosition * CHAR_BIT <= sizeInBytes);
+        assert(firstBitOffset + size <= bufferSizeInBits());
     }
 
-    /// Returns the current position in bits
-    size_t tell() { return currentBitPosition; }
+    BitStreamView createSubView(size_t newbufferSizeInBits) const
+    {
+        // 0Bits is a special case as it should always have a size of 0
+        if (newbufferSizeInBits == 0) return {};
+        const size_t curBytesPos     = currentBitPosition / CHAR_BIT;
+        const size_t bitPosInCurByte = currentBitPosition % CHAR_BIT;
+        assert(tell() + newbufferSizeInBits <= size);
+        assert(currentBitPosition + newbufferSizeInBits <= bufferSizeInBits());
+        return {buffer + curBytesPos, newbufferSizeInBits, bitPosInCurByte};
+    }
+
+    /// Returns the current position in the stream in bits
+    size_t tell() const { return currentBitPosition - firstBitOffset; }
     /// Set the current position, in bits
-    void setPosition(size_t newPosition) { currentBitPosition = newPosition; }
+    void setPosition(size_t newPosition)
+    {
+        assert(newPosition >= 0_z && newPosition < size);
+        currentBitPosition = newPosition + firstBitOffset;
+    }
+    /// Returns the current position in the buffer (ignoring the first bit position) in bits
+    size_t bitPositionInBuffer() const { return currentBitPosition; }
     /// Skips the next nbBits bits
     void skip(size_t nbBits)
     {
-        assert(currentBitPosition + nbBits <= sizeInBits());
+        assert(currentBitPosition + nbBits < bufferSizeInBits());
         currentBitPosition += nbBits;
     }
 
     void alignToByte()
     {
         // Remove the last 3 bytes to be a multiple of 8, but add 7 before so that we round up
-        currentBitPosition = (currentBitPosition + size_t(7)) & (~size_t(0x7));
+        currentBitPosition = (currentBitPosition + 7_z) & (~0x7_z);
     }
 
+    size_t bufferSizeInBytes() const { return (size + firstBitOffset + 7) / CHAR_BIT; }
     /** Returns the total size of the current stream buffer in bits
      * @note This will always return a multiple of the size of a byte in bits.
      */
-    size_t sizeInBits() { return bufferSize * sizeof(char) * CHAR_BIT; }
+    size_t bufferSizeInBits() const { return bufferSizeInBytes() * CHAR_BIT; }
     /// Returns the total size of the current stream buffer in bytes
-    size_t sizeInBytes() { return bufferSize; }
+    size_t sizeInBits() const { return size; }
 
     /** Reads a single bit from the stream */
     bool readBool()
     {
-        size_t currentBytesPos     = currentBitPosition / 8;
-        size_t bitPosInCurrentByte = currentBitPosition % 8;
-        int    mask                = (1 << bitPosInCurrentByte);
+        const size_t currentBytesPos     = currentBitPosition / CHAR_BIT;
+        const size_t bitPosInCurrentByte = currentBitPosition % CHAR_BIT;
+        const int    mask                = (1 << bitPosInCurrentByte);
         currentBitPosition++;
         return (buffer[currentBytesPos] & mask) == mask;
     }
@@ -99,8 +118,8 @@ public:
         static_assert(std::is_unsigned<RetType>::value, "You must return an unsigned type !");
         static_assert(NbBits <= sizeof(RetType) * CHAR_BIT, "RetType is too small!");
         RetType value           = 0;
-        size_t  curBytesPos     = currentBitPosition / 8;
-        size_t  bitPosInCurByte = currentBitPosition % 8;
+        size_t  curBytesPos     = currentBitPosition / CHAR_BIT;
+        size_t  bitPosInCurByte = currentBitPosition % CHAR_BIT;
         currentBitPosition += NbBits;
         // The following variable is needed because we are reading a little endian input.
         size_t curDestBitPosition = 0;

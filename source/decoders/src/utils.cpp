@@ -20,6 +20,7 @@ void exportToPGM(const char* output, const uint8_t* data, int width, int height,
             if (maxVal < data[i]) maxVal = data[i];
         }
     }
+    maxVal     = maxVal < 1 ? 1 : maxVal;
     int   bpp  = maxVal >= 256 ? 2 : 1;
     FILE* file = fopen(output, "wb");
     if (file) {

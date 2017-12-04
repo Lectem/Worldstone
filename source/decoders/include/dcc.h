@@ -124,6 +124,8 @@ protected:
 
     size_t getDirectionSize(uint32_t dirIndex);
 
+    //    void decodeDirectionStage2(const Direction& dir);
+
 public:
     bool decode(const char* filename);
     bool decode(StreamPtr&& streamPtr);
