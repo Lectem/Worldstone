@@ -16,6 +16,7 @@ set(system_headers
     include/Platform.h
     include/Stream.h
     include/SystemUtils.h
+    include/Vector.h
 )
 
 
