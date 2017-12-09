@@ -102,6 +102,35 @@ SCENARIO_TEMPLATE("Read-only filestreams", StreamType, stream_types)
                         }
                     }
                 }
+                AND_WHEN("We read the whole file using getc")
+                {
+                    char buffer[256] = {};
+                    CHECK(fileSize < 256);
+                    for (int i = 0; i < fileSize; i++)
+                    {
+                        int val = streamRef.getc();
+                        CHECK(val >= 0);
+                        buffer[i] = static_cast<char>(val);
+                    }
+                    THEN("The buffer contains the same things as the file")
+                    {
+                        CHECK(!strcmp("test", buffer));
+                        CHECK_FALSE(streamRef.eof());
+                        CHECK(streamRef.tell() == fileSize);
+                        AND_WHEN("We read more")
+                        {
+                            int val = streamRef.getc();
+                            CHECK(val < 0);
+                            THEN("EOF and fail flags are set")
+                            {
+                                CHECK(streamRef.eof());
+                                CHECK(streamRef.fail());
+                                CHECK_FALSE(streamRef.bad());
+                                CHECK_FALSE(streamRef.good());
+                            }
+                        }
+                    }
+                }
                 AND_WHEN("We read more than the whole file")
                 {
                     char buffer[256] = {};
