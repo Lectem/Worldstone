@@ -23,8 +23,9 @@ static_assert(std::is_assignable<decltype(ImageView<uint8_t>().operator()(0, 0))
               "Must be able to assign values using operator()(size_t,size_t)");
 
 using ConstImageView = const ImageView<uint8_t>;
-static_assert(!std::is_assignable<decltype(ConstImageView().operator()(0, 0)), uint8_t>::value,
-              "Must not be able to assign using operator()(size_t,size_t) on a const ImageView");
+static_assert(
+    !std::is_assignable<decltype(std::declval<ConstImageView>().operator()(0, 0)), uint8_t>::value,
+    "Must not be able to assign using operator()(size_t,size_t) on a const ImageView");
 
 TEST_CASE("ImageView")
 {

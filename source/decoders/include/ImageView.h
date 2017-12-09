@@ -24,6 +24,13 @@ struct ImageView
     size_t height = 0;       ///< Number of scanlines of the image
     size_t stride = 0;       ///< Actual width of the buffer scanlines
 
+    ImageView() = default;
+
+    ImageView(Color* _buffer, size_t _width, size_t _height, size_t _stride)
+        : buffer(_buffer), width(_width), height(_height), stride(_stride)
+    {
+    }
+
     /**Access the pixel at the given coordinates.
      * @param x The position in the scanline
      * @param y The number of the scanline
@@ -81,7 +88,7 @@ public:
     /// Allocates a new Image of dimensions width * height
     ImageView<Color> getNewImage(size_t width, size_t height) override
     {
-        if (!width || !height) return {nullptr};
+        if (!width || !height) return {};
         // if (!width || !height) return ImageView<Color>::getInvalidView();
         images.emplace_back(width, height);
         return {images.back().buffer.data(), width, height, width};
