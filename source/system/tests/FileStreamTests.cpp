@@ -106,7 +106,7 @@ SCENARIO_TEMPLATE("Read-only filestreams", StreamType, stream_types)
                 {
                     char buffer[256] = {};
                     CHECK(fileSize < 256);
-                    for (int i = 0; i < fileSize; i++)
+                    for (size_t i = 0; i < fileSize; i++)
                     {
                         int val = streamRef.getc();
                         CHECK(val >= 0);
