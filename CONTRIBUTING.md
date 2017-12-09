@@ -58,7 +58,7 @@ void bar(){}
 
 struct IntegerStruct
 {
-    int value; //< The value of the integer
+    int value; ///< The value of the integer
 };
 ```
 
