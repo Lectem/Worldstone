@@ -11,6 +11,7 @@ set(DECODERS_HEADERS
     include/AABB.h
     include/dc6.h
     include/dcc.h
+    include/ImageView.h
     include/utils.h
     include/palette.h
 )

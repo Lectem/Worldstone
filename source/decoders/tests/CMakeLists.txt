@@ -1,5 +1,8 @@
 
-add_executable(ws_decoderstests decoderstests.cpp)
+add_executable(ws_decoderstests
+    decoderstests.cpp
+    ImageViewTests.cpp
+)
 target_link_libraries(ws_decoderstests external::doctest WS::decoders)
 set_target_properties(ws_decoderstests PROPERTIES
     VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/workingDirectory
