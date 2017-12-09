@@ -3,7 +3,9 @@
 #---------------------------------#
 
 # Build worker image (VM template)
-image: Visual Studio 2015
+image:
+  - Visual Studio 2015
+  - Visual Studio 2017
 
 clone_depth: 3
 
