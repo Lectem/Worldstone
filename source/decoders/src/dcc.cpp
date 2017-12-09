@@ -604,8 +604,8 @@ void decodeDirectionStage2(DirectionData& data, const std::vector<PixelBufferEnt
 /// Set to 1 to export the frames to the grayscale PPM format
 #define DEBUG_EXPORT_PPM 0
 #if DEBUG_EXPORT_PPM
-        Utils::exportToPGM(fmt::format("test{}.ppm", frameIndex).c_str(), pixels, int(pbStride),
-                           int(pbHeight));
+        auto filename = fmt::format("test{}.ppm", frameIndex);
+        Utils::exportToPGM(filename.c_str(), pixels, int(pbStride), int(pbHeight));
 #endif
     }
 }
