@@ -3,17 +3,23 @@
  */
 #pragma once
 
+#include <Platform.h>
 #include <Vector.h>
+#include <string.h> // memcpy & memset
 
 namespace WorldStone
 {
-/**A view on an image buffer.
+/**A view on an image buffer of type Color.
  * This class can be used to access a buffer of the Color type as if it was an image.
  * It should be small enough so that you can directly copy the view instead of passing it by
  * reference. Note that this class does not do bounds checking, and the user is the one responsible
  * for handling the data correctly.
  * A good way to abstract an image allocator could be to implement an @ref IImageProvider, which
  * returns an ImageView.
+ * @note Unlike the usage of the term 'view' in the standard, such as in std::string_view, an
+ *       ImageView maps on a mutable buffer unless the template parameter is const.
+ *       What this means is that a gsl::span is the equivalent of ImageView<uint8_t>
+ *       while a std::view would be ImageView<const uint8_t> for example.
  */
 template<class Color>
 struct ImageView
@@ -31,17 +37,6 @@ struct ImageView
     {
     }
 
-    /**Access the pixel at the given coordinates.
-     * @param x The position in the scanline
-     * @param y The number of the scanline
-     * @return A reference to the pixel of coordinates (x,y)
-     * @warning This function does not perform any bounds checking,
-     *          the only valid inputs verify @code x < width && y < height @endcode
-     */
-    Color& operator()(size_t x, size_t y) { return buffer[x + y * stride]; }
-    /// @overload Color operator()(size_t x, size_t y) const
-    Color operator()(size_t x, size_t y) const { return buffer[x + y * stride]; }
-
     /// Checks if the view seems to be valid
     bool isValid() const { return buffer && width && height && width <= stride; }
 
@@ -54,6 +49,74 @@ struct ImageView
 
     /// Enable conversion from ImageView<Color> to ImageView<const Color>
     operator ImageView<const Color>() const { return {buffer, width, height, stride}; }
+
+    /**Create an ImageView that is contained by the current view.
+     * @param subWidth The width of the subview, must verify @code xOffset + subWidth <= width
+     * @endcode
+     * @param subHeight The height of the subview, must verify @code yOffset + subHeight > height
+     * @endcode
+     * @return A subview of given characteristics, or an invalid view if it is not contained by the
+     * current one
+     */
+    ImageView subView(size_t xOffset, size_t yOffset, size_t subWidth, size_t subHeight) const
+    {
+        if (xOffset + subWidth > width || yOffset + subHeight > height) return {};
+        return {buffer + xOffset + yOffset * stride, subWidth, subHeight, stride};
+    }
+
+    /**Access the pixel at the given coordinates.
+     * @return A reference to the pixel of coordinates (x,y)
+     * @warning This function does not perform any bounds checking,
+     *          the only valid inputs verify @code x < width && y < height @endcode
+     */
+    Color& operator()(size_t x, size_t y) const { return buffer[x + y * stride]; }
+
+    /**Copy (blits) the content of an image to another.
+     * If the current view and destination memory overlap, result is undefined.
+     * @warning No bounds checking done.
+     */
+    void copyTo(ImageView destination) const
+    {
+        for (size_t y = 0; y < height; y++)
+        {
+            memcpy(destination.buffer + y * destination.stride, buffer + y * stride,
+                   width * sizeof(Color));
+        }
+    }
+
+    /**Fills a part of the image.
+     * @param columns Number of pixels to fill per scanline
+     * @param rows Number of scanlines to fill
+     * @param colorValue The value to set every byte of the pixels to
+     * @see fillBytes for a faster version when all the bytes have the same value
+     */
+    void fill(size_t x, size_t y, size_t columns, size_t rows, Color colorValue)
+    {
+        Color* lineStart = buffer + x + y * stride;
+        for (size_t row = 0; row < rows; ++row)
+        {
+            for (size_t column = 0; column < columns; column++)
+            {
+                lineStart[column] = colorValue;
+            }
+            lineStart += stride;
+        }
+    }
+
+    /**Fills a part of the image using a byte pattern
+     * @param columns Number of pixels to fill per scanline
+     * @param rows Number of scanlines to fill
+     * @param byteValue The value to set every byte of the pixels to
+     */
+    void fillBytes(size_t x, size_t y, size_t columns, size_t rows, uint8_t byteValue)
+    {
+        Color* dstPtr = buffer + x + y * stride;
+        for (size_t row = 0; row < rows; ++row)
+        {
+            memset(dstPtr, byteValue, columns * sizeof(Color));
+            dstPtr += stride;
+        }
+    }
 };
 
 /**An interface of a class that can provide images views

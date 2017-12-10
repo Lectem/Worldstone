@@ -4,11 +4,12 @@
 #pragma once
 
 #include <stdint.h>
-#include <AABB.h>
 #include <FileStream.h>
+#include <Vector.h>
 #include <memory>
 #include <type_traits>
-#include <vector>
+#include "AABB.h"
+#include "ImageView.h"
 #include "palette.h"
 
 namespace WorldStone
@@ -94,7 +95,7 @@ public:
         ///@name Values in file
         ///@{
         DirectionHeader header;
-        std::vector<FrameHeader> frameHeaders;
+        Vector<FrameHeader> frameHeaders;
         ///@}
 
         Extents extents;
@@ -122,8 +123,8 @@ protected:
      * It lets us compute the size of a direction by substracting the next offset by the current
      * one.
      */
-    std::vector<uint32_t> directionsOffsets;
-    std::vector<uint32_t> framePointers;
+    Vector<uint32_t> directionsOffsets;
+    Vector<uint32_t> framePointers;
 
     size_t getDirectionSize(uint32_t dirIndex);
 
@@ -138,7 +139,7 @@ public:
 
     bool extractHeaderAndOffsets();
 
-    bool readDirection(Direction& outDir, uint32_t dirIndex);
+    bool readDirection(Direction& outDir, uint32_t dirIndex, IImageProvider<uint8_t>& imgProvider);
 
     const Header& getHeader() const { return header; }
 };

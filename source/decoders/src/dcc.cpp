@@ -1,5 +1,5 @@
-/**@internal
- * @file dcc.cpp
+/// @internal
+/** @file dcc.cpp
  * @author Lectem.
  * Thanks to Bilian Belchev and Paul Siramy for their DCC file format documentation, upon which this
  * decoder is hugely based
@@ -10,6 +10,7 @@
 #include <array>
 #include <assert.h>
 #include <fmt/format.h>
+#include "ImageView.h"
 #include "palette.h"
 #include "utils.h"
 
@@ -96,7 +97,7 @@ bool DCC::extractHeaderAndOffsets()
            "Assumed there are 255 frames max, but Paul Siramy's doc mentions 256 as max ?");
 
     directionsOffsets.resize(header.directions + 1);
-    directionsOffsets[header.directions] = static_cast<uint32_t>(stream->size());
+    directionsOffsets[header.directions] = uint32_t(stream->size());
     for (uint32_t dir = 0; dir < header.directions; dir++)
     {
         stream->readRaw(directionsOffsets[dir]); // TODO : ENDIAN
@@ -196,20 +197,23 @@ struct FrameData
     size_t   firstPixelBufferEntry;
     uint16_t nbCellsX;
     uint16_t nbCellsY;
-    uint16_t offsetX; //!< X Offset relative to the whole direction bounding box
-    uint16_t offsetY; //!< Y Offset relative to the whole direction bounding box
+    uint16_t offsetX; ///< X Offset relative to the whole direction bounding box
+    uint16_t offsetY; ///< Y Offset relative to the whole direction bounding box
 
-    std::vector<bool>     cellSameAsPrevious;
-    std::vector<CellSize> cellWidths;
-    std::vector<CellSize> cellHeights;
+    Vector<bool>     cellSameAsPrevious;
+    Vector<CellSize> cellWidths;
+    Vector<CellSize> cellHeights;
 
-    FrameData(const DCC::Direction& dir, const DCC::FrameHeader& frameHeader)
+    ImageView<uint8_t> imageView; ///< Output buffer image view
+
+    FrameData(const DCC::Direction& dir, const DCC::FrameHeader& frameHeader,
+              IImageProvider<uint8_t>& imgProvider)
     {
         offsetX = uint16_t(frameHeader.extents.xLower - dir.extents.xLower);
         offsetY = uint16_t(frameHeader.extents.yLower - dir.extents.yLower);
 
         // width (in # of pixels) in 1st column
-        uint16_t       widthFirstColumn = 4 - (offsetX % 4);
+        const uint16_t widthFirstColumn = 4 - (offsetX % 4);
         const uint16_t frameWidth       = uint16_t(frameHeader.extents.width());
         if ((frameWidth - widthFirstColumn) <= 1) // if 2nd column is 0 or 1 pixel width
             nbCellsX = 1;
@@ -221,7 +225,7 @@ struct FrameData
             if ((tmp % 4) == 0) nbCellsX--;
         }
 
-        uint16_t       heightFirstRow = 4 - (offsetY % 4);
+        const uint16_t heightFirstRow = 4 - (offsetY % 4);
         const uint16_t frameHeight    = uint16_t(frameHeader.extents.height());
         if ((frameHeight - heightFirstRow) <= 1)
             nbCellsY = 1;
@@ -256,6 +260,8 @@ struct FrameData
             cellHeights[nbCellsY - 1] =
                 CellSize(frameHeight - (heightFirstRow + heightExcludingFirstAndLastRows));
         }
+
+        imageView = imgProvider.getNewImage(frameWidth, frameHeight);
     }
 };
 
@@ -263,7 +269,7 @@ struct DirectionData
 {
     const DCC::Direction& dirRef;
 
-    std::vector<uint8_t> codeToPixelValue;
+    Vector<uint8_t> codeToPixelValue;
 
     BitStreamView equalCellBitStream;
     BitStreamView pixelMaskBitStream;
@@ -275,9 +281,10 @@ struct DirectionData
     size_t nbPixelBufferCellsX;
     size_t nbPixelBufferCellsY;
 
-    std::vector<FrameData> framesData;
+    Vector<FrameData> framesData;
 
-    DirectionData(const DCC::Direction& dir, BitStreamView& bitStream, size_t nbFramesPerDir)
+    DirectionData(const DCC::Direction& dir, BitStreamView& bitStream, size_t nbFramesPerDir,
+                  IImageProvider<uint8_t>& imgProvider)
         : dirRef(dir), nbFrames(nbFramesPerDir)
     {
         uint32_t equalCellsBitStreamSize    = 0;
@@ -342,8 +349,18 @@ struct DirectionData
 
         for (size_t frameIndex = 0; frameIndex < nbFrames; ++frameIndex)
         {
-            framesData.emplace_back(dir, dir.frameHeaders[frameIndex]);
+            framesData.emplace_back(dir, dir.frameHeaders[frameIndex], imgProvider);
         }
+    }
+
+    /// Check that all the data is valid and allocated
+    bool isValid() const
+    {
+        for (size_t frameIndex = 0; frameIndex < nbFrames; ++frameIndex)
+        {
+            if (!framesData[frameIndex].imageView.isValid()) return false;
+        }
+        return true;
     }
 };
 
@@ -395,8 +412,8 @@ int decodePixelCodesStack(DirectionData& data, uint8_t pixelMask, PixelCodesStac
     return int(curPixelIdx);
 }
 
-void decodeFrameStage1(DirectionData& data, FrameData& frameData, std::vector<size_t>& pixelBuffer,
-                       std::vector<PixelBufferEntry>& pbEntries)
+void decodeFrameStage1(DirectionData& data, FrameData& frameData, Vector<size_t>& pixelBuffer,
+                       Vector<PixelBufferEntry>& pbEntries)
 {
     // Offset in terms of cells for this frame
     const size_t frameCellOffsetX = frameData.offsetX / 4;
@@ -430,8 +447,10 @@ void decodeFrameStage1(DirectionData& data, FrameData& frameData, std::vector<si
                     pixelMask = data.pixelMaskBitStream.readUnsigned<4, uint8_t>();
                 }
             }
+
             // Store the fact that we skipped this cell for the 2nd phase
             frameData.cellSameAsPrevious[curFrameCellIndex] = sameAsPreviousCell;
+
             if (!sameAsPreviousCell) {
                 // Pixel buffer entries are encoded as a stack in the stream which means the
                 // last value decoded is actually the 1st value with a bit in the mask.
@@ -482,13 +501,13 @@ void decodeFrameStage1(DirectionData& data, FrameData& frameData, std::vector<si
     }
 }
 
-void decodeDirectionStage1(DirectionData& data, std::vector<PixelBufferEntry>& pbEntries)
+void decodeDirectionStage1(DirectionData& data, Vector<PixelBufferEntry>& pbEntries)
 {
     // For each cell store a PixelBufferEntry index that points to the last entry for this cell
     // This will be used to retrieve values from the previous frame
     constexpr size_t    invalidIndex       = std::numeric_limits<size_t>::max();
     const size_t        pixelBufferNbCells = data.nbPixelBufferCellsX * data.nbPixelBufferCellsY;
-    std::vector<size_t> pixelBuffer(pixelBufferNbCells, invalidIndex);
+    Vector<size_t>      pixelBuffer(pixelBufferNbCells, invalidIndex);
 
     // 1st phase of decoding : fill the pixel buffer
     // We actually fill a buffer of entries as to avoid storing empty entries
@@ -500,7 +519,7 @@ void decodeDirectionStage1(DirectionData& data, std::vector<PixelBufferEntry>& p
     }
 }
 
-void decodeDirectionStage2(DirectionData& data, const std::vector<PixelBufferEntry>& pbEntries)
+void decodeDirectionStage2(DirectionData& data, const Vector<PixelBufferEntry>& pbEntries)
 {
     // This is the reason why we need to stages, we don't have the offset of this bitstream
     BitStreamView& pixelCodeIndices = data.pixelCodesDisplacementBitStream;
@@ -510,9 +529,9 @@ void decodeDirectionStage2(DirectionData& data, const std::vector<PixelBufferEnt
     const size_t pbStride           = pbWidth;
     const size_t nbPixelBufferCells = data.nbPixelBufferCellsX * data.nbPixelBufferCellsY;
 
-    std::vector<Cell>    pixelBufferCells(nbPixelBufferCells, Cell{0xF, 0xF});
-    std::vector<uint8_t> pixelBufferColors(pbStride * pbHeight);
-    uint8_t*             pixels = pixelBufferColors.data();
+    Vector<Cell>       pixelBufferCells(nbPixelBufferCells, Cell{0xF, 0xF});
+    Vector<uint8_t>    pixelBufferColors(pbStride * pbHeight);
+    ImageView<uint8_t> pBuffer{pixelBufferColors.data(), pbWidth, pbHeight, pbStride};
 
     // 2nd phase of decoding : Finish using the pixel buffer entries
     for (size_t frameIndex = 0; frameIndex < data.nbFrames; ++frameIndex)
@@ -526,14 +545,15 @@ void decodeDirectionStage2(DirectionData& data, const std::vector<PixelBufferEnt
             size_t pbCellPosX = frameData.offsetX;
             for (size_t cellX = 0; cellX < frameData.nbCellsX; cellX++)
             {
-                size_t frameCellIndex = cellX + cellY * frameData.nbCellsX;
-                size_t pbCellIndex    = (pbCellPosX / pbCellMaxPixelSize) +
-                                     (pbCellPosY / pbCellMaxPixelSize) * data.nbPixelBufferCellsX;
-                size_t pixelIndex = pbCellPosX + pbCellPosY * pbStride;
-                Cell   frameCell;
+                const size_t frameCellIndex = cellX + cellY * frameData.nbCellsX;
+                Cell         frameCell;
                 frameCell.width  = frameData.cellWidths[cellX];
                 frameCell.height = frameData.cellHeights[cellY];
-                Cell& pbCell     = pixelBufferCells[pbCellIndex];
+
+                const size_t pbCellIndex =
+                    (pbCellPosX / pbCellMaxPixelSize) +
+                    (pbCellPosY / pbCellMaxPixelSize) * data.nbPixelBufferCellsX;
+                Cell& pbCell = pixelBufferCells[pbCellIndex];
 
                 if (frameData.cellSameAsPrevious[frameCellIndex]) {
                     if ((frameCell.width != pbCell.width) || (frameCell.height != pbCell.height)) {
@@ -542,11 +562,8 @@ void decodeDirectionStage2(DirectionData& data, const std::vector<PixelBufferEnt
                         // buffer for all frames we would not need to clear this (it would be
                         // initialized to 0 before writing any value to the frame pixels) But we
                         // would then need to copy values if the size matched
-                        for (size_t row = 0; row < frameCell.height; ++row)
-                        {
-                            memset(pixels + pixelIndex, 0, frameCell.width);
-                            pixelIndex += pbStride; // Next line
-                        }
+                        pBuffer.fillBytes(pbCellPosX, pbCellPosY, frameCell.width, frameCell.height,
+                                          0);
                     }
                     else
                     {
@@ -560,19 +577,15 @@ void decodeDirectionStage2(DirectionData& data, const std::vector<PixelBufferEnt
 
                     if (pixelValues[0] == pixelValues[1]) {
                         // This means we only got one pixel code, so fill the cell with it
-
-                        for (size_t row = 0; row < frameCell.height; ++row)
-                        {
-                            memset(pixels + pixelIndex, pixelValues[0], frameCell.width);
-                            pixelIndex += pbStride; // Next line
-                        }
+                        pBuffer.fillBytes(pbCellPosX, pbCellPosY, frameCell.width, frameCell.height,
+                                          pixelValues[0]);
                     }
                     else
                     {
                         ReadUnsignedPtrType readCodeIndex = nullptr;
                         if (pixelValues[1] == pixelValues[2]) {
                             // Stopped decoding after the 2nd value, only pixelValues[0] and
-                            // pixelValues[1] are different Only 1bit needs to be read to choose
+                            // pixelValues[1] are different, so only 1bit needs to be read to choose
                             // from those values
                             readCodeIndex = &BitStreamView::readUnsigned<1>;
                         }
@@ -584,11 +597,12 @@ void decodeDirectionStage2(DirectionData& data, const std::vector<PixelBufferEnt
                         {
                             for (size_t x = 0; x < frameCell.width; x++)
                             {
-                                uint32_t pixelCodeIndex = (pixelCodeIndices.*readCodeIndex)();
+                                const uint32_t pixelCodeIndex = (pixelCodeIndices.*readCodeIndex)();
                                 // Note: This actually means that a cell (4x4 block) can use at most
-                                // 4 colors !
-                                const uint8_t pixelValue              = pixelValues[pixelCodeIndex];
-                                pixels[pixelIndex + x + y * pbStride] = pixelValue;
+                                // 4 colors, a bit like DXT !
+                                const uint8_t pixelValue = pixelValues[pixelCodeIndex];
+
+                                pBuffer(pbCellPosX + x, pbCellPosY + y) = pixelValue;
                             }
                         }
                     }
@@ -599,23 +613,30 @@ void decodeDirectionStage2(DirectionData& data, const std::vector<PixelBufferEnt
             }
             pbCellPosY += frameData.cellHeights[cellY];
         }
-// Done decoding this frame !
+        // Done decoding this frame, now copy its content.
+        const ImageView<uint8_t> frameImageView = frameData.imageView;
+        const ImageView<uint8_t> pbFrameView    = pBuffer.subView(
+            frameData.offsetX, frameData.offsetY, frameImageView.width, frameImageView.height);
+        assert(frameImageView.isValid() && pbFrameView.isValid());
+
+        pbFrameView.copyTo(frameImageView);
 
 /// Set to 1 to export the frames to the grayscale PPM format
 #define DEBUG_EXPORT_PPM 0
 #if DEBUG_EXPORT_PPM
+/// Set to export all the frames at the size of the pixel buffer (not cleared outside of the frame)
+#define EXPORT_FULL_SIZE false
         auto filename = fmt::format("test{}.ppm", frameIndex);
-        Utils::exportToPGM(filename.c_str(), pixels, int(pbStride), int(pbHeight));
+        Utils::exportToPGM(filename.c_str(), EXPORT_FULL_SIZE ? pBuffer : frameImageView);
 #endif
     }
 }
 } // anonymous namespace
 
-bool DCC::readDirection(Direction& outDir, uint32_t dirIndex)
+bool DCC::readDirection(Direction& outDir, uint32_t dirIndex, IImageProvider<uint8_t>& imgProvider)
 {
-    using byte                             = unsigned char*;
-    const size_t      directionEncodedSize = getDirectionSize(dirIndex);
-    std::vector<byte> buffer(directionEncodedSize);
+    const size_t    directionEncodedSize = getDirectionSize(dirIndex);
+    Vector<uint8_t> buffer(directionEncodedSize);
     stream->seek(directionsOffsets[dirIndex], IStream::beg);
     stream->read(buffer.data(), directionEncodedSize);
     assert(stream->good());
@@ -628,9 +649,10 @@ bool DCC::readDirection(Direction& outDir, uint32_t dirIndex)
 
     outDir.computeDirExtents();
 
-    DirectionData data{outDir, bitStream, header.framesPerDir};
+    DirectionData data{outDir, bitStream, header.framesPerDir, imgProvider};
+    if (!data.isValid()) return false;
 
-    std::vector<PixelBufferEntry> pbEntries;
+    Vector<PixelBufferEntry> pbEntries;
 
     decodeDirectionStage1(data, pbEntries);
 

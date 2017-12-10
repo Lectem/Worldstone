@@ -5,6 +5,7 @@
 #pragma once
 
 #include <stdint.h>
+#include "ImageView.h"
 #include "palette.h"
 
 namespace WorldStone
@@ -22,6 +23,8 @@ namespace Utils
  *               If the value is -1, use the highest value of data and assume 1 byte per pixel
  */
 void exportToPGM(const char* output, const uint8_t* data, int width, int height, int maxVal = -1);
+/// @overload void exportToPGM(const char*, ImageView<const uint8_t>, int)
+void exportToPGM(const char* output, ImageView<const uint8_t> image, int maxVal = -1);
 
 /**
  * Export a paletted image to the PPM format

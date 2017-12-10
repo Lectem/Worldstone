@@ -22,10 +22,10 @@ static_assert(std::is_convertible<ImageView<uint8_t>, ImageView<const uint8_t>>:
 static_assert(std::is_assignable<decltype(ImageView<uint8_t>().operator()(0, 0)), uint8_t>::value,
               "Must be able to assign values using operator()(size_t,size_t)");
 
-using ConstImageView = const ImageView<uint8_t>;
+using ImmutableImageView = ImageView<const uint8_t>;
 static_assert(
-    !std::is_assignable<decltype(std::declval<ConstImageView>().operator()(0, 0)), uint8_t>::value,
-    "Must not be able to assign using operator()(size_t,size_t) on a const ImageView");
+    !std::is_assignable<decltype(ImmutableImageView().operator()(0, 0)), uint8_t>::value,
+    "Must not be able to assign using operator()(size_t,size_t) on an ImageView<const Color>");
 
 TEST_CASE("ImageView")
 {

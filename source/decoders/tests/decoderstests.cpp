@@ -6,6 +6,7 @@
 #include <dcc.h>
 #include "doctest.h"
 using WorldStone::DCC;
+using WorldStone::SimpleImageProvider;
 
 /**Try to decode BaalSpirit.dcc.
  * This is the DCC file with the biggest number of frames (but only 1 direction).
@@ -29,7 +30,8 @@ TEST_CASE("DCC decoding BaalSpirit.dcc")
     CHECK(header.finalDc6Size == 547757);
 
     DCC::Direction dir0;
-    REQUIRE(dcc.readDirection(dir0, 0));
+    SimpleImageProvider<uint8_t> imgProvider;
+    REQUIRE(dcc.readDirection(dir0, 0, imgProvider));
 
     CHECK(dir0.header.outsizeCoded        ==  546933);
     CHECK(dir0.header.hasRawPixelEncoding ==   false);

@@ -30,6 +30,12 @@ void exportToPGM(const char* output, const uint8_t* data, int width, int height,
     }
 }
 
+void exportToPGM(const char* output, ImageView<const uint8_t> image, int maxVal)
+{
+    // TODO: just make this the default and use the stride
+    assert(image.width == image.stride);
+    exportToPGM(output, image.buffer, int(image.width), int(image.height), maxVal);
+}
 void exportToPPM(const char* output, const uint8_t* data, int width, int height,
                  const Palette& palette)
 {

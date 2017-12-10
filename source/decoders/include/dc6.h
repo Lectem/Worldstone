@@ -63,14 +63,12 @@ public:
     const Header&                   getHeader() { return header; }
     const std::vector<FrameHeader>& getFameHeaders() { return frameHeaders; }
 
-    /**
-     * Decompress the given frame.
+    /**Decompress the given frame.
      * @param frameNumber The frame number in the file
      * @return A valid vector to the data on success, empty one on failure
      */
     std::vector<uint8_t> decompressFrame(size_t frameNumber) const;
-    /**
-     * Same as @ref decompressFrame but will output the data in a given buffer
+    /**Same as @ref decompressFrame but will output the data in a given buffer
      * @warning: asserts on failure
      */
     void decompressFrameIn(size_t frameNumber, uint8_t* data) const;
