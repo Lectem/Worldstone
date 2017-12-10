@@ -6,54 +6,59 @@ Loading
 
  * [x] MPQ files
  * [ ] Read data files (txt/bin)
-	- [ ] txt files are mostly tabular
-	
- 
+    - [ ] txt files are mostly tabular
+
+
 Rendering
-	
+
  * [ ] DC6
-	- [ ] sprites
-		- [x] decoding
-		- [ ] rendering
-	- [ ] paletted
-	- [ ] color shift
-	- [ ] used for UI, Items...
+    - [ ] sprites
+        - [x] decoding
+        - [ ] rendering
+    - [ ] paletted
+    - [ ] color shift
+    - [ ] used for UI, Items...
  * [ ] DCC
-	- [ ] Sprites for characters / monsters
+    - [ ] Sprites for characters / monsters
+    - [ ] Investigate block per block rendering instead of frame per frame (tiling)
+          * Means a frame is a list of blocks indices
+          * Have to generate geometry, cpu side or on the fly ?
+          * Texture memory improvements ? Easier packing algorithm
+          * DCC format would be good for this due to encoding (Equal cells compression)
  * [ ] COF
-	- [ ] Animation control files
-	- [ ] Tells how to assemble multiple sprites (equipment, big monsters...)
-	- [ ] Layers
+    - [ ] Animation control files
+    - [ ] Tells how to assemble multiple sprites (equipment, big monsters...)
+    - [ ] Layers
  * [ ] .d2 Animation related
  * [ ] Must be able to scale to high resolutions
  * [ ] Perspective
  * [ ] automap (aka minimap)
- 
+
 Sound
 
  * [ ] Everything is in wav
  * [ ] Spatial audio would be a must
- 
+
 Maps
 
  * [ ] Load DT1 and DS1 files
-	- [ ] DT1 tiles
-	- [ ] DS1 area definition, monsters / objects locations
+    - [ ] DT1 tiles
+    - [ ] DS1 area definition, monsters / objects locations
  * [ ] Isometric tile rendering
-	- [ ] Diamond shaped tiles
-	- [ ] Can be animated
+    - [ ] Diamond shaped tiles
+    - [ ] Can be animated
  * [ ] Lights/shadows system
  * [ ] Procedural generation
 
 Gameplay
 
  * [ ] Characters
-	- [ ] 16 directions
-	- [ ] Skills are hardcoded...
-	- [ ] stats
-	- [ ] exp
+    - [ ] 16 directions
+    - [ ] Skills are hardcoded...
+    - [ ] stats
+    - [ ] exp
  * [ ] Collisions
-	- [ ] Information in the DT1 files ?
+    - [ ] Information in the DT1 files ?
  * [ ] Missiles
  * [ ] Monsters
  * [ ] Difficulties
@@ -67,6 +72,6 @@ UI
  * [ ] Belt
  * [ ] Shortcuts
  * [ ] Text
-	- [ ] Localization
-	- [ ] Font rendering
+    - [ ] Localization
+    - [ ] Font rendering
  * [ ] Should be customizable
