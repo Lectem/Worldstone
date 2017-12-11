@@ -39,8 +39,8 @@ TEST_CASE("DCC decoding BaalSpirit.dcc")
     CHECK(dir0.header.variable0Bits       ==       0);
     CHECK(dir0.header.widthBits           ==       5);
     CHECK(dir0.header.heightBits          ==       5);
-    CHECK(dir0.header.xoffsetBits         ==       5);
-    CHECK(dir0.header.yoffsetBits         ==       5);
+    CHECK(dir0.header.xOffsetBits         ==       5);
+    CHECK(dir0.header.yOffsetBits         ==       5);
     CHECK(dir0.header.optionalBytesBits   ==       0);
     CHECK(dir0.header.codedBytesBits      ==       9);
 
@@ -50,5 +50,89 @@ TEST_CASE("DCC decoding BaalSpirit.dcc")
     CHECK(dir0.extents.yUpper   ==  (45+1));
     CHECK(dir0.extents.width()  ==     195);
     CHECK(dir0.extents.height() ==     224);
+    // clang-format on
+}
+
+/// @testimpl{WorldStone::DCC,DCC_CRHDBRVDTHTH}
+TEST_CASE("DCC decoding CRHDBRVDTHTH.dcc")
+{
+    DCC dcc;
+    REQUIRE(dcc.decode("CRHDBRVDTHTH.dcc"));
+    // clang-format off
+    const DCC::Header& header = dcc.getHeader();
+
+    CHECK(header.signature    ==   116);
+    CHECK(header.version      ==     6);
+    CHECK(header.directions   ==     8);
+    CHECK(header.framesPerDir ==    24);
+    CHECK(header.padding0[0]  ==     0);
+    CHECK(header.padding0[1]  ==     0);
+    CHECK(header.padding0[2]  ==     0);
+    CHECK(header.tag          ==     1);
+    CHECK(header.finalDc6Size == 59600);
+
+    DCC::Direction dir0;
+    SimpleImageProvider<uint8_t> imgProvider;
+    REQUIRE(dcc.readDirection(dir0, 0, imgProvider));
+
+    CHECK(dir0.header.outsizeCoded        ==  7225);
+    CHECK(dir0.header.hasRawPixelEncoding ==  true);
+    CHECK(dir0.header.compressEqualCells  ==  true);
+    CHECK(dir0.header.variable0Bits       ==     0);
+    CHECK(dir0.header.widthBits           ==     4);
+    CHECK(dir0.header.heightBits          ==     4);
+    CHECK(dir0.header.xOffsetBits         ==     4);
+    CHECK(dir0.header.yOffsetBits         ==     5);
+    CHECK(dir0.header.optionalBytesBits   ==     0);
+    CHECK(dir0.header.codedBytesBits      ==     6);
+
+    CHECK(dir0.extents.xLower   ==     -12);
+    CHECK(dir0.extents.yLower   ==     -75);
+    CHECK(dir0.extents.xUpper   ==  (46+1));
+    CHECK(dir0.extents.yUpper   == (-15+1));
+    CHECK(dir0.extents.width()  ==      59);
+    CHECK(dir0.extents.height() ==      61);
+    // clang-format on
+}
+
+/// @testimpl{WorldStone::DCC,DCC_BloodSmall01}
+TEST_CASE("DCC decoding BloodSmall01.dcc")
+{
+    DCC dcc;
+    REQUIRE(dcc.decode("BloodSmall01.dcc"));
+    // clang-format off
+    const DCC::Header& header = dcc.getHeader();
+
+    CHECK(header.signature    ==   116);
+    CHECK(header.version      ==     6);
+    CHECK(header.directions   ==     8);
+    CHECK(header.framesPerDir ==     9);
+    CHECK(header.padding0[0]  ==     0);
+    CHECK(header.padding0[1]  ==     0);
+    CHECK(header.padding0[2]  ==     0);
+    CHECK(header.tag          ==     1);
+    CHECK(header.finalDc6Size == 14200);
+
+    DCC::Direction dir0;
+    SimpleImageProvider<uint8_t> imgProvider;
+    REQUIRE(dcc.readDirection(dir0, 0, imgProvider));
+
+    CHECK(dir0.header.outsizeCoded        ==  1776);
+    CHECK(dir0.header.hasRawPixelEncoding == false);
+    CHECK(dir0.header.compressEqualCells  == false);
+    CHECK(dir0.header.variable0Bits       ==     0);
+    CHECK(dir0.header.widthBits           ==     4);
+    CHECK(dir0.header.heightBits          ==     4);
+    CHECK(dir0.header.xOffsetBits         ==     4);
+    CHECK(dir0.header.yOffsetBits         ==     5);
+    CHECK(dir0.header.optionalBytesBits   ==     0);
+    CHECK(dir0.header.codedBytesBits      ==     6);
+
+    CHECK(dir0.extents.xLower   ==     -18);
+    CHECK(dir0.extents.yLower   ==     -44);
+    CHECK(dir0.extents.xUpper   ==  (13+1));
+    CHECK(dir0.extents.yUpper   ==   (9+1));
+    CHECK(dir0.extents.width()  ==      32);
+    CHECK(dir0.extents.height() ==      54);
     // clang-format on
 }

@@ -118,8 +118,8 @@ static bool readDirHeader(DCC::DirectionHeader& dirHeader, BitStreamView& bitStr
     dirHeader.variable0Bits         = bitStream.readUnsigned<4>();
     dirHeader.widthBits             = bitStream.readUnsigned<4>();
     dirHeader.heightBits            = bitStream.readUnsigned<4>();
-    dirHeader.xoffsetBits           = bitStream.readUnsigned<4>();
-    dirHeader.yoffsetBits           = bitStream.readUnsigned<4>();
+    dirHeader.xOffsetBits           = bitStream.readUnsigned<4>();
+    dirHeader.yOffsetBits           = bitStream.readUnsigned<4>();
     dirHeader.optionalBytesBits     = bitStream.readUnsigned<4>();
     dirHeader.codedBytesBits        = bitStream.readUnsigned<4>();
     return bitStream.good();
@@ -138,8 +138,8 @@ static bool readFrameHeaders(uint8_t nbFrames, DCC::Direction& outDir, BitStream
         frameHeader.variable0 = (bitStream.*readUnsignedPtrs[dirHeader.variable0Bits])();
         frameHeader.width     = (bitStream.*readUnsignedPtrs[dirHeader.widthBits])();
         frameHeader.height    = (bitStream.*readUnsignedPtrs[dirHeader.heightBits])();
-        frameHeader.xoffset   = (bitStream.*readSignedPtrs[dirHeader.xoffsetBits])();
-        frameHeader.yoffset   = (bitStream.*readSignedPtrs[dirHeader.yoffsetBits])();
+        frameHeader.xOffset   = (bitStream.*readSignedPtrs[dirHeader.xOffsetBits])();
+        frameHeader.yOffset   = (bitStream.*readSignedPtrs[dirHeader.yOffsetBits])();
 
         frameHeader.optionalBytes = (bitStream.*readUnsignedPtrs[dirHeader.optionalBytesBits])();
         frameHeader.codedBytes    = (bitStream.*readUnsignedPtrs[dirHeader.codedBytesBits])();
@@ -147,17 +147,17 @@ static bool readFrameHeaders(uint8_t nbFrames, DCC::Direction& outDir, BitStream
 
         assert(frameHeader.width < 0x700000);
         assert(frameHeader.height < 0x700000);
-        frameHeader.extents.xLower = frameHeader.xoffset;
-        frameHeader.extents.xUpper = frameHeader.xoffset + int32_t(frameHeader.width);
+        frameHeader.extents.xLower = frameHeader.xOffset;
+        frameHeader.extents.xUpper = frameHeader.xOffset + int32_t(frameHeader.width);
 
         if (frameHeader.frameBottomUp) {
-            frameHeader.extents.yLower = frameHeader.yoffset;
-            frameHeader.extents.yUpper = frameHeader.yoffset + int32_t(frameHeader.height);
+            frameHeader.extents.yLower = frameHeader.yOffset;
+            frameHeader.extents.yUpper = frameHeader.yOffset + int32_t(frameHeader.height);
         }
         else // top-down
         {
-            frameHeader.extents.yLower = frameHeader.yoffset - int32_t(frameHeader.height) + 1;
-            frameHeader.extents.yUpper = frameHeader.yoffset + 1;
+            frameHeader.extents.yLower = frameHeader.yOffset - int32_t(frameHeader.height) + 1;
+            frameHeader.extents.yUpper = frameHeader.yOffset + 1;
         }
     }
 

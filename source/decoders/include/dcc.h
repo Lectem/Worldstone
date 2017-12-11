@@ -25,6 +25,8 @@ namespace WorldStone
  * This format is usually used with COF files, which describe the animations and blending of
  * multiple DCC files.
  * @test{Decoders,DCC_BaalSpirit}
+ * @test{Decoders,DCC_CRHDBRVDTHTH}
+ * @test{Decoders,DCC_BloodSmall01}
  */
 class DCC
 {
@@ -63,8 +65,8 @@ public:
         uint32_t variable0Bits     : 4; ///< Endcoded size in bits of FrameHeader::variable0
         uint32_t widthBits         : 4; ///< Endcoded size in bits of FrameHeader::width
         uint32_t heightBits        : 4; ///< Endcoded size in bits of FrameHeader::height
-        uint32_t xoffsetBits       : 4; ///< Endcoded size in bits of FrameHeader::xoffset
-        uint32_t yoffsetBits       : 4; ///< Endcoded size in bits of FrameHeader::yoffset
+        uint32_t xOffsetBits       : 4; ///< Endcoded size in bits of FrameHeader::xoffset
+        uint32_t yOffsetBits       : 4; ///< Endcoded size in bits of FrameHeader::yoffset
         uint32_t optionalBytesBits : 4; ///< Endcoded size in bits of FrameHeader::optionalBytes
         uint32_t codedBytesBits    : 4; ///< Endcoded size in bits of FrameHeader::codedBytes
         // clang-format on
@@ -77,8 +79,8 @@ public:
         uint32_t variable0;
         uint32_t width;
         uint32_t height;
-        int32_t  xoffset;
-        int32_t  yoffset;
+        int32_t  xOffset;
+        int32_t  yOffset;
         uint32_t optionalBytes;
         uint32_t codedBytes;
         bool     frameBottomUp;
