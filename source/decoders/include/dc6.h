@@ -60,8 +60,8 @@ public:
 
     bool extractHeaders();
 
-    const Header&                   getHeader() { return header; }
-    const std::vector<FrameHeader>& getFameHeaders() { return frameHeaders; }
+    const Header&                   getHeader() const { return header; }
+    const std::vector<FrameHeader>& getFameHeaders() const { return frameHeaders; }
 
     /**Decompress the given frame.
      * @param frameNumber The frame number in the file
