@@ -136,3 +136,67 @@ TEST_CASE("DCC decoding BloodSmall01.dcc")
     CHECK(dir0.extents.height() ==      54);
     // clang-format on
 }
+
+/**@testimpl{WorldStone::DCC,DCC_HZTRLITA1HTH}
+ *Special has it has a 1bit value for an offset that gives - 1.
+ */
+TEST_CASE("DCC decoding HZTRLITA1HTH.dcc")
+{
+    DCC dcc;
+    REQUIRE(dcc.decode("HZTRLITA1HTH.dcc"));
+    // clang-format off
+    const DCC::Header& header = dcc.getHeader();
+
+    CHECK(header.signature    ==   116);
+    CHECK(header.version      ==     6);
+    CHECK(header.directions   ==     8);
+    CHECK(header.framesPerDir ==    12);
+    CHECK(header.padding0[0]  ==     0);
+    CHECK(header.padding0[1]  ==     0);
+    CHECK(header.padding0[2]  ==     0);
+    CHECK(header.tag          ==     1);
+    CHECK(header.finalDc6Size == 92732);
+
+    DCC::Direction dir;
+    SimpleImageProvider<uint8_t> imgProvider;
+    REQUIRE(dcc.readDirection(dir, 0, imgProvider));
+
+    CHECK(dir.header.outsizeCoded        == 10923);
+    CHECK(dir.header.hasRawPixelEncoding == false);
+    CHECK(dir.header.compressEqualCells  ==  true);
+    CHECK(dir.header.variable0Bits       ==     0);
+    CHECK(dir.header.widthBits           ==     4);
+    CHECK(dir.header.heightBits          ==     4);
+    CHECK(dir.header.xOffsetBits         ==     4);
+    CHECK(dir.header.yOffsetBits         ==     1);
+    CHECK(dir.header.optionalBytesBits   ==     0);
+    CHECK(dir.header.codedBytesBits      ==     6);
+
+    CHECK(dir.extents.xLower   ==     -22);
+    CHECK(dir.extents.yLower   ==     -62);
+    CHECK(dir.extents.xUpper   ==  (33+1));
+    CHECK(dir.extents.yUpper   ==  (-1+1));
+    CHECK(dir.extents.width()  ==      56);
+    CHECK(dir.extents.height() ==      62);
+
+    REQUIRE(dcc.readDirection(dir, 4, imgProvider));
+
+    CHECK(dir.header.outsizeCoded        ==  9774);
+    CHECK(dir.header.hasRawPixelEncoding == false);
+    CHECK(dir.header.compressEqualCells  ==  true);
+    CHECK(dir.header.variable0Bits       ==     0);
+    CHECK(dir.header.widthBits           ==     4);
+    CHECK(dir.header.heightBits          ==     4);
+    CHECK(dir.header.xOffsetBits         ==     1);
+    CHECK(dir.header.yOffsetBits         ==     1);
+    CHECK(dir.header.optionalBytesBits   ==     0);
+    CHECK(dir.header.codedBytesBits      ==     6);
+
+    CHECK(dir.extents.xLower   ==      -1);
+    CHECK(dir.extents.yLower   ==     -62);
+    CHECK(dir.extents.xUpper   ==  (22+1));
+    CHECK(dir.extents.yUpper   ==  (-1+1));
+    CHECK(dir.extents.width()  ==      24);
+    CHECK(dir.extents.height() ==      62);
+    // clang-format on
+}

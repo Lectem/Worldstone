@@ -27,6 +27,7 @@ namespace WorldStone
  * @test{Decoders,DCC_BaalSpirit}
  * @test{Decoders,DCC_CRHDBRVDTHTH}
  * @test{Decoders,DCC_BloodSmall01}
+ * @test{Decoders,DCC_HZTRLITA1HTH}
  */
 class DCC
 {
