@@ -189,6 +189,7 @@ void DCxView::palettesListUpdated(const QStringList& palettesList)
 void DCxView::displayDCx(const QString& fileName)
 {
     animationTimer->stop();
+    currentDCx = nullptr;
     if (fileName.endsWith(".dc6", Qt::CaseInsensitive))
         currentDCx = std::make_unique<DC6Sprite>(DCxViewerApp::instance()->getFilePtr(fileName));
     else if (fileName.endsWith(".dcc", Qt::CaseInsensitive))
