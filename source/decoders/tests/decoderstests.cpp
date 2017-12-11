@@ -53,7 +53,9 @@ TEST_CASE("DCC decoding BaalSpirit.dcc")
     // clang-format on
 }
 
-/// @testimpl{WorldStone::DCC,DCC_CRHDBRVDTHTH}
+/**@testimpl{WorldStone::DCC,DCC_CRHDBRVDTHTH}
+ * This test makes sure we test the case where a 0b0000 mask is used for a cell.
+ */
 TEST_CASE("DCC decoding CRHDBRVDTHTH.dcc")
 {
     DCC dcc;
@@ -95,7 +97,10 @@ TEST_CASE("DCC decoding CRHDBRVDTHTH.dcc")
     // clang-format on
 }
 
-/// @testimpl{WorldStone::DCC,DCC_BloodSmall01}
+/**@testimpl{WorldStone::DCC,DCC_BloodSmall01}
+ * This test makes sures that we treat the case of the 2nd cell
+ * being merged into the 1st one correctly when it has only 1 pixel.
+ */
 TEST_CASE("DCC decoding BloodSmall01.dcc")
 {
     DCC dcc;
