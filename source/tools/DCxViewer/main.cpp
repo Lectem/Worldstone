@@ -101,6 +101,7 @@ WorldStone::StreamPtr DCxViewerApp::getFilePtr(const QString& fileName)
     WorldStone::StreamPtr stream;
     QString               fileNameBackslashes = fileName;
     fileNameBackslashes.replace('/', '\\');
+    qDebug() << "getFilePtr(" << fileName << ")";
     stream = mpqArchive->open(fileNameBackslashes.toStdString());
     if (!stream) {
         stream = std::make_unique<WorldStone::FileStream>(fileName.toStdString());
@@ -112,7 +113,9 @@ WorldStone::StreamPtr DCxViewerApp::getFilePtr(const QString& fileName)
 void DCxViewerApp::fileActivated(const QString& fileName)
 {
     if (!mpqArchive) return;
-    if (fileName.endsWith(".dc6", Qt::CaseInsensitive)) {
+    if (fileName.endsWith(".dc6", Qt::CaseInsensitive) ||
+        fileName.endsWith(".dcc", Qt::CaseInsensitive))
+    {
         emit requestDisplayDC6(fileName);
     }
 }

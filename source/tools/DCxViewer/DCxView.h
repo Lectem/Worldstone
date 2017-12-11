@@ -1,24 +1,80 @@
 #pragma once
 
+#include <FileStream.h>
+#include <ImageView.h>
 #include <MpqArchive.h>
 #include <QWidget>
+#include <Vector.h>
 #include <dc6.h>
+#include <dcc.h>
 #include <vector>
 
+using WorldStone::ImageView;
 using WorldStone::DC6;
+using WorldStone::DCC;
 using WorldStone::Palette;
+using WorldStone::StreamPtr;
+using WorldStone::Vector;
 
-class DC6View : public QWidget
+struct DCxSprite
+{
+    virtual bool    isValid() const           = 0;
+    virtual size_t  getNbDirections() const   = 0;
+    virtual size_t  getNbFramesPerDir() const = 0;
+    virtual QString getHeaderDesc() const     = 0;
+    virtual QString getFrameHeaderDesc(size_t dir, size_t frameIndex) const             = 0;
+    virtual ImageView<const uint8_t> getFrameImage(size_t dir, size_t frameIndex) const = 0;
+    ~DCxSprite() {}
+};
+
+struct DC6Sprite : public DCxSprite
+{
+    DC6Sprite(StreamPtr&& streamPtr);
+    bool           isValid() const override { return valid; }
+    size_t         getNbDirections() const override { return dc6.getHeader().directions; }
+    virtual size_t getNbFramesPerDir() const override { return dc6.getHeader().framesPerDir; }
+    QString        getHeaderDesc() const override { return headerDesc; }
+    QString getFrameHeaderDesc(size_t dir, size_t frameIndex) const override;
+    ImageView<const uint8_t> getFrameImage(size_t dir, size_t frameIndex) const override;
+
+private:
+    Vector<Vector<uint8_t>> framesImages;
+    DC6                     dc6;
+    QString                 headerDesc;
+    bool                    valid = false;
+};
+
+struct DCCSprite : public DCxSprite
+{
+    DCCSprite(StreamPtr&& streamPtr);
+    bool           isValid() const override { return valid; }
+    size_t         getNbDirections() const override { return dcc.getHeader().directions; }
+    virtual size_t getNbFramesPerDir() const override { return dcc.getHeader().framesPerDir; }
+    QString        getHeaderDesc() const override { return headerDesc; }
+    QString getFrameHeaderDesc(size_t dir, size_t frameIndex) const override;
+    ImageView<const uint8_t> getFrameImage(size_t dir, size_t frameIndex) const override;
+
+private:
+    using ImgProvider = WorldStone::SimpleImageProvider<uint8_t>;
+    Vector<DCC::Direction> directions;
+    Vector<ImgProvider>    directionImgProviders;
+    DCC                    dcc;
+    QString                headerDesc;
+    bool                   valid = false;
+};
+
+class DCxView : public QWidget
 {
     Q_OBJECT
 public:
-    DC6View(QWidget* parent = nullptr, Qt::WindowFlags flags = {});
+    DCxView(QWidget* parent = nullptr, Qt::WindowFlags flags = {});
 public slots:
     void loadPalette(const QString& paletteFile);
     void palettesListUpdated(const QStringList& palettesList);
-    void displayDC6(const QString& fileName);
+    void displayDCx(const QString& fileName);
     void nextFrame();
-    void refreshDC6Frame();
+    void refreshFrame();
+
 private:
     bool eventFilter(QObject* obj, QEvent* event);
 
@@ -38,5 +94,5 @@ private:
     class QTimer*  animationTimer  = nullptr;
     class QSlider* framerateSlider = nullptr;
 
-    std::unique_ptr<DC6> currentDC6;
+    std::unique_ptr<DCxSprite> currentDCx;
 };

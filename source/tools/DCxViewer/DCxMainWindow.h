@@ -20,5 +20,5 @@ signals:
 private:
     void               createActions();
     class QListWidget* mpqFileList = nullptr;
-    class DC6View*     dc6View     = nullptr;
+    class DCxView*     dc6View     = nullptr;
 };

@@ -27,18 +27,18 @@ DCxMainWindow::DCxMainWindow()
                       QDockWidget::DockWidgetFeature::DockWidgetFloatable);
     dock->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
 
-    dc6View = new DC6View(this);
+    dc6View = new DCxView(this);
 
     dock->setWidget(dc6View);
     connect(DCxViewerApp::instance(), &DCxViewerApp::requestDisplayDC6, dc6View,
-            &DC6View::displayDC6);
+            &DCxView::displayDCx);
 
     addDockWidget(Qt::RightDockWidgetArea, dock);
 
     readSettings();
     connect(DCxViewerApp::instance(), &DCxViewerApp::fileListUpdated, this,
             &DCxMainWindow::refreshMPQList);
-    connect(this, &DCxMainWindow::palettesListUpdated, dc6View, &DC6View::palettesListUpdated);
+    connect(this, &DCxMainWindow::palettesListUpdated, dc6View, &DCxView::palettesListUpdated);
     refreshMPQList();
 }
 
