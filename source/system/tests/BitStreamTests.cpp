@@ -51,7 +51,7 @@ TEST_CASE("BitStreamView read.")
         // Test the signed integers read
         bitstream.skip(6);
         CHECK(bitstream.readSigned<0>() == 0);
-        CHECK(bitstream.readSigned<1>() == 0); // Always return 0
+        CHECK(bitstream.readSigned<1>() == -1);
 
         CHECK(bitstream.tell() == 2 + 6 + 1);
     }

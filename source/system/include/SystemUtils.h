@@ -24,8 +24,10 @@ namespace Utils
 {
 
 /** Convert a N-bits 2's complement signed value to a SignedResult value.
+ * Extending the sign means filling the higher bits with the sign bit.
+ * We then reinterpret it as a 2's complement.
  * @tparam SignedResult Type of the result, must be signed.
- * @tparam NbBits The size in bits of value. Value must be between > 1.
+ * @tparam NbBits The size in bits of value. Value must be between > 0.
  * @param value The original value, 2's complement on @ref NbBits bits.
  * @test{System,SignExtend}
  */
@@ -33,7 +35,7 @@ template<typename SignedResult, unsigned NbBits, typename InputType>
 inline SignedResult signExtend(const InputType value)
 {
     static_assert(std::is_integral<SignedResult>::value && std::is_integral<InputType>::value, "");
-    static_assert(NbBits > 1, "Can not represent a signed value on 1 bit.");
+    static_assert(NbBits > 0, "Can not represent a signed value on 0 bit.");
     static_assert(NbBits <= sizeof(SignedResult) * CHAR_BIT,
                   "Result type is not big enough to hold the values.");
     static_assert(std::is_signed<SignedResult>::value, "Result type must be signed");

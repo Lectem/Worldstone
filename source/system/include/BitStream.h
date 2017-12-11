@@ -145,8 +145,9 @@ public:
 
     /** Reads an signed value of variable bit size. Values are using 2's complement.
      * @tparam NbBits The number of bits to read from the stream
+     * @note The value is sign extended, hence for 1-bit values: 0b0 is 0 and 0b1 is -1.
      */
-    template<unsigned NbBits, typename std::enable_if<(NbBits > 1u)>::type* = nullptr>
+    template<unsigned NbBits, typename std::enable_if<(NbBits > 0)>::type* = nullptr>
     int32_t           readSigned()
     {
         return Utils::signExtend<int32_t, NbBits>(readUnsigned<NbBits>());
@@ -157,7 +158,7 @@ public:
      * bits choosen at runtime and use a method pointers table. But really, it'd be best to just not
      * call it.
      */
-    template<unsigned NbBits, typename std::enable_if<(NbBits <= 1u)>::type* = nullptr>
+    template<unsigned NbBits, typename std::enable_if<(NbBits == 0)>::type* = nullptr>
     int32_t           readSigned()
     {
         currentBitPosition += NbBits;

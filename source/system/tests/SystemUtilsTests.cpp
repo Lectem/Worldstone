@@ -30,6 +30,11 @@ TEST_CASE("SignExtend")
         CHECK(signExtend<int32_t, 3>(      0x07) ==         -1);
         CHECK(signExtend<int32_t, 9>(     0x1CE) ==        -50);
     }
+    SUBCASE("1-bit special case")
+    {
+        CHECK(signExtend<int32_t, 1>(0b0) ==  0);
+        CHECK(signExtend<int32_t, 1>(0b1) == -1); // Sign extension => 0xFFFFFFFF => -1
+    }
     // clang-format on
 }
 
