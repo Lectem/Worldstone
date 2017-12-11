@@ -215,8 +215,8 @@ struct FrameData
         // width (in # of pixels) in 1st column
         const uint16_t widthFirstColumn = 4 - (offsetX % 4);
         const uint16_t frameWidth       = uint16_t(frameHeader.extents.width());
-        if ((frameWidth - widthFirstColumn) <= 1) // if 2nd column is 0 or 1 pixel width
-            nbCellsX = 1;
+        if ((frameWidth - widthFirstColumn) <= 1)
+            nbCellsX = 1; // if 2nd column is 0 or 1 pixel wide, only use 1 cell
         else
         {
             // so, we have minimum 2 pixels behind 1st column
@@ -228,7 +228,7 @@ struct FrameData
         const uint16_t heightFirstRow = 4 - (offsetY % 4);
         const uint16_t frameHeight    = uint16_t(frameHeader.extents.height());
         if ((frameHeight - heightFirstRow) <= 1)
-            nbCellsY = 1;
+            nbCellsY = 1; // if 2nd row is 0 or 1 pixel high, only use 1 cell
         else
         {
             uint16_t tmp = frameHeight - heightFirstRow - 1;
@@ -242,9 +242,12 @@ struct FrameData
         cellWidths.resize(nbCellsX, 4);
         cellHeights.resize(nbCellsY, 4);
 
-        // Treat the special cases (first and last columns/rows)
-        cellWidths[0] = CellSize(widthFirstColumn);
-        if (nbCellsX > 1) {
+        if (nbCellsX == 1)
+            cellWidths[0] = CellSize(frameWidth); // Might have merged 2nd column into 1st
+        else
+        {
+            // Treat the special cases (first and last columns/rows)
+            cellWidths[0] = CellSize(widthFirstColumn);
             // Compute size of the last column
             const size_t nbColumnsExcludingFirstAndLast    = nbCellsX - 2;
             const size_t widthExcludingFirstAndLastColumns = 4 * nbColumnsExcludingFirstAndLast;
@@ -252,8 +255,11 @@ struct FrameData
                 CellSize(frameWidth - (widthFirstColumn + widthExcludingFirstAndLastColumns));
         }
 
-        cellHeights[0] = CellSize(heightFirstRow);
-        if (nbCellsY > 1) {
+        if (nbCellsY == 1)
+            cellHeights[0] = CellSize(frameHeight); // Might have merged 2nd row into 1st
+        else
+        {
+            cellHeights[0] = CellSize(heightFirstRow);
             // Compute size of the last row
             const size_t nbRowsExcludingFirstAndLast     = nbCellsY - 2;
             const size_t heightExcludingFirstAndLastRows = 4 * nbRowsExcludingFirstAndLast;
@@ -371,6 +377,8 @@ using PixelCodesStack = std::array<uint8_t, PixelBufferEntry::nbValues>;
 int decodePixelCodesStack(DirectionData& data, uint8_t pixelMask, PixelCodesStack& pixelCodesStack)
 {
     const uint16_t nbPixelsInMask = Utils::popCount(uint16_t(pixelMask));
+    if (nbPixelsInMask == 0)
+        return 0; // Reuse the previous cell values, but still decode the cell in stage2
 
     // Is the cell encoded in the raw stream ?
     bool decodeRaw = data.rawPixelUsageBitStream.bufferSizeInBits() > 0 &&
@@ -454,7 +462,7 @@ void decodeFrameStage1(DirectionData& data, FrameData& frameData, Vector<size_t>
             if (!sameAsPreviousCell) {
                 // Pixel buffer entries are encoded as a stack in the stream which means the
                 // last value decoded is actually the 1st value with a bit in the mask.
-                PixelCodesStack pixelCodesStack;
+                PixelCodesStack pixelCodesStack = {};
                 int nbPixelsDecoded = decodePixelCodesStack(data, pixelMask, pixelCodesStack);
 
                 PixelBufferEntry previousEntryForCell;
