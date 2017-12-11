@@ -12,7 +12,7 @@ It is written in modern C++ and aims to be portable/cross-platform.
 
 ## Status of the project 
 
-DC6 and DCC decoders are now working.
+DC6 and DCC (sprites) decoders are now working.
 Work is progressing slowly. While not reflected in the repo, a lot of documentation has been gathered for future work !
 
 ## Building
