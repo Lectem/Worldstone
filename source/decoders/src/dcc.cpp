@@ -151,6 +151,7 @@ static bool readFrameHeaders(uint8_t nbFrames, DCC::Direction& outDir, BitStream
         frameHeader.extents.xUpper = frameHeader.xOffset + int32_t(frameHeader.width);
 
         if (frameHeader.frameBottomUp) {
+            assert(false && "Please report the name of the DCC file to the devs!");
             frameHeader.extents.yLower = frameHeader.yOffset;
             frameHeader.extents.yUpper = frameHeader.yOffset + int32_t(frameHeader.height);
         }
@@ -165,6 +166,7 @@ static bool readFrameHeaders(uint8_t nbFrames, DCC::Direction& outDir, BitStream
     for (DCC::FrameHeader& frameHeader : outDir.frameHeaders)
     {
         if (frameHeader.optionalBytes) {
+            assert(false && "Please report the name of the DCC file to the devs!");
             bitStream.alignToByte();
             bitStream.skip(frameHeader.optionalBytes * CHAR_BIT);
         }
