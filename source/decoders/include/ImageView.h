@@ -24,7 +24,7 @@ namespace WorldStone
 template<class Color>
 struct ImageView
 {
-
+    static_assert(std::is_trivially_copyable<Color>::value, "Color must be trivially copyable for memcpy/memset");
     Color* buffer = nullptr; ///< Pointer to the memory considered as the first pixel
     size_t width  = 0;       ///< Width of the image, can be dfferent from the one of the buffer
     size_t height = 0;       ///< Number of scanlines of the image
