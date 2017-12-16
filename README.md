@@ -6,9 +6,9 @@
 [![Pull requests](https://img.shields.io/github/issues-pr-raw/Lectem/Worldstone.svg)](https://github.com/Lectem/Worldstone/pulls)
 [![Opened issues](https://img.shields.io/github/issues-raw/Lectem/Worldstone.svg)](https://github.com/Lectem/Worldstone/issues)
 
-Diablo 2 tools and engine reimplementation in modern c++.
+Diablo 2 tools and engine reimplementation in 'modern' C++ (see [C++ Usage](#c-usage)).
 
-It is written in modern C++ and aims to be portable/cross-platform.
+It aims to be portable/cross-platform.
 
 ## Status of the project 
 
@@ -52,3 +52,21 @@ You can tweak the configuration using the following CMake variables (I suggest u
 * DT1 viewer
 
 For a more detailed list of what will need to do to have an engine, check the [TODO](TODO.md) list.
+
+## C++ Usage
+
+While this project tends to use modern features of C++, it tries to use them sparingly. It is not [Orthodox C++](https://gist.github.com/bkaradzic/2e39896bc7d8c34e042b), but is still similar.
+Basically, if you can do something without the latest X or Y fancy feature, then don't use the feature.
+
+For example:
+
+- IOstreams are banned (anybody asking why can lookup the reason easily)
+- Don't use a feature just because you can. (ie. don't put lambdas, SFINAE and auto where it is not needed)
+- Try not to overuse templates (too much).
+- Use the good stuff !
+  * static_assert
+  * move-semantics
+  * custom litterals
+  * atomics
+  * unique_ptr
+  * ...
