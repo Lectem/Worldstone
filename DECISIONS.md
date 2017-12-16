@@ -1,3 +1,9 @@
+12/16/2017
+- Trying to choose a library or API for rendering
+  * No to https://github.com/floooh/oryol as it doesn't have shader hot reloading
+  * It needs either Metal or OpenGL for OSX...
+  * Try either BGFX or Magnum
+
 11/26/2017
 - Use CHECK and == for unit test instead of CHECK_EQ when possible
   * Visually easier to understand, we're used to see ==
