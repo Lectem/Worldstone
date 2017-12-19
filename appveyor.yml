@@ -2,6 +2,15 @@
 #    environment configuration    #
 #---------------------------------#
 
+notifications:
+
+  - provider: Webhook
+    url: https://webhooks.gitter.im/e/cec723c4f8dbc9aac4bb
+    method: GET
+    on_build_success: false
+    on_build_failure: true
+    on_build_status_changed: true
+
 # Build worker image (VM template)
 image:
   - Visual Studio 2015

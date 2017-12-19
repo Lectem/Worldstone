@@ -1,3 +1,10 @@
+coverage:
+  notify:
+    gitter:
+      default:
+        url: https://webhooks.gitter.im/e/1404d38413db91e7b80b
+        threshold: 1%
+
 # Please keep in sync with our CMake CUSTOM_COVERAGE_EXCLUDE and CTestCustom.cmake
 ignore:
   - "external"                  # Ignore any third-parties

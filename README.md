@@ -5,6 +5,7 @@
 [![CDash dashboard](https://img.shields.io/badge/CDash-Access-blue.svg)](http://my.cdash.org/index.php?project=Worldstone)
 [![Pull requests](https://img.shields.io/github/issues-pr-raw/Lectem/Worldstone.svg)](https://github.com/Lectem/Worldstone/pulls)
 [![Opened issues](https://img.shields.io/github/issues-raw/Lectem/Worldstone.svg)](https://github.com/Lectem/Worldstone/issues)
+[![Gitter chat](https://badges.gitter.im/Lectem/Worldstone.png)](https://gitter.im/Worldstone/Lobby)
 
 Diablo 2 tools and engine reimplementation in 'modern' C++ (see [C++ Usage](#c-usage)).
 

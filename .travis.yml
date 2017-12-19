@@ -1,3 +1,11 @@
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/82e5807277e0336f839b
+    on_success: change
+    on_failure: always
+    on_start: never
+
 dist: trusty
 sudo: false
 language: cpp
