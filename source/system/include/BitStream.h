@@ -141,8 +141,10 @@ public:
         const size_t curBytesPos     = currentBitPosition / CHAR_BIT;
         const int    bitPosInCurByte = currentBitPosition % CHAR_BIT;
         currentBitPosition += size_t(nbBits);
+        // Note: Could get rid of the condition by having one extra byte at the end of the stream
         const uint16_t shortFromBuffer =
-            buffer[curBytesPos] | uint16_t(buffer[curBytesPos + 1] << CHAR_BIT);
+            buffer[curBytesPos] |
+            ((bitPosInCurByte + nbBits > 8) ? uint16_t(buffer[curBytesPos + 1] << CHAR_BIT) : 0);
         const unsigned mask  = 0xFF >> (CHAR_BIT - nbBits);
         const uint8_t  value = uint8_t((shortFromBuffer >> bitPosInCurByte) & mask);
         return value;
