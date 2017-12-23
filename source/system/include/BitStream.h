@@ -32,7 +32,7 @@ namespace WorldStone
 
 class BitStreamView : public IOBase
 {
-    using byte = char;
+    using byte                     = unsigned char;
     size_t      size               = 0;       ///< Size of the bitstream in bits
     size_t      firstBitOffset     = 0;       ///< Position of the first bit in the first byte
     size_t      currentBitPosition = 0;       ///< Current absolute position in the buffer, in bits
@@ -105,41 +105,49 @@ public:
     uint32_t readBit() { return uint32_t(readBool()); }
 
     /** Reads an unsigned value of variable bit size
-     * @tparam NbBits The number of bits to read from the stream
      * @tparam RetType The type of the value to return, must be at least NbBits bits big.
-     * @note This function has not been optimized.
-     *       We could do so by having special cases based on NbBits
-     *       or simply keeping currentBytesPos/bitPosInCurrentByte in the class.
-     *       But is it worth it ?
+     * @param nbBits The number of bits to read from the stream
      */
-    template<unsigned NbBits, typename RetType = uint32_t>
-    RetType           readUnsigned()
+    template<typename RetType = uint32_t>
+    RetType readUnsigned(unsigned nbBits)
     {
         static_assert(std::is_unsigned<RetType>::value, "You must return an unsigned type !");
-        static_assert(NbBits <= sizeof(RetType) * CHAR_BIT, "RetType is too small!");
         RetType value           = 0;
         size_t  curBytesPos     = currentBitPosition / CHAR_BIT;
         size_t  bitPosInCurByte = currentBitPosition % CHAR_BIT;
-        currentBitPosition += NbBits;
+        currentBitPosition += nbBits;
         // The following variable is needed because we are reading a little endian input.
         size_t curDestBitPosition = 0;
-        while (curDestBitPosition < NbBits)
+        while (curDestBitPosition < nbBits)
         {
             // How many bits we can read in this byte ?
-            const size_t bytesToReadInCurByte =
-                std::min(CHAR_BIT - bitPosInCurByte, NbBits - curDestBitPosition);
-            const RetType mask = RetType((1U << bytesToReadInCurByte) - 1U);
+            const size_t bitsToReadInCurByte =
+                std::min(CHAR_BIT - bitPosInCurByte, nbBits - curDestBitPosition);
+            const RetType mask = RetType((1U << bitsToReadInCurByte) - 1U);
             // The bits we got from the current byte
             const RetType inBits = (RetType(buffer[curBytesPos++]) >> bitPosInCurByte) & mask;
             // Place them at the right position
             value |= inBits << curDestBitPosition;
-            curDestBitPosition += bytesToReadInCurByte;
+            curDestBitPosition += bitsToReadInCurByte;
             // Next time we start at the beginning of the byte, perhaps we could optimize by
             // Treating the first byte as a special case ?
             bitPosInCurByte = 0;
         }
         return value;
     }
+
+    uint8_t readUnsigned8OrLess(const int nbBits)
+    {
+        const size_t curBytesPos     = currentBitPosition / CHAR_BIT;
+        const int    bitPosInCurByte = currentBitPosition % CHAR_BIT;
+        currentBitPosition += size_t(nbBits);
+        const uint16_t shortFromBuffer =
+            buffer[curBytesPos] | uint16_t(buffer[curBytesPos + 1] << CHAR_BIT);
+        const unsigned mask  = 0xFF >> (CHAR_BIT - nbBits);
+        const uint8_t  value = uint8_t((shortFromBuffer >> bitPosInCurByte) & mask);
+        return value;
+    }
+
     /** Return 0u, used for member function tables as replacement for BitStream::readUnsigned<0> */
     uint32_t read0Bits() { return 0u; }
 
@@ -150,7 +158,7 @@ public:
     template<unsigned NbBits, typename std::enable_if<(NbBits > 0)>::type* = nullptr>
     int32_t           readSigned()
     {
-        return Utils::signExtend<int32_t, NbBits>(readUnsigned<NbBits>());
+        return Utils::signExtend<int32_t, NbBits>(readUnsigned(NbBits));
     }
 
     /** Return 0 if reading less than 2 bits

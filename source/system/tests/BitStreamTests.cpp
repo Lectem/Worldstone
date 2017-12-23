@@ -19,25 +19,51 @@ TEST_CASE("BitStreamView read.")
     SUBCASE("Unsigned integer reads")
     {
         // clang-format off
-        CHECK_EQ(bitstream.readUnsigned< 0>() , /*==*/ ( 0                       ));
-        CHECK_EQ(bitstream.readUnsigned< 8>() , /*==*/ ( 0x01                    ));
-        CHECK_EQ(bitstream.readUnsigned<16>() , /*==*/ ( 0x4523                  )); // Little endian
-        CHECK_EQ(bitstream.readUnsigned< 3>() , /*==*/ ( 0x67            & 0b111 ));
-        CHECK_EQ(bitstream.readUnsigned<13>() , /*==*/ ( 0x8967   >> 3           ));
-        CHECK_EQ(bitstream.readUnsigned<13>() , /*==*/ ( 0xCDAB          & 0x1FFF));
-        CHECK_EQ(bitstream.readUnsigned< 2>() , /*==*/ ((0xCDAB   >> 13) & 0b11  ));
-        CHECK_EQ(bitstream.readUnsigned< 9>() , /*==*/ ( 0xEFCDAB >> 15          ));
+        CHECK_EQ(bitstream.readUnsigned( 0) , /*==*/ ( 0                       ));
+        CHECK_EQ(bitstream.readUnsigned( 8) , /*==*/ ( 0x01                    ));
+        CHECK_EQ(bitstream.readUnsigned(16) , /*==*/ ( 0x4523                  )); // Little endian
+        CHECK_EQ(bitstream.readUnsigned( 3) , /*==*/ ( 0x67            & 0b111 ));
+        CHECK_EQ(bitstream.readUnsigned(13) , /*==*/ ( 0x8967   >> 3           ));
+        CHECK_EQ(bitstream.readUnsigned(13) , /*==*/ ( 0xCDAB          & 0x1FFF));
+        CHECK_EQ(bitstream.readUnsigned( 2) , /*==*/ ((0xCDAB   >> 13) & 0b11  ));
+        CHECK_EQ(bitstream.readUnsigned( 9) , /*==*/ ( 0xEFCDAB >> 15          ));
         // clang-format on
     }
-    // Test the unsigned integers read with small return types
+    SUBCASE("Unsigned integer reads with smaller types")
+    {
+        // clang-format off
+        CHECK(bitstream.readUnsigned< uint8_t>( 0) ==  uint8_t(     0));
+        CHECK(bitstream.readUnsigned< uint8_t>( 8) ==  uint8_t(  0x01));
+        CHECK(bitstream.readUnsigned< uint8_t>( 8) ==  uint8_t(  0x23));
+        CHECK(bitstream.readUnsigned< uint8_t>( 8) ==  uint8_t(  0x45));
+        CHECK(bitstream.readUnsigned<uint16_t>(16) == uint16_t(0x8967));
+        // clang-format on
+    }
+    SUBCASE("Unsigned integer 8-bit or less reads")
+    {
+        // clang-format off
+        CHECK_EQ(bitstream.readUnsigned8OrLess(0), /*==*/ ( 0                        ));
+        CHECK_EQ(bitstream.readUnsigned8OrLess(8), /*==*/ ( 0x01                     ));
+        CHECK_EQ(bitstream.readUnsigned(16),       /*==*/ ( 0x4523                   )); // Little endian
+        CHECK_EQ(bitstream.readUnsigned8OrLess(3), /*==*/ ( 0x67            & 0b111  ));
+        CHECK_EQ(bitstream.readUnsigned(13),       /*==*/ ( 0x8967   >> 3            ));
+        CHECK_EQ(bitstream.readUnsigned(13),       /*==*/ ( 0xCDAB          & 0x1FFF ));
+        CHECK_EQ(bitstream.readUnsigned8OrLess(2), /*==*/ ((0xCDAB   >> 13) & 0b11   ));
+        CHECK_EQ(bitstream.readUnsigned8OrLess(5), /*==*/ ((0xEFCDAB >> 15) & 0b11111));
+        CHECK_EQ(bitstream.readUnsigned8OrLess(4), /*==*/ ((0xEFCDAB >> 20) & 0b1111 ));
+        // clang-format on
+    }
     SUBCASE("Signed integer reads")
     {
         // clang-format off
-        CHECK(bitstream.readUnsigned< 0,  uint8_t>() ==  uint8_t(     0));
-        CHECK(bitstream.readUnsigned< 8,  uint8_t>() ==  uint8_t(  0x01));
-        CHECK(bitstream.readUnsigned< 8,  uint8_t>() ==  uint8_t(  0x23));
-        CHECK(bitstream.readUnsigned< 8,  uint8_t>() ==  uint8_t(  0x45));
-        CHECK(bitstream.readUnsigned<16, uint16_t>() == uint16_t(0x8967));
+        CHECK_EQ(bitstream.readSigned< 0>() , /*==*/ ( 0                           ));/*signbit=0*/
+        CHECK_EQ(bitstream.readSigned< 8>() , /*==*/ ( 0x01                        ));/*signbit=0*/
+        CHECK_EQ(bitstream.readSigned<16>() , /*==*/ ( 0x4523                      ));/*signbit=0*/
+        CHECK_EQ(bitstream.readSigned< 3>() , /*==*/ ( 0b111           | 0xFFFFFFF8));/*signbit=1*/
+        CHECK_EQ(bitstream.readSigned<13>() , /*==*/ ( 0x8967 >> 3     | 0xFFFFE000));/*signbit=1*/
+        CHECK_EQ(bitstream.readSigned<13>() , /*==*/ ( 0xCDAB & 0x1FFF             ));/*signbit=0*/
+        CHECK_EQ(bitstream.readSigned< 2>() , /*==*/ ( 0b10            | 0xFFFFFFFC));/*signbit=1*/
+        CHECK_EQ(bitstream.readSigned< 9>() , /*==*/ ( 0x1DF           | 0xFFFFFE00));/*signbit=1*/
         // clang-format on
     }
     // Test the read 0/1 bits

@@ -16,7 +16,8 @@ TEST_CASE("SignExtend")
         CHECK(signExtend<int32_t,13>(         0) ==          0);
         CHECK(signExtend<int32_t,32>(0x16641337) == 0x16641337);
         CHECK(signExtend<int32_t,32>(0x7FFFFFFF) == 0x7FFFFFFF);
-        CHECK(signExtend<int32_t, 2>(      0b11) ==         -1);
+        CHECK(signExtend<int32_t, 2>(      0b01) ==          1);
+        CHECK(signExtend<int32_t, 3>(     0b011) ==          3);
     }
     SUBCASE("Negative input")
     {
