@@ -1,8 +1,10 @@
+#include <FileStream.h>
 #include <dc6.h>
 #include <fmt/format.h>
 
 using WorldStone::DC6;
 using WorldStone::Palette;
+using WorldStone::FileStream;
 
 int main(int argc, char* argv[])
 {
@@ -10,7 +12,7 @@ int main(int argc, char* argv[])
         Palette palette;
         palette.decode(argv[2]);
         DC6 dc6;
-        if (dc6.decode(argv[1])) {
+        if (dc6.initDecoder(std::make_unique<FileStream>(argv[1]))) {
             int frameIndex = 0;
             for (auto& frameHeader : dc6.getFameHeaders())
             {

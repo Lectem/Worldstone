@@ -1,5 +1,4 @@
-/// @internal
-/** @file dcc.cpp
+/**@file dcc.cpp
  * @author Lectem.
  * Thanks to Bilian Belchev and Paul Siramy for their DCC file format documentation, upon which this
  * decoder is hugely based
@@ -41,17 +40,7 @@ static constexpr readSignedPtrType readSignedPtrs[16] = {
     &BitStreamView::readSigned<DCC::bitsWidthTable[14]>,
     &BitStreamView::readSigned<DCC::bitsWidthTable[15]>};
 
-bool DCC::decode(const char* filename)
-{
-    assert(!stream);
-    stream = std::make_unique<FileStream>(filename);
-    if (stream && stream->good()) {
-        return extractHeaderAndOffsets();
-    }
-    return false;
-}
-
-bool DCC::decode(StreamPtr&& streamPtr)
+bool DCC::initDecoder(StreamPtr&& streamPtr)
 {
     assert(!stream);
     stream = std::move(streamPtr);
@@ -628,6 +617,8 @@ void decodeDirectionStage2(DirectionData& data, const Vector<PixelBufferEntry>& 
 } // anonymous namespace
 bool DCC::readDirection(Direction& outDir, uint32_t dirIndex, IImageProvider<uint8_t>& imgProvider)
 {
+    if (dirIndex >= header.directions) return false;
+
     const size_t    directionEncodedSize = getDirectionSize(dirIndex);
     Vector<uint8_t> buffer(directionEncodedSize);
     stream->seek(directionsOffsets[dirIndex], IStream::beg);
@@ -670,4 +661,3 @@ bool DCC::readDirection(Direction& outDir, uint32_t dirIndex, IImageProvider<uin
 
 } // namespace WorldStone
 
-/// @endinternal

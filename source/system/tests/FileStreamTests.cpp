@@ -13,7 +13,7 @@ using WorldStone::MpqArchive;
 using WorldStone::MpqFileStream;
 using WorldStone::StreamPtr;
 
-namespace test_helpers
+namespace
 {
 
 // We are not testing the MpqArchive here, just assume it works for some tests.
@@ -31,10 +31,10 @@ public:
     ~MpqFileWrapper() { close(); }
 };
 }
-typedef doctest::Types<WorldStone::FileStream, test_helpers::MpqFileWrapper> stream_types;
+typedef doctest::Types<WorldStone::FileStream, MpqFileWrapper> stream_types;
 
 TYPE_TO_STRING(WorldStone::FileStream);
-TYPE_TO_STRING(test_helpers::MpqFileWrapper);
+TYPE_TO_STRING(MpqFileWrapper);
 
 /// @testimpl{WorldStone::IStream,RO_filestreams}
 SCENARIO_TEMPLATE("Read-only filestreams", StreamType, stream_types)

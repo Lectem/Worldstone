@@ -131,19 +131,33 @@ protected:
 
     size_t getDirectionSize(uint32_t dirIndex);
 
-    //    void decodeDirectionStage2(const Direction& dir);
+    bool extractHeaderAndOffsets();
 
 public:
-    bool decode(const char* filename);
-    bool decode(StreamPtr&& streamPtr);
+    /**Start decoding the stream and preparing data.
+     * @return true on success
+     *
+     * Prepares the decoder to read the frames using @ref readDirection.
+     * Basically calls extractHeaderAndOffsets, so that you can call @ref getHeader.
+     */
+    bool initDecoder(StreamPtr&& streamPtr);
 
     /// Resets the decoder and frees resources
     void reset() { *this = DCC{}; }
 
-    bool extractHeaderAndOffsets();
-
+    /**Decodes a direction of the file into memory.
+     * @param outDir   Will hold the Direction information obtained during decoding.
+     * @param dirIndex The number of the direction in the file.
+     * @param imgProvider The image provider to be used when allocating frames data.
+     * @return true on success
+     *
+     * Use @ref getHeader and the @ref Header::directions member to know how many directions are in
+     * the file. The frames will be allocated+decoded in order, hence using the images allocated
+     * using the image provider will be in the order of the file.
+     */
     bool readDirection(Direction& outDir, uint32_t dirIndex, IImageProvider<uint8_t>& imgProvider);
 
+    /// Returns the header of the file read by extractHeaderAndOffsets
     const Header& getHeader() const { return header; }
 };
 } // namespace WorldStone

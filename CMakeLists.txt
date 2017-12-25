@@ -103,6 +103,8 @@ if(WS_USE_DOXYGEN AND ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} VERSION_GREA
             #testimpl{2}="@anchor	TEST_\2	@sa	\1"
             ;testimpl{2}="@anchor\tTEST_\\2\t@sa\t\\1"
         )
+        # Doxygen spits way too much of these warnings...
+        set(DOXYGEN_WARN_IF_UNDOCUMENTED NO)
         doxygen_add_docs(
             doc
             README.md source doc

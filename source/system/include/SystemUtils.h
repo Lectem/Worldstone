@@ -28,7 +28,7 @@ namespace Utils
  * We then reinterpret it as a 2's complement.
  * @tparam SignedResult Type of the result, must be signed.
  * @tparam NbBits The size in bits of value. Value must be between > 0.
- * @param value The original value, 2's complement on @ref NbBits bits.
+ * @param value The original value, 2's complement on @p NbBits bits.
  * @test{System,SignExtend}
  */
 template<typename SignedResult, unsigned NbBits, typename InputType>

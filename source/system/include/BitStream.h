@@ -25,7 +25,7 @@ namespace WorldStone
  * @note Does not inherit from @ref IStream to avoid confusion since size is in bits and not bytes.
  * Use @ref MemoryStream instead.
  * @warning As this class acts as a view, the buffer must outlive the usage of this class.
- * @todo Add some bounds checking and set io flags on error
+ * @todo Add some bounds checking and set io flags on error ?
  * @todo Implement a MemoryStream class
  * @test{System,RO_bitstream}
  */

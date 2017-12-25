@@ -7,7 +7,7 @@
 
 DC6Sprite::DC6Sprite(StreamPtr&& streamPtr)
 {
-    if (!dc6.decode(std::move(streamPtr))) {
+    if (!dc6.initDecoder(std::move(streamPtr))) {
         valid = false;
         return;
     }
@@ -55,7 +55,7 @@ ImageView<const uint8_t> DC6Sprite::getFrameImage(size_t dir, size_t frameIndex)
 
 DCCSprite::DCCSprite(StreamPtr&& streamPtr)
 {
-    if (!dcc.decode(std::move(streamPtr))) {
+    if (!dcc.initDecoder(std::move(streamPtr))) {
         valid = false;
         return;
     }

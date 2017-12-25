@@ -7,6 +7,7 @@
 #include "doctest.h"
 using WorldStone::DCC;
 using WorldStone::SimpleImageProvider;
+using WorldStone::FileStream;
 
 /**Try to decode BaalSpirit.dcc.
  * This is the DCC file with the biggest number of frames (but only 1 direction).
@@ -15,7 +16,7 @@ using WorldStone::SimpleImageProvider;
 TEST_CASE("DCC decoding BaalSpirit.dcc")
 {
     DCC dcc;
-    REQUIRE(dcc.decode("BaalSpirit.dcc"));
+    REQUIRE(dcc.initDecoder(std::make_unique<FileStream>("BaalSpirit.dcc")));
     // clang-format off
     const DCC::Header& header = dcc.getHeader();
 
@@ -59,7 +60,7 @@ TEST_CASE("DCC decoding BaalSpirit.dcc")
 TEST_CASE("DCC decoding CRHDBRVDTHTH.dcc")
 {
     DCC dcc;
-    REQUIRE(dcc.decode("CRHDBRVDTHTH.dcc"));
+    REQUIRE(dcc.initDecoder(std::make_unique<FileStream>("CRHDBRVDTHTH.dcc")));
     // clang-format off
     const DCC::Header& header = dcc.getHeader();
 
@@ -104,7 +105,7 @@ TEST_CASE("DCC decoding CRHDBRVDTHTH.dcc")
 TEST_CASE("DCC decoding BloodSmall01.dcc")
 {
     DCC dcc;
-    REQUIRE(dcc.decode("BloodSmall01.dcc"));
+    REQUIRE(dcc.initDecoder(std::make_unique<FileStream>("BloodSmall01.dcc")));
     // clang-format off
     const DCC::Header& header = dcc.getHeader();
 
@@ -148,7 +149,7 @@ TEST_CASE("DCC decoding BloodSmall01.dcc")
 TEST_CASE("DCC decoding HZTRLITA1HTH.dcc")
 {
     DCC dcc;
-    REQUIRE(dcc.decode("HZTRLITA1HTH.dcc"));
+    REQUIRE(dcc.initDecoder(std::make_unique<FileStream>("HZTRLITA1HTH.dcc")));
     // clang-format off
     const DCC::Header& header = dcc.getHeader();
 

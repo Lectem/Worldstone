@@ -12,17 +12,8 @@
 
 namespace WorldStone
 {
-bool DC6::decode(const char* filename)
-{
-    assert(!stream);
-    stream = std::make_unique<FileStream>(filename);
-    if (stream && stream->good()) {
-        return extractHeaders();
-    }
-    return false;
-}
 
-bool DC6::decode(StreamPtr&& streamPtr)
+bool DC6::initDecoder(StreamPtr&& streamPtr)
 {
     assert(!stream);
     stream = std::move(streamPtr);

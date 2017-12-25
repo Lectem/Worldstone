@@ -37,7 +37,7 @@ struct ImageView
     {
     }
 
-    /// Checks if the view seems to be valid
+    /// Checks if the view seems to be valid based on its characteristics
     bool isValid() const { return buffer && width && height && width <= stride; }
 
     bool operator==(const ImageView& rhs) const
@@ -51,11 +51,11 @@ struct ImageView
     operator ImageView<const Color>() const { return {buffer, width, height, stride}; }
 
     /**Create an ImageView that is contained by the current view.
-     * @param subWidth The width of the subview, must verify @code xOffset + subWidth <= width
-     * @endcode
-     * @param subHeight The height of the subview, must verify @code yOffset + subHeight > height
-     * @endcode
-     * @return A subview of given characteristics, or an invalid view if it is not contained by the
+     * @param xOffset   First column of the subview
+     * @param yOffset   First row of the subview
+     * @param subWidth  Number of columns, must verify @code xOffset + subWidth <= width @endcode
+     * @param subHeight Number of rows, must verify @code yOffset + subHeight > height @endcode
+     * @return A subview of given characteristics, or an invalid view if not contained by the
      * current one
      */
     ImageView subView(size_t xOffset, size_t yOffset, size_t subWidth, size_t subHeight) const
@@ -85,8 +85,10 @@ struct ImageView
     }
 
     /**Fills a part of the image.
-     * @param columns Number of pixels to fill per scanline
-     * @param rows Number of scanlines to fill
+     * @param x          First column to fill
+     * @param y          First row to fill
+     * @param columns    Number of pixels to fill per scanline
+     * @param rows       Number of scanlines to fill
      * @param colorValue The value to set every byte of the pixels to
      * @see fillBytes for a faster version when all the bytes have the same value
      */
@@ -104,8 +106,10 @@ struct ImageView
     }
 
     /**Fills a part of the image using a byte pattern
-     * @param columns Number of pixels to fill per scanline
-     * @param rows Number of scanlines to fill
+     * @param x         First column to fill
+     * @param y         First row to fill
+     * @param columns   Number of pixels to fill per scanline
+     * @param rows      Number of scanlines to fill
      * @param byteValue The value to set every byte of the pixels to
      */
     void fillBytes(size_t x, size_t y, size_t columns, size_t rows, uint8_t byteValue)
@@ -119,7 +123,7 @@ struct ImageView
     }
 };
 
-/**An interface of a class that can provide images views
+/**An interface of a class that can provide images views.
  * One example would be to reuse the same texture to store multiple images.
  */
 template<class Color>

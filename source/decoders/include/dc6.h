@@ -51,14 +51,20 @@ protected:
     std::vector<uint32_t>    framePointers;
     std::vector<FrameHeader> frameHeaders;
 
+    bool extractHeaders();
+
 public:
-    bool decode(const char* filename);
-    bool decode(StreamPtr&& streamPtr);
+    /**Start decoding the stream and preparing data.
+    * @return true on success
+    *
+    * Prepares the decoder to read the frames using @ref decompressFrame.
+    * Basically calls extractHeaders, so that you can call @ref getHeader and @ref getFameHeaders.
+    */
+    bool initDecoder(StreamPtr&& streamPtr);
 
     /// Resets the decoder and frees resources
     void reset() { *this = DC6{}; }
 
-    bool extractHeaders();
 
     const Header&                   getHeader() const { return header; }
     const std::vector<FrameHeader>& getFameHeaders() const { return frameHeaders; }
