@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
         DC6 dc6;
         if (dc6.initDecoder(std::make_unique<FileStream>(argv[1]))) {
             int frameIndex = 0;
-            for (auto& frameHeader : dc6.getFameHeaders())
+            for (auto& frameHeader : dc6.getFrameHeaders())
             {
                 fmt::print("\nframe index {}\n", frameIndex);
                 fmt::print("flip {}\n", frameHeader.flip);

@@ -58,7 +58,7 @@ public:
     * @return true on success
     *
     * Prepares the decoder to read the frames using @ref decompressFrame.
-    * Basically calls extractHeaders, so that you can call @ref getHeader and @ref getFameHeaders.
+    * Basically calls extractHeaders, so that you can call @ref getHeader and @ref getFrameHeaders.
     */
     bool initDecoder(StreamPtr&& streamPtr);
 
@@ -67,7 +67,7 @@ public:
 
 
     const Header&                   getHeader() const { return header; }
-    const std::vector<FrameHeader>& getFameHeaders() const { return frameHeaders; }
+    const std::vector<FrameHeader>& getFrameHeaders() const { return frameHeaders; }
 
     /**Decompress the given frame.
      * @param frameNumber The frame number in the file

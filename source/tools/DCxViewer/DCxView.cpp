@@ -31,7 +31,7 @@ DC6Sprite::DC6Sprite(StreamPtr&& streamPtr)
 QString DC6Sprite::getFrameHeaderDesc(size_t dir, size_t frameIndex) const
 {
     const size_t            dc6FrameIndex = dir * dc6.getHeader().framesPerDir + frameIndex;
-    const DC6::FrameHeader& frameHeader   = dc6.getFameHeaders()[dc6FrameIndex];
+    const DC6::FrameHeader& frameHeader   = dc6.getFrameHeaders()[dc6FrameIndex];
     const QString           qstr          = QString::fromStdString(
         fmt::format("<table>"
                     "<tr><td>size:     </td> <td>{}x{}</td></tr>"
@@ -48,7 +48,7 @@ QString DC6Sprite::getFrameHeaderDesc(size_t dir, size_t frameIndex) const
 ImageView<const uint8_t> DC6Sprite::getFrameImage(size_t dir, size_t frameIndex) const
 {
     const size_t            dc6FrameIndex = dir * dc6.getHeader().framesPerDir + frameIndex;
-    const DC6::FrameHeader& frameHeader   = dc6.getFameHeaders()[dc6FrameIndex];
+    const DC6::FrameHeader& frameHeader   = dc6.getFrameHeaders()[dc6FrameIndex];
     return {framesImages[dc6FrameIndex].data(), size_t(frameHeader.width),
             size_t(frameHeader.height), size_t(frameHeader.width)};
 }
