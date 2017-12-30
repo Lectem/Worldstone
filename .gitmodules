@@ -10,3 +10,6 @@
 [submodule "external/doctest"]
 	path = external/doctest
 	url = https://github.com/onqtam/doctest.git
+[submodule "external/bgfx.cmake"]
+	path = external/bgfx.cmake
+	url = https://github.com/Lectem/bgfx.cmake.git

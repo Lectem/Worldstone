@@ -29,7 +29,7 @@ Work is progressing slowly. While not reflected in the repo, a lot of documentat
   
 ### Copy-paste from command line (in the project directory):
 
-    git submodule update --init
+    git submodule update --init --recursive
     mkdir build && cd build
     cmake ..
     cmake --build .

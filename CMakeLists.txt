@@ -31,6 +31,7 @@ include(Coverage)
 ##  OPTIONS  ##
 ###############
 
+option(WS_WITH_BGFX "Build target that require bgfx" ON)
 option(WS_USE_DOXYGEN "Add a doxygen target to generate the documentation" ON)
 
 # Use our own option for tests, in case people use our libraries through add_subdirectory
