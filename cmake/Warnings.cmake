@@ -46,16 +46,17 @@ function(target_set_warnings)
         #list(APPEND WarningFlags "/wd4514" "/wd4710" "/wd4711")
         #list(APPEND WarningFlags "/wd4365") #signed/unsigned mismatch
         #list(APPEND WarningFlags "/wd4668") # is not defined as a preprocessor macro, replacing with '0' for
-      elseif(WGCC)
-        list(APPEND WarningFlags -Wno-switch-enum)
-      elseif(WCLANG)
-        list(APPEND WarningFlags -Wno-unknown-warning-option -Wno-padded -Wno-undef -Wno-reserved-id-macro -fcomment-block-commands=test,retval)
-        if(NOT CMAKE_CXX_STANDARD EQUAL 98)
-            list(APPEND WarningFlags -Wno-c++98-compat -Wno-c++98-compat-pedantic)
-        endif()
-        if ("${CMAKE_CXX_SIMULATE_ID}" STREQUAL "MSVC") # clang-cl has some VCC flags by default that it will not recognize...
-            list(APPEND WarningFlags -Wno-unused-command-line-argument)
-        endif()
+      elseif(WGCC OR WCLANG)
+        list(APPEND WarningFlags -Wno-switch-enum -Wno-old-style-cast)
+        if(WCLANG)
+          list(APPEND WarningFlags -Wno-unknown-warning-option -Wno-padded -Wno-undef -Wno-reserved-id-macro -fcomment-block-commands=test,retval)
+          if(NOT CMAKE_CXX_STANDARD EQUAL 98)
+              list(APPEND WarningFlags -Wno-c++98-compat -Wno-c++98-compat-pedantic)
+          endif()
+          if ("${CMAKE_CXX_SIMULATE_ID}" STREQUAL "MSVC") # clang-cl has some VCC flags by default that it will not recognize...
+              list(APPEND WarningFlags -Wno-unused-command-line-argument)
+          endif()
+        endif(WCLANG)
       endif()
     endif()
 
