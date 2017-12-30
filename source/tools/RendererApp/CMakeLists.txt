@@ -1,5 +1,9 @@
 project(RendererApp)
 
+if(NOT WS_WITH_BGFX)
+    return()
+endif()
+
 find_package(SDL2)
 
 if(NOT TARGET SDL2::SDL2)
@@ -9,8 +13,10 @@ else()
     message(STATUS "Found SDL2 at ${SDL2_LIBRARY_DIR}, building RendererApp.")
 endif()
 
-set(SRC_LIST main.cpp)
-set(HDR_LIST main.h)
+add_subdirectory(imgui)
+
+set(SRC_LIST main.cpp BaseApp.cpp RendererApp.cpp)
+set(HDR_LIST main.h BaseApp.h RendererApp.h Inputs.h)
 
 add_executable(RendererApp WIN32 ${SRC_LIST} ${HDR_LIST})
 target_link_libraries(RendererApp
@@ -18,6 +24,8 @@ target_link_libraries(RendererApp
         WS::system
         WS::decoders
         SDL2::SDL2
+        external::bgfx
+        bgfx::imgui
 )
 
 target_enable_lto(RendererApp optimized)

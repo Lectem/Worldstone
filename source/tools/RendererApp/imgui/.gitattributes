@@ -1,0 +1,4 @@
+# Mark all generated headers as binary
+
+*.bin.h binary
+*.ttf.h binary
