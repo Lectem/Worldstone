@@ -28,6 +28,9 @@ IncludeCategories:
 PointerAlignment: Left
 PenaltyExcessCharacter: 200 # for doxygen inline comments (or it would break before the member name) should be enough for the rest
 AllowShortFunctionsOnASingleLine: All
+BreakBeforeBinaryOperators: NonAssignment
+# While surprising at first, this is good when you want to comment or ifdef something
+BreakConstructorInitializersBeforeComma: true
 
 # Unchanged
 
@@ -54,9 +57,7 @@ BraceWrapping:
   BeforeCatch:     false
   BeforeElse:      false
   IndentBraces:    false
-BreakBeforeBinaryOperators: None
 BreakBeforeTernaryOperators: true
-BreakConstructorInitializersBeforeComma: false
 BreakAfterJavaFieldAnnotations: false
 BreakStringLiterals: true
 Cpp11BracedListStyle: true
