@@ -5,7 +5,7 @@ set(CTEST_BINARY_DIRECTORY "./buildCI")
 
 set(CTEST_CMAKE_GENERATOR "Unix Makefiles")
 #set(CTEST_USE_LAUNCHERS 1)
-set(CTEST_PROJECT_NAME "CPP-BoilerPlate")
+
 set(CTEST_BUILD_CONFIGURATION "Coverage") # Only works for multi-config generators
 
 if(NOT "$ENV{GCOV}" STREQUAL "")
@@ -29,7 +29,13 @@ if(RET_VAL_TEST)
     message(FATAL_ERROR "Some tests failed !")
 endif()
 if(CTEST_COVERAGE_COMMAND)
-    ctest_coverage()
+    # There's no way to exclude files/directories from being ran with gcov,
+    # as it can fail and it is not important since coverage will work,
+    # just output a message instead of failing
+    ctest_coverage(CAPTURE_CMAKE_ERROR RET_VAL_COV)
+    if(RET_VAL_COV)
+        message(STATUS "Coverage returned ${RET_VAL_COV}")
+    endif()
 else()
     message(WARNING "GCov not found, not running coverage")
 endif()
