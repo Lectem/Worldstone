@@ -34,7 +34,7 @@ add_library(external::storm ALIAS storm)
 set_target_properties(fmt storm PROPERTIES FOLDER "external")
 
 if(WS_WITH_BGFX)
-    option( BGFX_BUILD_TOOLS      "Build bgfx tools."                             OFF )
+    option( BGFX_BUILD_TOOLS      "Build bgfx tools."                             ON  )
     option( BGFX_BUILD_EXAMPLES   "Build bgfx examples."                          OFF )
     option( BGFX_INSTALL          "Create installation target."                   OFF )
     option( BGFX_INSTALL_EXAMPLES "Install examples and their runtimes."          OFF )
