@@ -1,5 +1,8 @@
 #include "RendererApp.h"
+#include <FileStream.h>
 #include <bgfx/bgfx.h>
+#include <dcc.h>
+#include "DrawSprite.h"
 #include "imgui/imgui_bgfx.h"
 
 bool RendererApp::initAppThread()
@@ -7,11 +10,25 @@ bool RendererApp::initAppThread()
     if (!BaseApp::initAppThread()) return false;
 
     imguiCreate(imguiAllocator);
+    using WorldStone::DCC;
+    DCC testDCC;
+    testDCC.initDecoder(std::make_unique<WorldStone::FileStream>("sprites/CRHDBRVDTHTH.dcc"));
+    DCC::Direction                           firstDir;
+    WorldStone::SimpleImageProvider<uint8_t> imageprovider;
+    testDCC.readDirection(firstDir, 0, imageprovider);
+    const auto&         firstFrame = firstDir.frameHeaders[0];
+    WorldStone::Palette pal;
+    pal.decode("palettes/pal.dat");
+    assert(pal.isValid());
+    static_assert(sizeof(WorldStone::Palette::Color) == 3, "");
+    DrawSprite::init({uint16_t(firstFrame.width), uint16_t(firstFrame.height),
+                      imageprovider.getImage(0).buffer, (const uint8_t*)pal.colors.data()});
     return true;
 }
 
 void RendererApp::shutdownAppThread()
 {
+    DrawSprite::shutdown();
     imguiDestroy();
     BaseApp::shutdownAppThread();
 }
@@ -72,6 +89,8 @@ void RendererApp::executeAppLoopOnce()
     // This dummy draw call is here to make sure that view 0 is cleared
     // if no other draw calls are submitted to view 0.
     bgfx::touch(0);
+
+    DrawSprite::draw(windowWidth, windowHeight);
 
     // Advance to next frame. Rendering thread will be kicked to
     // process submitted rendering primitives.

@@ -15,10 +15,59 @@ endif()
 
 add_subdirectory(imgui)
 
-set(SRC_LIST main.cpp BaseApp.cpp RendererApp.cpp)
-set(HDR_LIST main.h BaseApp.h RendererApp.h Inputs.h)
+set(RendererAppWorkDir ${CMAKE_CURRENT_LIST_DIR}/workingDirectory)
+set(ShaderBinariesDir ${RendererAppWorkDir}/shaders)
 
-add_executable(RendererApp WIN32 ${SRC_LIST} ${HDR_LIST})
+set(SRC_LIST
+    main.cpp
+    BaseApp.cpp
+    RendererApp.cpp
+    bgfxUtils.cpp
+    DrawSprite.cpp
+)
+set(HDR_LIST
+    main.h
+    BaseApp.h
+    RendererApp.h
+    Inputs.h
+    bgfxUtils.h
+    DrawSprite.h
+)
+
+set(SHADERS_LIST
+    shaders/vs_sprite.sc
+    shaders/fs_sprite.sc
+)
+
+if( MSVC )
+    set( SHADER_PLATFORMS dx11 glsl)
+elseif( APPLE )
+    set( SHADER_PLATFORMS glsl ) #metal)
+else()
+    set( SHADER_PLATFORMS glsl )
+endif()
+
+foreach(SHADER ${SHADERS_LIST})
+    if(${SHADER} MATCHES "vs_.*")
+        set(SHADER_TYPE VERTEX)
+    elseif(${SHADER} MATCHES "fs_.*")
+        set(SHADER_TYPE FRAGMENT)
+    else()
+        message(FATAL_ERROR "Unsupported shader name")
+    endif()
+    add_shader(${SHADER} ${SHADER_TYPE}
+        OUTPUT ${ShaderBinariesDir}
+        PLATFORMS ${SHADER_PLATFORMS}
+        GLSL_VERSION 130
+    )
+endforeach()
+
+add_executable(RendererApp
+    WIN32
+    ${SRC_LIST}
+    ${HDR_LIST}
+    ${SHADERS_LIST}
+)
 target_link_libraries(RendererApp
     PUBLIC
         WS::system
@@ -26,6 +75,10 @@ target_link_libraries(RendererApp
         SDL2::SDL2
         external::bgfx
         bgfx::imgui
+)
+
+set_target_properties(RendererApp PROPERTIES
+    VS_DEBUGGER_WORKING_DIRECTORY ${RendererAppWorkDir}
 )
 
 target_enable_lto(RendererApp optimized)
