@@ -28,7 +28,7 @@ namespace bx { struct AllocatorI; }
 void imguiCreate(bx::AllocatorI& _allocator, float _fontSize = 18.0f);
 void imguiDestroy();
 
-void imguiBeginFrame(int32_t _mx, int32_t _my, uint8_t _button, float _scroll, uint16_t _width, uint16_t _height, char _inputChar = 0, bgfx::ViewId _view = 255);
+void imguiBeginFrame(int32_t _mx, int32_t _my, uint8_t _button, uint16_t _width, uint16_t _height, char _inputChar = 0, bgfx::ViewId _view = 255);
 void imguiEndFrame();
 
 namespace entry { class AppI; }

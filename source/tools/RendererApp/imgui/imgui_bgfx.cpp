@@ -212,7 +212,6 @@ struct OcornutImguiContext
 		m_allocator = &_allocator;
 
 		m_viewId = 255;
-		m_lastScroll = 0;
 		m_last = bx::getHPCounter();
 
 		ImGuiIO& io = ImGui::GetIO();
@@ -343,7 +342,6 @@ struct OcornutImguiContext
 		  int32_t _mx
 		, int32_t _my
 		, uint8_t _button
-		, float _scroll
 		, int _width
 		, int _height
 		, char _inputChar
@@ -371,7 +369,6 @@ struct OcornutImguiContext
 		io.MouseDown[0] = 0 != (_button & IMGUI_MBUT_LEFT);
 		io.MouseDown[1] = 0 != (_button & IMGUI_MBUT_RIGHT);
 		io.MouseDown[2] = 0 != (_button & IMGUI_MBUT_MIDDLE);
-		io.MouseWheel = _scroll;
 
 #if defined(SCI_NAMESPACE)
 		uint8_t modifiers = inputGetModifiersState();
@@ -407,7 +404,6 @@ struct OcornutImguiContext
 	bgfx::UniformHandle u_imageLodEnabled;
 	ImFont* m_font[ImGui::Font::Count];
 	int64_t m_last;
-	int32_t m_lastScroll;
 	bgfx::ViewId m_viewId;
 };
 
@@ -441,9 +437,9 @@ void imguiDestroy()
 	s_ctx.destroy();
 }
 
-void imguiBeginFrame(int32_t _mx, int32_t _my, uint8_t _button, float _scroll, uint16_t _width, uint16_t _height, char _inputChar, bgfx::ViewId _viewId)
+void imguiBeginFrame(int32_t _mx, int32_t _my, uint8_t _button, uint16_t _width, uint16_t _height, char _inputChar, bgfx::ViewId _viewId)
 {
-	s_ctx.beginFrame(_mx, _my, _button, _scroll, _width, _height, _inputChar, _viewId);
+	s_ctx.beginFrame(_mx, _my, _button, _width, _height, _inputChar, _viewId);
 }
 
 void imguiEndFrame()
