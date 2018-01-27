@@ -177,7 +177,10 @@ void BaseApp::run()
 
 void BaseApp::runAppThread()
 {
-    if (!initAppThread()) return;
+    if (!initAppThread()) {
+        requireExit();
+        return;
+    }
     while (!stopRunning)
     {
         executeAppLoopOnce();
