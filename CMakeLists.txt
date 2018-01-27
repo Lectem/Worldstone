@@ -94,6 +94,7 @@ if(WS_USE_DOXYGEN AND ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} VERSION_GREA
         set(DOXYGEN_MACRO_EXPANSION YES)
         set(DOXYGEN_EXPAND_ONLY_PREDEF YES)
         set(DOXYGEN_PREDEFINED [[TYPE_TO_STRING(x)=""]])
+        list(APPEND DOXYGEN_EXCLUDE source/tools/RendererApp/imgui)
         # Custom commands
         # The following will expand to
         set(DOXYGEN_ALIASES
