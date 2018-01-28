@@ -70,11 +70,12 @@ void RendererApp::executeAppLoopOnce()
         {
         case SDL_QUIT: requireExit(); break;
         case SDL_KEYDOWN:
-        case SDL_KEYUP:
-        {
             if (event.key.keysym.sym == SDLK_F1) {
                 showBgfxStats = !showBgfxStats;
             }
+            // FALLTHROUGH
+        case SDL_KEYUP:
+        {
             int key               = event.key.keysym.sym & ~SDLK_SCANCODE_MASK;
             imguiIO.KeysDown[key] = (event.type == SDL_KEYDOWN);
             imguiIO.KeyShift      = ((SDL_GetModState() & KMOD_SHIFT) != 0);
