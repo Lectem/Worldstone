@@ -33,6 +33,9 @@ bool RendererApp::initAppThread()
     io.KeyMap[ImGuiKey_Y]          = SDLK_y;
     io.KeyMap[ImGuiKey_Z]          = SDLK_z;
 
+    io.SetClipboardTextFn = [](void*, const char* text) { SDL_SetClipboardText(text); };
+    io.GetClipboardTextFn = [](void*) -> const char* { return SDL_GetClipboardText(); };
+
     using WorldStone::DCC;
     DCC testDCC;
     testDCC.initDecoder(std::make_unique<WorldStone::FileStream>("sprites/CRHDBRVDTHTH.dcc"));
