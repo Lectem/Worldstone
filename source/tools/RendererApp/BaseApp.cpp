@@ -1,13 +1,22 @@
 #include "BaseApp.h"
+#include <bx/macros.h>
 
+BX_PRAGMA_DIAGNOSTIC_PUSH()
+// Caused by winnt.h
+BX_PRAGMA_DIAGNOSTIC_IGNORED_MSVC(4121) // warning C4121:
+                                        // 'JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V2':
+                                        // alignment of a member was sensitive to packing
 #include <SDL.h>
 #include <SDL_syswm.h>
 #include <bgfx/platform.h>
+BX_PRAGMA_DIAGNOSTIC_POP()
 // List of stupid defines from Xlib.h, included by SDL_syswm
 #undef False
 #undef True
 #undef None
 #undef Status
+
+
 #include <thread>
 
 int BaseApp::init()

@@ -81,13 +81,11 @@ static FontRangeMerge s_fontRangeMerge[] =
 	{ s_iconsFontAwesomeTtf, sizeof(s_iconsFontAwesomeTtf), { ICON_MIN_FA, ICON_MAX_FA, 0 } },
 };
 
-static void* memAlloc(size_t _size);
-static void memFree(void* _ptr);
+static void* memAlloc(size_t _size, void* _userData);
+static void memFree(void* _ptr, void* _userData);
 
 struct OcornutImguiContext
 {
-	static void renderDrawLists(ImDrawData* _drawData);
-
 	void render(ImDrawData* _drawData)
 	{
 		const ImGuiIO& io = ImGui::GetIO();
@@ -160,8 +158,8 @@ struct OcornutImguiContext
 				else if (0 != cmd->ElemCount)
 				{
 					uint64_t state = 0
-						| BGFX_STATE_RGB_WRITE
-						| BGFX_STATE_ALPHA_WRITE
+						| BGFX_STATE_WRITE_RGB
+						| BGFX_STATE_WRITE_A
 						| BGFX_STATE_MSAA
 						;
 
@@ -214,10 +212,11 @@ struct OcornutImguiContext
 		m_viewId = 255;
 		m_last = bx::getHPCounter();
 
+		ImGui::SetAllocatorFunctions(memAlloc, memFree, NULL);
+
+		m_imgui = ImGui::CreateContext();
+
 		ImGuiIO& io = ImGui::GetIO();
-		io.RenderDrawListsFn = renderDrawLists;
-		io.MemAllocFn = memAlloc;
-		io.MemFreeFn  = memFree;
 
 		io.DisplaySize = ImVec2(1280.0f, 720.0f);
 		io.DeltaTime   = 1.0f / 60.0f;
@@ -309,7 +308,7 @@ struct OcornutImguiContext
 	void destroy()
 	{
 		ImGui::ShutdownDockContext();
-		ImGui::Shutdown();
+		ImGui::DestroyContext(m_imgui);
 
 		bgfx::destroy(s_tex);
 		bgfx::destroy(m_texture);
@@ -335,7 +334,8 @@ struct OcornutImguiContext
 			ImGui::StyleColorsLight(&style);
 		}
 
-		style.FrameRounding = 4.0f;
+		style.FrameRounding    = 4.0f;
+		style.WindowBorderSize = 0.0f;
 	}
 
 	void beginFrame(
@@ -393,8 +393,10 @@ struct OcornutImguiContext
 	{
 		ImGui::PopStyleVar(1);
 		ImGui::Render();
+		render(ImGui::GetDrawData() );
 	}
 
+	ImGuiContext*       m_imgui;
 	bx::AllocatorI*     m_allocator;
 	bgfx::VertexDecl    m_decl;
 	bgfx::ProgramHandle m_program;
@@ -412,19 +414,16 @@ BX_PRAGMA_DIAGNOSTIC_IGNORED_CLANG("-Wglobal-constructors")
 static OcornutImguiContext s_ctx;
 BX_PRAGMA_DIAGNOSTIC_POP()
 
-static void* memAlloc(size_t _size)
+static void* memAlloc(size_t _size, void* _userData)
 {
+	BX_UNUSED(_userData);
 	return BX_ALLOC(s_ctx.m_allocator, _size);
 }
 
-static void memFree(void* _ptr)
+static void memFree(void* _ptr, void* _userData)
 {
+	BX_UNUSED(_userData);
 	BX_FREE(s_ctx.m_allocator, _ptr);
-}
-
-void OcornutImguiContext::renderDrawLists(ImDrawData* _drawData)
-{
-	s_ctx.render(_drawData);
 }
 
 void imguiCreate(bx::AllocatorI& _allocator, float _fontSize)
@@ -463,8 +462,8 @@ BX_PRAGMA_DIAGNOSTIC_IGNORED_CLANG_GCC("-Wunused-parameter")
 BX_PRAGMA_DIAGNOSTIC_IGNORED_CLANG_GCC("-Wunused-but-set-variable") // warning: variable ‘L1’ set but not used
 BX_PRAGMA_DIAGNOSTIC_IGNORED_CLANG_GCC("-Wunused-function") // warning: ‘int rect_width_compare(const void*, const void*)’ defined but not used
 BX_PRAGMA_DIAGNOSTIC_IGNORED_CLANG_GCC("-Wtype-limits") // warning: comparison is always true due to limited range of data type
-#define STBTT_malloc(_size, _userData) memAlloc(_size)
-#define STBTT_free(_ptr, _userData) memFree(_ptr)
+#define STBTT_malloc(_size, _userData) memAlloc(_size,nullptr)
+#define STBTT_free(_ptr, _userData) memFree(_ptr,nullptr)
 #define STB_RECT_PACK_IMPLEMENTATION
 #include <stb/stb_rect_pack.h>
 #define STB_TRUETYPE_IMPLEMENTATION
