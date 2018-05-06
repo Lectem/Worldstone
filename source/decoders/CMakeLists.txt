@@ -1,6 +1,7 @@
 project(decoders)
 
 set(DECODERS_SOURCES
+    src/cof.cpp
     src/dc6.cpp
     src/dcc.cpp
     src/palette.cpp
@@ -9,6 +10,7 @@ set(DECODERS_SOURCES
 
 set(DECODERS_HEADERS
     include/AABB.h
+    include/cof.h
     include/dc6.h
     include/dcc.h
     include/ImageView.h
