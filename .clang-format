@@ -31,6 +31,8 @@ AllowShortFunctionsOnASingleLine: All
 BreakBeforeBinaryOperators: NonAssignment
 # While surprising at first, this is good when you want to comment or ifdef something
 BreakConstructorInitializersBeforeComma: true
+# Will be available in clang-format v6
+#IndentPPDirectives: AfterHash
 
 # Unchanged
 
