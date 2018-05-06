@@ -14,6 +14,7 @@
 
 namespace WorldStone
 {
+// clang-format off
 /**
  * @brief Decoder for the DCC image format
  *
@@ -24,11 +25,26 @@ namespace WorldStone
  *
  * This format is usually used with COF files, which describe the animations and blending of
  * multiple DCC files.
+ *
+ * Layout of a DC6 file:
+ * | Name                       | Type                         | Size in bytes                               | Offsets                   |
+ * | -------------------------- | ---------------------------- | ------------------------------------------- | ------------------------- |
+ * | header                     | DC6::Header                  | 24                                          | 0x00                      |
+ * | framePointers              | uint32_t[dirs][framesPerDir] | 4 * header.directions * header.framesPerDir | 0x18                      |
+ * | frameHeader[0]             | DC6::FrameHeader             | 32                                          | framePointers[0]          |
+ * | frameData[0]               | uint8_t[frameHeader.length]  | frameHeader[0].length                       | ^                         |
+ * | termination[0]             | uint8_t[3]                   | 3                                           | ^                         |
+ * | ... other frames ...       ||||
+ * | frameHeader[totalFrames-1] | DC6::FrameHeader             | 32                                          | framePointers[nbFrames-1] |
+ * | frameData[totalFrames-1]   | uint8_t[frameHeader.length]  | frameHeader[nbFrames-1].length              | ^                         |
+ * | termination[totalFrames-1] | uint8_t[3]                   | 3                                           | ^                         |
+ *
  * @test{Decoders,DCC_BaalSpirit}
  * @test{Decoders,DCC_CRHDBRVDTHTH}
  * @test{Decoders,DCC_BloodSmall01}
  * @test{Decoders,DCC_HZTRLITA1HTH}
  */
+// clang-format on
 class DCC
 {
     using Extents = AABB<int32_t>;
@@ -97,7 +113,7 @@ public:
     {
         ///@name Values in file
         ///@{
-        DirectionHeader header;
+        DirectionHeader     header;
         Vector<FrameHeader> frameHeaders;
         ///@}
 

@@ -12,13 +12,14 @@ DC6Sprite::DC6Sprite(StreamPtr&& streamPtr)
         return;
     }
     const DC6::Header& header = dc6.getHeader();
-    headerDesc                = QString::fromStdString(
-        fmt::format("<table>"
-                    "<tr><td>Version:       </td> <td>{}.{}</td></tr>"
-                    "<tr><td>Directions:    </td> <td>{}   </td></tr>"
-                    "<tr><td>Frames per dir:</td> <td>{}   </td></tr>"
-                    "</table>",
-                    header.version, header.subVersion, header.directions, header.framesPerDir));
+    headerDesc                = QString::fromStdString(fmt::format("<table>"
+                                                    "<tr><td>Version:       </td> <td>{}</td></tr>"
+                                                    "<tr><td>Flags:         </td> <td>{}</td></tr>"
+                                                    "<tr><td>Directions:    </td> <td>{}</td></tr>"
+                                                    "<tr><td>Frames per dir:</td> <td>{}</td></tr>"
+                                                    "</table>",
+                                                    header.version, header.flags, header.directions,
+                                                    header.framesPerDir));
 
     const size_t totalNbFrames = header.framesPerDir * header.directions;
     for (size_t frameIndex = 0; frameIndex < totalNbFrames; frameIndex++)
@@ -107,16 +108,16 @@ ImageView<const uint8_t> DCCSprite::getFrameImage(size_t dir, size_t frameIndex)
 }
 
 DCxView::DCxView(QWidget* parent, Qt::WindowFlags flags)
-    : QWidget(parent, flags),
-      paletteSelector(new QListWidget(this)),
-      headerInfo(new QLabel(this)),
-      frameInfo(new QLabel(this)),
-      frameHeaderInfo(new QLabel(this)),
-      image(new QLabel(this)),
-      frameSpinBox(new QSpinBox(this)),
-      directionSpinBox(new QSpinBox(this)),
-      animationTimer(new QTimer(this)),
-      framerateSlider(new QSlider(Qt::Horizontal, this))
+    : QWidget(parent, flags)
+    , paletteSelector(new QListWidget(this))
+    , headerInfo(new QLabel(this))
+    , frameInfo(new QLabel(this))
+    , frameHeaderInfo(new QLabel(this))
+    , image(new QLabel(this))
+    , frameSpinBox(new QSpinBox(this))
+    , directionSpinBox(new QSpinBox(this))
+    , animationTimer(new QTimer(this))
+    , framerateSlider(new QSlider(Qt::Horizontal, this))
 {
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addWidget(headerInfo);
@@ -232,8 +233,8 @@ void DCxView::refreshFrame()
     if (currentDCx) {
         image->show();
         frameHeaderInfo->show();
-        int   dir          = directionSpinBox->value();
-        int   frameInDir   = frameSpinBox->value();
+        int dir        = directionSpinBox->value();
+        int frameInDir = frameSpinBox->value();
 
         if (!animationTimer->isActive()) {
             frameHeaderInfo->setText(currentDCx->getFrameHeaderDesc(dir, frameInDir));

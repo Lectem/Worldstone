@@ -9,6 +9,7 @@
 
 namespace WorldStone
 {
+// clang-format off
 /**
  * @brief Decoder for the DC6 image format
  *
@@ -19,30 +20,52 @@ namespace WorldStone
  *
  * This format is mostly used for menu, items but also for some monsters (eg:Mephisto)
  * This is an update of diablo 1 Cel format
+ *
+ * Layout of a DC6 file:
+ * | Name                       | Type                         | Size in bytes                               | Offsets                   |
+ * | -------------------------- | ---------------------------- | ------------------------------------------- | ------------------------- |
+ * | header                     | DC6::Header                  | 24                                          | 0x00                      |
+ * | framePointers              | uint32_t[dirs][framesPerDir] | 4 * header.directions * header.framesPerDir | 0x18                      |
+ * | frameHeader[0]             | DC6::FrameHeader             | 32                                          | framePointers[0]          |
+ * | frameData[0]               | uint8_t[frameHeader.length]  | frameHeader[0].length                       | ^                         |
+ * | termination[0]             | uint8_t[3]                   | 3                                           | ^                         |
+ * | ... other frames ...       ||||
+ * | frameHeader[totalFrames-1] | DC6::FrameHeader             | 32                                          | framePointers[nbFrames-1] |
+ * | frameData[totalFrames-1]   | uint8_t[frameHeader.length]  | frameHeader[nbFrames-1].length              | ^                         |
+ * | termination[totalFrames-1] | uint8_t[3]                   | 3                                           | ^                         |
+ *
  */
+// clang-format on
 class DC6
 {
 public:
+    enum Flags
+    {
+        IsSerialized = 1 << 0, ///< Always set for files
+        IsLoadedInHW = 1 << 1, ///< Used by the game to know if the file was loaded in the renderer
+        Is24Bits = 1 << 2, ///< Used internally by the game for 24 to 8 bits per color conversion
+    };
+
     struct Header
     {
         int32_t  version;        ///< DC6 major version, usually 6
-        int32_t  subVersion;     ///< DC6 minor version, usually 1
-        int32_t  zeros;          ///< Always 0 ? might be micro version or encoding
-        uint8_t  termination[4]; ///< Always 0xEEEEEEEE or 0xCDCDCDCD
+        int32_t  flags;          ///< @ref DC6::Flags
+        int32_t  format;         ///< Always 0 in the game files. 0=indexed 2=24bits
+        uint8_t  termination[4]; ///< Three of those bytes are appended at the end of the file.
         uint32_t directions;     ///< Number of directions in this file
         uint32_t framesPerDir;   ///< Number of frames for each direction
     };
 
     struct FrameHeader
     {
-        int32_t flip;     ///< Default (false) means scanlines are from bottom to top
-        int32_t width;    ///< Width in pixels
-        int32_t height;   ///< Height in pixels
-        int32_t offsetX;  ///< Horizontal offset for left edge of the frame
-        int32_t offsetY;  ///< Vertical offset for bottom(top if flipped) edge of the frame.
-        int32_t zeros;
-        int32_t nextBlock;  ///< Pointer to the next frame
-        int32_t length;     ///< Length of the frame in chunks
+        int32_t  flip;      ///< Default (false) means scanlines are from bottom to top
+        int32_t  width;     ///< Width in pixels
+        int32_t  height;    ///< Height in pixels
+        int32_t  offsetX;   ///< Horizontal offset for left edge of the frame
+        int32_t  offsetY;   ///< Vertical offset for bottom(top if flipped) edge of the frame.
+        int32_t  allocSize; ///< Used by the game as a slot to store the data size. 0 in the files.
+        int32_t  nextBlock; ///< Pointer to the next frame
+        uint32_t length;    ///< Length of the frame in chunks
     };
 
 protected:
@@ -55,16 +78,15 @@ protected:
 
 public:
     /**Start decoding the stream and preparing data.
-    * @return true on success
-    *
-    * Prepares the decoder to read the frames using @ref decompressFrame.
-    * Basically calls extractHeaders, so that you can call @ref getHeader and @ref getFrameHeaders.
-    */
+     * @return true on success
+     *
+     * Prepares the decoder to read the frames using @ref decompressFrame.
+     * Basically calls extractHeaders, so that you can call @ref getHeader and @ref getFrameHeaders.
+     */
     bool initDecoder(StreamPtr&& streamPtr);
 
     /// Resets the decoder and frees resources
     void reset() { *this = DC6{}; }
-
 
     const Header&                   getHeader() const { return header; }
     const std::vector<FrameHeader>& getFrameHeaders() const { return frameHeaders; }
@@ -75,7 +97,7 @@ public:
      */
     std::vector<uint8_t> decompressFrame(size_t frameNumber) const;
     /**Same as @ref decompressFrame but will output the data in a given buffer
-     * @warning: asserts on failure
+     * @warning: can assert or throw on failure
      */
     void decompressFrameIn(size_t frameNumber, uint8_t* data) const;
 

@@ -4,7 +4,7 @@
  */
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <dcc.h>
-#include "doctest.h"
+#include <doctest.h>
 using WorldStone::DCC;
 using WorldStone::SimpleImageProvider;
 using WorldStone::FileStream;

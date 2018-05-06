@@ -74,13 +74,13 @@ void DC6::decompressFrameIn(size_t frameNumber, uint8_t* data) const
 
     // We're reading it bottom to top, but save data with the y axis from top to
     // bottom
-    int x = 0, y = fHeader.height - 1;
-    int rawIndex = 0;
+    int    x = 0, y = fHeader.height - 1;
+    size_t rawIndex = 0;
     while (rawIndex < fHeader.length)
     {
         int val = stream->getc();
         rawIndex++;
-        if (val == EOF) throw;
+        if (stream->eof()) throw;
         uint8_t chunkSize = static_cast<uint8_t>(val);
         if (chunkSize == 0x80) // end of line
         {
@@ -94,14 +94,10 @@ void DC6::decompressFrameIn(size_t frameNumber, uint8_t* data) const
         else // chunkSize is the number of colors to read
         {
             assert(chunkSize + x <= fHeader.width);
-            for (int i = 0; i < chunkSize; i++, x++)
-            {
-                int color = stream->getc();
-                rawIndex++;
-                if (color == EOF) throw;
-                assert(x >= 0 && y >= 0 && x + fHeader.width * y < fHeader.width * fHeader.height);
-                data[static_cast<size_t>(x + fHeader.width * y)] = static_cast<uint8_t>(color);
-            }
+            stream->read(data + x + fHeader.width * y, chunkSize);
+            rawIndex += chunkSize;
+            x += chunkSize;
+            if (stream->eof()) throw;
         }
     }
     assert(fHeader.length == rawIndex);

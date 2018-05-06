@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
                 fmt::print("height {}\n", frameHeader.height);
                 fmt::print("offsetX {}\n", frameHeader.offsetX);
                 fmt::print("offsetY {}\n", frameHeader.offsetY);
-                fmt::print("zeros {}\n", frameHeader.zeros);
+                fmt::print("allocatedSize {}\n", frameHeader.allocSize);
                 fmt::print("nextBlock {}\n", frameHeader.nextBlock);
                 fmt::print("length {}\n", frameHeader.length);
             }
