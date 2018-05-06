@@ -13,15 +13,9 @@ int main(int argc, char* argv[])
     return app.exec();
 }
 
-DCxViewerApp::DCxViewerApp(int& argc, char** argv) : QApplication(argc, argv)
-{
-    readSettings();
-}
+DCxViewerApp::DCxViewerApp(int& argc, char** argv) : QApplication(argc, argv) { readSettings(); }
 
-DCxViewerApp::~DCxViewerApp()
-{
-    writeSettings();
-}
+DCxViewerApp::~DCxViewerApp() { writeSettings(); }
 
 void DCxViewerApp::readSettings()
 {
@@ -47,11 +41,14 @@ void DCxViewerApp::openMpq(const QUrl& mpqFileUrl)
         mpqFileName = mpqFileUrl.toLocalFile();
     else
         mpqFileName = mpqFileUrl.toString();
-    mpqArchive      = std::make_unique<MpqArchive>(mpqFileName.toStdString());
+
+    const QByteArray& mpqFileUrlUtf8 = mpqFileName.toUtf8();
+
+    mpqArchive = std::make_unique<MpqArchive>(mpqFileUrlUtf8.data());
     if (!mpqArchive->good()) qDebug() << "Failed to open" << mpqFileName << ".";
-    if (!listFileName.isEmpty())
-    {
-        mpqArchive->addListFile(listFileName.toStdString());
+    if (!listFileName.isEmpty()) {
+        const QByteArray& utf8Path = listFileName.toUtf8();
+        mpqArchive->addListFile(utf8Path.data());
     }
     updateMpqFileList();
 }
@@ -62,9 +59,9 @@ void DCxViewerApp::addListFile(const QUrl& listFileUrl)
         listFileName = listFileUrl.toLocalFile();
     else
         listFileName = listFileUrl.toString();
-    if (mpqArchive)
-    {
-        mpqArchive->addListFile(listFileName.toStdString());
+    if (mpqArchive) {
+        const QByteArray& utf8Path = listFileName.toUtf8();
+        mpqArchive->addListFile(utf8Path.data());
         updateMpqFileList();
     }
 }
@@ -80,17 +77,17 @@ void DCxViewerApp::setPaletteFile(const QUrl& paletteUrl)
 
 void DCxViewerApp::updateMpqFileList()
 {
-    if (!mpqArchive)return;
+    if (!mpqArchive) return;
     std::vector<MpqArchive::path> files = mpqArchive->findFiles();
     mpqFiles.clear();
     emit fileListUpdated();
-    for (std::string & file : files)
+    for (std::string& file : files)
         mpqFiles.push_back(QString::fromStdString(file));
     mpqFiles.sort();
     emit fileListUpdated();
 }
 
-void DCxViewerApp::setFileList(QStringList & newMpqFilesList)
+void DCxViewerApp::setFileList(QStringList& newMpqFilesList)
 {
     mpqFiles.swap(newMpqFilesList);
     emit fileListUpdated();
@@ -113,8 +110,8 @@ WorldStone::StreamPtr DCxViewerApp::getFilePtr(const QString& fileName)
 void DCxViewerApp::fileActivated(const QString& fileName)
 {
     if (!mpqArchive) return;
-    if (fileName.endsWith(".dc6", Qt::CaseInsensitive) ||
-        fileName.endsWith(".dcc", Qt::CaseInsensitive))
+    if (fileName.endsWith(".dc6", Qt::CaseInsensitive)
+        || fileName.endsWith(".dcc", Qt::CaseInsensitive))
     {
         emit requestDisplayDC6(fileName);
     }

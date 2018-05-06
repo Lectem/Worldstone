@@ -19,8 +19,7 @@ class MpqArchive : public Archive
     using HANDLE = void*; // Do not expose stormlib
 public:
     MpqArchive() { setstate(badbit); }
-    MpqArchive(const char* MpqFileName);
-    MpqArchive(const path& MpqFileName);
+    MpqArchive(const char* MpqFileName, const char* listFilePath = nullptr);
     MpqArchive(MpqArchive&& toMove);
     MpqArchive& operator=(MpqArchive&& toMove);
     ~MpqArchive() override;
@@ -30,7 +29,7 @@ public:
 
     HANDLE getInternalHandle() { return mpqHandle; }
 
-    void addListFile(const path& listFilePAth);
+    void addListFile(const char* listFilePAth);
     std::vector<path> findFiles(const path& searchMask = "*");
 
 private:

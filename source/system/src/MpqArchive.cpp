@@ -19,21 +19,21 @@ MpqArchive& MpqArchive::operator=(MpqArchive&& toMove)
     std::swap(_state, toMove._state);
     return *this;
 }
-MpqArchive::MpqArchive(const char* MpqFileName) : mpqFileName(MpqFileName)
+MpqArchive::MpqArchive(const char* MpqFileName, const char* listFilePath) : mpqFileName(MpqFileName)
 {
     static_assert(std::is_same<MpqArchive::HANDLE, ::HANDLE>(),
                   "Make sure we correctly defined HANDLE type");
-    load();
+    if (load() && listFilePath) {
+        addListFile(listFilePath);
+    }
 }
-
-MpqArchive::MpqArchive(const Archive::path& MpqFileName) : MpqArchive(MpqFileName.data()) {}
 
 MpqArchive::~MpqArchive() { unload(); }
 
-void MpqArchive::addListFile(const path& listFilePAth)
+void MpqArchive::addListFile(const char* listFilePath)
 {
     if (!mpqHandle) return;
-    if (SFileAddListFile(mpqHandle, listFilePAth.c_str()) != ERROR_SUCCESS) setstate(failbit);
+    if (SFileAddListFile(mpqHandle, listFilePath) != ERROR_SUCCESS) setstate(failbit);
 }
 
 std::vector<MpqArchive::path> MpqArchive::findFiles(const path& searchMask)
