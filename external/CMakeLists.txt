@@ -47,9 +47,9 @@ if(WS_WITH_BGFX)
     add_subdirectory(bgfx.cmake)
     target_set_warnings(bgfx DISABLE ALL)
     add_library(external::bgfx ALIAS bgfx)
-    include( bgfx.cmake/cmake/3rdparty/ocornut-imgui.cmake )
-    target_set_warnings(ocornut-imgui DISABLE ALL)
-    add_library(imgui::imgui ALIAS ocornut-imgui)
+    include( bgfx.cmake/cmake/3rdparty/dear-imgui.cmake )
+    target_set_warnings(dear-imgui DISABLE ALL)
+    add_library(imgui::imgui ALIAS dear-imgui)
 endif()
 
 set(BUILD_TESTING ${BUILD_TESTING_BCKP} CACHE BOOL "Build tests (default variable for CTest)" FORCE) #Set it back to its past value
