@@ -77,7 +77,7 @@ public:
         const size_t frameIdx = (direction * header.frames + frame) * header.layers;
         return &layersOrder[frameIdx];
     }
-
+    /// @note This list of components comes from the file data\\global\\excel\\Composit.txt
     static constexpr const char* componentsNames[] = {"HD", "TR", "LG", "RA", "LA", "RH",
                                                       "LH", "SH", "S1", "S2", "S3", "S4",
                                                       "S5", "S6", "S7", "S8"};
