@@ -76,7 +76,7 @@ void RendererApp::executeAppLoopOnce()
             if (event.key.keysym.sym == SDLK_F1) {
                 showBgfxStats = !showBgfxStats;
             }
-            // FALLTHROUGH
+            WS_FALLTHROUGH;
         case SDL_KEYUP:
         {
             int key               = event.key.keysym.sym & ~SDLK_SCANCODE_MASK;
