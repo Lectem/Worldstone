@@ -113,78 +113,79 @@ $(document).ready(function(){initNavTree('README_8md.html','');});
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;[![Pull requests](https:<span class="comment">//img.shields.io/github/issues-pr-raw/Lectem/Worldstone.svg)](https://github.com/Lectem/Worldstone/pulls)</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;[![Opened issues](https:<span class="comment">//img.shields.io/github/issues-raw/Lectem/Worldstone.svg)](https://github.com/Lectem/Worldstone/issues)</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;[![Gitter chat](https:<span class="comment">//badges.gitter.im/Lectem/Worldstone.png)](https://gitter.im/Worldstone/Lobby)</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;Diablo 2 tools and engine reimplementation in <span class="stringliteral">&#39;modern&#39;</span> C++ (see [C++ Usage](#c-usage)).</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;It aims to be portable/cross-platform.</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;## Status of the project </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;DC6 and DCC (sprites) decoders are now working.</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;Work is progressing slowly. While not reflected in the repo, a lot of documentation has been gathered for future work !</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">## Building</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">### Prerequisites</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor"></span>* CMake 3.6 or higher</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;* A C++14 compiler</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  - GCC 6.0 - tested (5.0 should work)</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  - clang 3.8 with libc++ or libstdc++-5(only 6 is tested) - tested</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  - MSVC 14 (Visual 2015) - tested</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;* Bzip2 <span class="keywordflow">for</span> Stormlib(libbz2-dev on debian/ubuntu)</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;* QT 5.x (only <span class="keywordflow">for</span> the tools)</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">### Copy-paste from command line (in the project directory):</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    git submodule update --init --recursive</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    mkdir build &amp;&amp; cd build</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    cmake ..</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    cmake --build .</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;### Configuration</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;You can tweak the configuration <span class="keyword">using</span> the following CMake variables (I suggest <span class="keyword">using</span> ccmake or cmake-gui)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;* CMAKE_PREFIX_PATH : You might need to add your Qt path to <span class="keyword">this</span> variable</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;* ENABLE_LTO : Use link time optimization on non debug builds <span class="keywordflow">if</span> available</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;* ENABLE_WARNINGS_SETTINGS : Set to <span class="keyword">false</span> to <span class="keyword">remove</span> warning flags added by the project</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;* BUILD_TESTING : Disable all testing features</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;* WS_BUILD_TESTS : Disable Worldstone tests</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;* WS_USE_DOXYGEN : Should we (<span class="keywordflow">try</span> to) add a doc target</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">### On Windows</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;- Required shared libraries should automatically be copied to the executable directory by CMake, but in <span class="keywordflow">case</span> where you can<span class="stringliteral">&#39;t run the tools from Visual, add the QTDIR environment variable with the Qt path as value (example : C:\Qt\5.7\msvc2015_64) then add %QTDIR%\bin and %QTDIR%\plugins to your PATH variable.</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="stringliteral">## Short-term objectives</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="stringliteral">* DC6/DCC viewer</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="stringliteral">* DT1 viewer</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="stringliteral">For a more detailed list of what will need to do to have an engine, check the [TODO](TODO.md) list.</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="stringliteral">## C++ Usage</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="stringliteral"></span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="stringliteral">While this project tends to use modern features of C++, it tries to use them sparingly. It is not [Orthodox C++](https://gist.github.com/bkaradzic/2e39896bc7d8c34e042b), but is still similar.</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="stringliteral">Basically, if you can do something without the latest X or Y fancy feature, then don&#39;</span>t use the feature.</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;For example:</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;- IOstreams are banned (anybody asking why can lookup the reason easily)</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;- Don<span class="stringliteral">&#39;t use a feature just because you can. (ie. don&#39;</span>t put lambdas, SFINAE and <span class="keyword">auto</span> where it is not needed)</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;- Try not to overuse templates (too much).</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;- Use the good stuff !</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  * static_assert</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  * move-semantics</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  * custom litterals</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  * atomics</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  * unique_ptr</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  * ...</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;[![Documentation](https:<span class="comment">//img.shields.io/badge/Documentation-latest-blue.svg)](https://lectem.github.io/Worldstone)</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;Diablo 2 tools and engine reimplementation in <span class="stringliteral">&#39;modern&#39;</span> C++ (see [C++ Usage](#c-usage)).</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;It aims to be portable/cross-platform.</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;## Status of the project </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;DC6 and DCC (sprites) decoders are now working.</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;Work is progressing slowly. While not reflected in the repo, a lot of documentation has been gathered for future work !</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">## Building</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">### Prerequisites</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor"></span>* CMake 3.6 or higher</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;* A C++14 compiler</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  - GCC 6.0 - tested (5.0 should work)</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  - clang 3.8 with libc++ or libstdc++-5(only 6 is tested) - tested</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  - MSVC 14 (Visual 2015) - tested</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;* Bzip2 <span class="keywordflow">for</span> Stormlib(libbz2-dev on debian/ubuntu)</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;* QT 5.x (only <span class="keywordflow">for</span> the tools)</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">### Copy-paste from command line (in the project directory):</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    git submodule update --init --recursive</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    mkdir build &amp;&amp; cd build</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    cmake ..</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    cmake --build .</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;### Configuration</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;You can tweak the configuration <span class="keyword">using</span> the following CMake variables (I suggest <span class="keyword">using</span> ccmake or cmake-gui)</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;* CMAKE_PREFIX_PATH : You might need to add your Qt path to <span class="keyword">this</span> variable</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;* ENABLE_LTO : Use link time optimization on non debug builds <span class="keywordflow">if</span> available</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;* ENABLE_WARNINGS_SETTINGS : Set to <span class="keyword">false</span> to <span class="keyword">remove</span> warning flags added by the project</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;* BUILD_TESTING : Disable all testing features</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;* WS_BUILD_TESTS : Disable Worldstone tests</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;* WS_USE_DOXYGEN : Should we (<span class="keywordflow">try</span> to) add a doc target</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">### On Windows</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;- Required shared libraries should automatically be copied to the executable directory by CMake, but in <span class="keywordflow">case</span> where you can<span class="stringliteral">&#39;t run the tools from Visual, add the QTDIR environment variable with the Qt path as value (example : C:\Qt\5.7\msvc2015_64) then add %QTDIR%\bin and %QTDIR%\plugins to your PATH variable.</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="stringliteral">## Short-term objectives</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="stringliteral">* DC6/DCC viewer</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="stringliteral">* DT1 viewer</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="stringliteral">For a more detailed list of what will need to do to have an engine, check the [TODO](TODO.md) list.</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="stringliteral">## C++ Usage</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="stringliteral"></span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="stringliteral">While this project tends to use modern features of C++, it tries to use them sparingly. It is not [Orthodox C++](https://gist.github.com/bkaradzic/2e39896bc7d8c34e042b), but is still similar.</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="stringliteral">Basically, if you can do something without the latest X or Y fancy feature, then don&#39;</span>t use the feature.</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;For example:</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;- IOstreams are banned (anybody asking why can lookup the reason easily)</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;- Don<span class="stringliteral">&#39;t use a feature just because you can. (ie. don&#39;</span>t put lambdas, SFINAE and <span class="keyword">auto</span> where it is not needed)</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;- Try not to overuse templates (too much).</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;- Use the good stuff !</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  * static_assert</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  * move-semantics</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  * custom litterals</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  * atomics</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  * unique_ptr</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  * ...</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>README.md</b></li>
-    <li class="footer">Generated on Tue May 8 2018 15:29:12 for Worldstone by
+    <li class="footer">Generated on Wed May 9 2018 08:51:58 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
