@@ -43,12 +43,19 @@ bool RendererApp::initAppThread()
     WorldStone::SimpleImageProvider<uint8_t> imageprovider;
     testDCC.readDirection(firstDir, 0, imageprovider);
     const auto&         firstFrame = firstDir.frameHeaders[0];
+
     WorldStone::Palette pal;
-    pal.decode("palettes/pal.dat");
-    assert(pal.isValid());
-    static_assert(sizeof(WorldStone::Palette::Color) == 3, "");
+    if(!pal.decode("palettes/pal.dat")) return false;
+
+    static_assert(sizeof(WorldStone::Palette::Color24Bits) == 3, "");
+    WorldStone::Vector<WorldStone::Palette::Color24Bits> paletteRGB888(WorldStone::Palette::colorCount);
+    for (size_t i = 0; i < WorldStone::Palette::colorCount; i++)
+    {
+        const WorldStone::Palette::Color color                      = pal.colors[i];
+        paletteRGB888[i] = {color.r, color.g, color.b};
+    }
     DrawSprite::init({uint16_t(firstFrame.width), uint16_t(firstFrame.height),
-                      imageprovider.getImage(0).buffer, (const uint8_t*)pal.colors.data()});
+                      imageprovider.getImage(0).buffer, (const uint8_t*)paletteRGB888.data()});
     return true;
 }
 
