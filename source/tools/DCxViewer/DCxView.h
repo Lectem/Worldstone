@@ -78,13 +78,13 @@ public slots:
 private:
     bool eventFilter(QObject* obj, QEvent* event);
 
-    Palette         palette;
-    class QLabel*      paletteLabel    = nullptr;
-    class QListWidget* paletteSelector = nullptr;
+    std::unique_ptr<Palette> palette;
+    class QLabel*            paletteLabel    = nullptr;
+    class QListWidget*       paletteSelector = nullptr;
 
-    class QLabel*   headerInfo       = nullptr;
-    class QLabel*   frameHeaderInfo  = nullptr;
-    class QLabel*   frameInfo        = nullptr;
+    class QLabel* headerInfo      = nullptr;
+    class QLabel* frameHeaderInfo = nullptr;
+    class QLabel* frameInfo       = nullptr;
     /// Could be changed to QGraphicsView for debug stuff
     class QLabel*   image            = nullptr;
     class QSpinBox* frameSpinBox     = nullptr;

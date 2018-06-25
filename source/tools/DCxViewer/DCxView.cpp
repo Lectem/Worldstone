@@ -176,7 +176,14 @@ void DCxView::loadPalette(const QString& paletteFile)
     WorldStone::StreamPtr stream = DCxViewerApp::instance()->getFilePtr(paletteFile);
     if (stream) {
         paletteLabel->setText(QString("Palettes (Current=%1)").arg(paletteFile));
-        palette.decode(stream.get());
+        auto tmpPal = std::make_unique<Palette>();
+        if (tmpPal->decode(stream.get())) {
+            palette = std::move(tmpPal);
+        }
+        else
+        {
+            qDebug() << "Failed to read the palette file " << paletteFile;
+        }
     }
     refreshFrame();
 }
@@ -252,10 +259,11 @@ void DCxView::refreshFrame()
             memcpy(bmp.scanLine(y), &frameView(0, y), frameView.width);
         }
         bmp.setColorCount(Palette::colorCount);
-        if (palette.isValid()) {
+        if (palette) {
+            const Palette& pal = *palette;
             for (int i = 0; i < Palette::colorCount; ++i)
             {
-                auto& c = palette.colors[i];
+                auto& c = pal.colors[i];
                 bmp.setColor(i, QColor(c.r, c.g, c.b).rgb());
             }
         }

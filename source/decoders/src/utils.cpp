@@ -40,7 +40,6 @@ void exportToPPM(const char* output, const uint8_t* data, int width, int height,
                  const Palette& palette)
 {
     assert(width > 0 && height > 0);
-    assert(palette.isValid());
     FILE* file = fopen(output, "wb");
     if (file) {
         fmt::print(file, "P6 {} {} 255\n", width, height);

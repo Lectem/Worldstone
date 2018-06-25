@@ -10,7 +10,10 @@ int main(int argc, char* argv[])
 {
     if (argc == 4) {
         Palette palette;
-        palette.decode(argv[2]);
+        if (!palette.decode(argv[2])) {
+            fmt::print("Couldn't read the palette file\n");
+            return 1;
+        }
         DC6 dc6;
         if (dc6.initDecoder(std::make_unique<FileStream>(argv[1]))) {
             int frameIndex = 0;
@@ -27,13 +30,12 @@ int main(int argc, char* argv[])
                 fmt::print("length {}\n", frameHeader.length);
             }
             dc6.exportToPPM(argv[3], palette);
+
+            return 0;
         }
     }
-    else
-    {
-        fmt::print("Usage : DC6extract file.dc6 palette.dat output\n");
-        fmt::print(
-            "This tool will extract all frames of dc6 file to output[direction][frame].ppm\n");
-    }
-    return 0;
+
+    fmt::print("Usage : DC6extract file.dc6 palette.dat output\n");
+    fmt::print("This tool will extract all frames of dc6 file to output[direction][frame].ppm\n");
+    return 1;
 }

@@ -22,17 +22,60 @@ struct Palette
 {
     struct Color
     {
-        uint8_t r, g, b;
+        uint8_t r, g, b, _padding;
+        bool operator==(const Color& rhs) const { return r == rhs.r && g == rhs.g && b == rhs.b; }
     };
 
-    static const int colorCount = 256;
+    struct Color24Bits
+    {
+        uint8_t r, g, b;
+        bool operator==(const Color24Bits& rhs) const
+        {
+            return r == rhs.r && g == rhs.g && b == rhs.b;
+        }
+    };
+    static const size_t colorCount = 256;
     std::array<Color, colorCount> colors;
 
-    void decode(const char* filename);
-    void decode(IStream* file);
-    bool isValid() const { return valid; }
-
-private:
-    bool valid = false;
+    bool decode(const char* filename);
+    bool decode(IStream* file);
+    uint8_t GetClosestColorIndex(Color color);
+    bool operator==(const Palette& rhs) const { return colors == rhs.colors; }
 };
+
+struct PalShiftTransform
+{
+    std::array<uint8_t, Palette::colorCount> indices;
+};
+
+/**
+ * @brief Precomputed palette variations in the form of palette shifts
+ */
+struct PL2
+{
+    Palette basePalette;
+
+    PalShiftTransform lightLevelVariations[32];
+    PalShiftTransform invColorVariations[16];
+    PalShiftTransform selectedUnitShift; ///< Needs confirmation for usage
+
+    PalShiftTransform alphaBlend[3][256]; ///< glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+    PalShiftTransform additiveBlend[256]; ///< glBlendFunc(GL_ONE, GL_ONE)
+    PalShiftTransform multiplicativeBlend[256]; ///< glBlendFunc(GL_ZERO, GL_SRC_COLOR)
+
+    PalShiftTransform hueVariations[111];
+    PalShiftTransform redTones;
+    PalShiftTransform greenTones;
+    PalShiftTransform blueTones;
+    PalShiftTransform unknownColorVariations[14];
+
+    PalShiftTransform maxComponentBlend[256];
+    PalShiftTransform darkenedColorShift;
+
+    Palette::Color24Bits textColors[13];
+    PalShiftTransform    textColorShifts[13];
+
+    static std::unique_ptr<PL2> CreateFromPalette(const Palette& palette);
+};
+
 } // namespace WorldStone
