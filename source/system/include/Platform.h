@@ -28,6 +28,27 @@
 #   define WS_32BITS
 #endif
 
+#define WS_STRINGIZE(_x) #_x
+
+#if defined(WS_CLANG)
+#   define WS_PRAGMA_DIAGNOSTIC_IGNORED_CLANG(_x)   _Pragma(WS_STRINGIZE(clang diagnostic ignored _x))
+#   define WS_PRAGMA_DIAGNOSTIC_IGNORED_GNU(_x)     WS_PRAGMA_DIAGNOSTIC_IGNORED_CLANG(_x)
+#else
+#   define WS_PRAGMA_DIAGNOSTIC_IGNORED_CLANG(_x)
+#endif
+#if defined(WS_GCC)
+#   define WS_PRAGMA_DIAGNOSTIC_IGNORED_GCC(_x)     _Pragma(WS_STRINGIZE(GCC diagnostic ignored _x) )
+#   define WS_PRAGMA_DIAGNOSTIC_IGNORED_GNU(_x)     WS_PRAGMA_DIAGNOSTIC_IGNORED_GCC(_x)
+#else
+#   define WS_PRAGMA_DIAGNOSTIC_IGNORED_GCC(_x)
+#endif
+#if defined(WS_MSC)
+#   define WS_PRAGMA_DIAGNOSTIC_IGNORED_MSC(_x)     __pragma(warning(disable:_x) )
+#   define WS_PRAGMA_DIAGNOSTIC_IGNORED_GNU(_x)
+#else
+#   define WS_PRAGMA_DIAGNOSTIC_IGNORED_MSC(_x)
+#endif
+
 /**@def WS_FALLTHROUGH
  * Used to annotate implicit fallthroughs in a switch. Here is an example:
  * @code
