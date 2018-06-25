@@ -3,7 +3,7 @@
  * @brief Implementation of the tests for Palette and PL2
  */
 #include <FileStream.h>
-#include <Palette.h>
+#include <palette.h>
 #include <Platform.h>
 #include <SystemUtils.h>
 #include <doctest.h>
