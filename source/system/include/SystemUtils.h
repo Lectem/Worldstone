@@ -9,11 +9,13 @@
 #include <stdint.h>
 #include <limits.h>
 #include <type_traits>
+
+#include "Platform.h"
+
 // Don't bring in huge headers for nothing (only used as fallback for popCount)
 #if !defined(WS_GCC_FAMILY) && !(defined(WS_MSC) && defined(WS_64BITS))
 #include <bitset>
 #endif
-#include "Platform.h"
 
 /// Mark a variable as unused to shut warnings when it is unused on purpose.
 #define WS_UNUSED(x) (void)x

@@ -19,12 +19,14 @@ ColumnLimit:     100
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
 CommentPragmas:  '(/<|!<)'
 IncludeCategories:
-  - Regex:           '^<(std|cstd)'
+  - Regex:           '.Platform.h.'
     Priority:        1
-  - Regex:           '^<'
+  - Regex:           '^<(std|cstd)'
     Priority:        2
-  - Regex:           '.*'
+  - Regex:           '^<'
     Priority:        3
+  - Regex:           '.*'
+    Priority:        4
 PointerAlignment: Left
 PenaltyExcessCharacter: 200 # for doxygen inline comments (or it would break before the member name) should be enough for the rest
 AllowShortFunctionsOnASingleLine: All

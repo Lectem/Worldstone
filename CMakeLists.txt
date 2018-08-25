@@ -93,7 +93,7 @@ if(WS_USE_DOXYGEN AND ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} VERSION_GREA
         # Doxygen macros
         set(DOXYGEN_MACRO_EXPANSION YES)
         set(DOXYGEN_EXPAND_ONLY_PREDEF YES)
-        set(DOXYGEN_PREDEFINED [[TYPE_TO_STRING(x)=""]])
+        set(DOXYGEN_PREDEFINED FORCE_DOXYGEN [[TYPE_TO_STRING(x)=""]])
         set(DOXYGEN_EXCLUDE source/tools/RendererApp/imgui source/decoders/tests/workingDirectory/Copyright.md)
         # Custom commands
         # The following will expand to
