@@ -97,7 +97,7 @@ struct OcornutImguiContext
 
 		const bgfx::HMD*  hmd  = bgfx::getHMD();
 		const bgfx::Caps* caps = bgfx::getCaps();
-		if (NULL != hmd && 0 != (hmd->flags & BGFX_HMD_RENDERING) )
+		if (nullptr != hmd && 0 != (hmd->flags & BGFX_HMD_RENDERING) )
 		{
 			float proj[16];
 			bx::mtxProj(proj, hmd->eye[0].fov, 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
@@ -114,14 +114,14 @@ struct OcornutImguiContext
 			const float viewWidth  = width/2.0f;
 			bx::mtxOrtho(ortho[0], viewOffset, viewOffset + viewWidth, height, 0.0f, 0.0f, 1000.0f, offset0, caps->homogeneousDepth);
 			bx::mtxOrtho(ortho[1], viewOffset, viewOffset + viewWidth, height, 0.0f, 0.0f, 1000.0f, offset1, caps->homogeneousDepth);
-			bgfx::setViewTransform(m_viewId, NULL, ortho[0], BGFX_VIEW_STEREO, ortho[1]);
+			bgfx::setViewTransform(m_viewId, nullptr, ortho[0], BGFX_VIEW_STEREO, ortho[1]);
 			bgfx::setViewRect(m_viewId, 0, 0, hmd->width, hmd->height);
 		}
 		else
 		{
 			float ortho[16];
 			bx::mtxOrtho(ortho, 0.0f, width, height, 0.0f, 0.0f, 1000.0f, 0.0f, caps->homogeneousDepth);
-			bgfx::setViewTransform(m_viewId, NULL, ortho);
+			bgfx::setViewTransform(m_viewId, nullptr, ortho);
 			bgfx::setViewRect(m_viewId, 0, 0, uint16_t(width), uint16_t(height) );
 		}
 
@@ -166,7 +166,7 @@ struct OcornutImguiContext
 					bgfx::TextureHandle th = m_texture;
 					bgfx::ProgramHandle program = m_program;
 
-					if (NULL != cmd->TextureId)
+					if (nullptr != cmd->TextureId)
 					{
 						union { ImTextureID ptr; struct { bgfx::TextureHandle handle; uint8_t flags; uint8_t mip; } s; } texture = { cmd->TextureId };
 						state |= 0 != (IMGUI_FLAGS_ALPHA_BLEND & texture.s.flags)
@@ -212,7 +212,7 @@ struct OcornutImguiContext
 		m_viewId = 255;
 		m_last = bx::getHPCounter();
 
-		ImGui::SetAllocatorFunctions(memAlloc, memFree, NULL);
+		ImGui::SetAllocatorFunctions(memAlloc, memFree, nullptr);
 
 		m_imgui = ImGui::CreateContext();
 
@@ -220,7 +220,7 @@ struct OcornutImguiContext
 
 		io.DisplaySize = ImVec2(1280.0f, 720.0f);
 		io.DeltaTime   = 1.0f / 60.0f;
-		io.IniFilename = NULL;
+		io.IniFilename = nullptr;
 
 		setupStyle(true);
 
@@ -317,7 +317,7 @@ struct OcornutImguiContext
 		bgfx::destroy(m_imageProgram);
 		bgfx::destroy(m_program);
 
-		m_allocator = NULL;
+		m_allocator = nullptr;
 	}
 
 	void setupStyle(bool _dark)
