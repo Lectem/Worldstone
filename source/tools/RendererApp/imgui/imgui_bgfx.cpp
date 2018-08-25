@@ -287,7 +287,7 @@ struct OcornutImguiContext
 			{
 				const FontRangeMerge& frm = s_fontRangeMerge[ii];
 
-				io.Fonts->AddFontFromMemoryTTF( (void*)frm.data
+				io.Fonts->AddFontFromMemoryTTF( const_cast<void*>(frm.data)
 						, (int)frm.size
 						, _fontSize-3.0f
 						, &config
