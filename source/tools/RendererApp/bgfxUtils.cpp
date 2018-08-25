@@ -21,7 +21,7 @@ static const bgfx::Memory* loadMem(bx::FileReaderI* _reader, const char* _filePa
     }
 
     bx::debugPrintf("Failed to load %s.\n", _filePath);
-    return NULL;
+    return nullptr;
 }
 
 static bgfx::ShaderHandle loadShader(bx::FileReaderI* _reader, const char* _name)
@@ -67,7 +67,7 @@ bgfx::ProgramHandle loadProgram(bx::FileReaderI* _reader, const char* _vsName, c
 {
     bgfx::ShaderHandle vsh = loadShader(_reader, _vsName);
     bgfx::ShaderHandle fsh = BGFX_INVALID_HANDLE;
-    if (NULL != _fsName)
+    if (nullptr != _fsName)
     {
         fsh = loadShader(_reader, _fsName);
     }

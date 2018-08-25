@@ -1,22 +1,21 @@
 #include "BaseApp.h"
-#include <bx/macros.h>
+#include <Platform.h>
 
-BX_PRAGMA_DIAGNOSTIC_PUSH()
-// Caused by winnt.h
-BX_PRAGMA_DIAGNOSTIC_IGNORED_MSVC(4121) // warning C4121:
+WS_PRAGMA_DIAGNOSTIC_PUSH()
+// Caused by winnt.h because SDL2 changes packing, see https://bugzilla.libsdl.org/show_bug.cgi?id=4159
+WS_PRAGMA_DIAGNOSTIC_IGNORED_MSC(4121)  // warning C4121:
                                         // 'JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V2':
                                         // alignment of a member was sensitive to packing
 #include <SDL.h>
 #include <SDL_syswm.h>
 #include <bgfx/platform.h>
-BX_PRAGMA_DIAGNOSTIC_POP()
+WS_PRAGMA_DIAGNOSTIC_POP()
+
 // List of stupid defines from Xlib.h, included by SDL_syswm
 #undef False
 #undef True
 #undef None
 #undef Status
-
-
 #include <thread>
 
 int BaseApp::init()
@@ -56,7 +55,7 @@ int BaseApp::init()
     {
 #if defined(SDL_VIDEO_DRIVER_WINDOWS)
     case SDL_SYSWM_WINDOWS:
-        pd.ndt = NULL;
+        pd.ndt = nullptr;
         pd.nwh = wmi.info.win.window;
         break;
 #endif
@@ -68,7 +67,7 @@ int BaseApp::init()
 #endif
 #if defined(SDL_VIDEO_DRIVER_COCOA)
     case SDL_SYSWM_COCOA:
-        pd.ndt = NULL;
+        pd.ndt = nullptr;
         pd.nwh = wmi.info.cocoa.window;
         break;
 #endif
@@ -81,9 +80,9 @@ int BaseApp::init()
     default: SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Unsupported window system");
     }
     // Let bgfx create the rendering context and back buffers
-    pd.context      = NULL;
-    pd.backBuffer   = NULL;
-    pd.backBufferDS = NULL;
+    pd.context      = nullptr;
+    pd.backBuffer   = nullptr;
+    pd.backBufferDS = nullptr;
     bgfx::setPlatformData(pd);
 
     // Call this before init to tell bgfx this is the render thread
