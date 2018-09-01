@@ -45,6 +45,41 @@
 
 ///@}
 
+
+
+#ifdef FORCE_DOXYGEN
+#   define WS_PLATFORM_WINDOWS    ///< Defined if we are building for Windows
+#   define WS_PLATFORM_LINUX      ///< Defined if we are building for Linux
+#   define WS_PLATFORM_MAC        ///< Defined if we are building for Mac based platform (OSX,iOS...)
+#   define WS_PLATFORM_IOS        ///< Defined if we are building for iOS
+#   define WS_PLATFORM_EMSCRIPTEN ///< Defined if we are building for Emscripten
+#endif
+
+///@name System defines
+///@{
+#if defined(_WIN32) || defined(_WIN64)
+#   ifndef NOMINMAX
+#       define NOMINMAX // Already set by CMake, but might be required for consumers
+#   endif // NOMINMAX
+#   define WS_PLATFORM_WINDOWS
+#elif defined(__linux__)
+#	define WS_PLATFORM_LINUX
+#elif __APPLE__
+#   define WS_PLATFORM_MAC
+#   include <TargetConditionals.h>
+#   if defined(TARGET_OS_IOS)
+#       define WS_PLATFORM_IOS
+#   endif
+#elif defined(__EMSCRIPTEN__)
+#   define WS_PLATFORM_EMSCRIPTEN
+#else
+#   error "Unknown platform"
+#endif
+///@}
+
+
+
+
 #define WS_STRINGIZE(_x) #_x
 
 ///@name Macros to silence warnings
