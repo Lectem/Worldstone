@@ -185,13 +185,13 @@ $(document).ready(function(){initNavTree('DCxView_8h_source.html','');});
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">bool</span> eventFilter(QObject* obj, QEvent* event);</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <a class="code" href="structWorldStone_1_1Palette.html">Palette</a>         palette;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">class </span>QLabel*      paletteLabel    = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">class </span>QListWidget* paletteSelector = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    std::unique_ptr&lt;Palette&gt; palette;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">class </span>QLabel*            paletteLabel    = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">class </span>QListWidget*       paletteSelector = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">class </span>QLabel*   headerInfo       = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">class </span>QLabel*   frameHeaderInfo  = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">class </span>QLabel*   frameInfo        = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">class </span>QLabel* headerInfo      = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">class </span>QLabel* frameHeaderInfo = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">class </span>QLabel* frameInfo       = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keyword">class </span>QLabel*   image            = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keyword">class </span>QSpinBox* frameSpinBox     = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keyword">class </span>QSpinBox* directionSpinBox = <span class="keyword">nullptr</span>;</div>
@@ -225,7 +225,7 @@ $(document).ready(function(){initNavTree('DCxView_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="dir_d4997a96f2e948238c4ace8570226aa1.html">tools</a></li><li class="navelem"><a class="el" href="dir_944f5cf43582d10fda2c3f338ff04cc9.html">DCxViewer</a></li><li class="navelem"><b>DCxView.h</b></li>
-    <li class="footer">Generated on Wed May 9 2018 08:51:58 for Worldstone by
+    <li class="footer">Generated on Sat Sep 1 2018 11:09:54 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

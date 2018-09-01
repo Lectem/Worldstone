@@ -150,103 +150,111 @@ $(document).ready(function(){initNavTree('RendererApp_8cpp_source.html','');});
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="classWorldStone_1_1SimpleImageProvider.html">WorldStone::SimpleImageProvider&lt;uint8_t&gt;</a> imageprovider;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    testDCC.readDirection(firstDir, 0, imageprovider);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span>&amp;         firstFrame = firstDir.frameHeaders[0];</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="structWorldStone_1_1Palette.html">WorldStone::Palette</a> pal;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    pal.decode(<span class="stringliteral">&quot;palettes/pal.dat&quot;</span>);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    assert(pal.isValid());</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    static_assert(<span class="keyword">sizeof</span>(<a class="code" href="structWorldStone_1_1Palette_1_1Color.html">WorldStone::Palette::Color</a>) == 3, <span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    DrawSprite::init({uint16_t(firstFrame.width), uint16_t(firstFrame.height),</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                      imageprovider.<a class="code" href="classWorldStone_1_1SimpleImageProvider.html#a8dc415eb85e8dc4c120ec1dad966dce3">getImage</a>(0).buffer, (<span class="keyword">const</span> uint8_t*)pal.colors.data()});</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keywordtype">void</span> RendererApp::shutdownAppThread()</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;{</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    DrawSprite::shutdown();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    imguiDestroy();</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    BaseApp::shutdownAppThread();</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="structWorldStone_1_1Palette.html">WorldStone::Palette</a> pal;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">if</span>(!pal.decode(<span class="stringliteral">&quot;palettes/pal.dat&quot;</span>)) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    static_assert(<span class="keyword">sizeof</span>(<a class="code" href="structWorldStone_1_1Palette_1_1Color24Bits.html">WorldStone::Palette::Color24Bits</a>) == 3, <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    WorldStone::Vector&lt;WorldStone::Palette::Color24Bits&gt; paletteRGB888(WorldStone::Palette::colorCount);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; WorldStone::Palette::colorCount; i++)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keyword">const</span> <a class="code" href="structWorldStone_1_1Palette_1_1Color.html">WorldStone::Palette::Color</a> color                      = pal.colors[i];</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        paletteRGB888[i] = {color.r, color.g, color.b};</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    DrawSprite::init({uint16_t(firstFrame.width), uint16_t(firstFrame.height),</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                      imageprovider.<a class="code" href="classWorldStone_1_1SimpleImageProvider.html#a8dc415eb85e8dc4c120ec1dad966dce3">getImage</a>(0).buffer, (<span class="keyword">const</span> uint8_t*)paletteRGB888.data()});</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keywordtype">void</span> RendererApp::executeAppLoopOnce()</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keywordtype">void</span> RendererApp::shutdownAppThread()</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;{</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="comment">// Input processing comes here</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keyword">const</span> <a class="code" href="structInputs.html">Inputs</a> inputs = inputsManager.receiveAndProcessEvents();</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="comment">// Ideally we would not set the imgui IO directly here as we should have a</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="comment">// wrapper that parses SDL events</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    ImGuiIO&amp; imguiIO = ImGui::GetIO();</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">const</span> SDL_Event&amp; event : inputs.events)</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">switch</span> (event.type)</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordflow">case</span> SDL_QUIT: requireExit(); <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordflow">case</span> SDL_KEYDOWN:</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="keywordflow">if</span> (event.key.keysym.sym == SDLK_F1) {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                showBgfxStats = !showBgfxStats;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            }</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <a class="code" href="Platform_8h.html#af99b99e9296ee98d2aea72db714b7c77">WS_FALLTHROUGH</a>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordflow">case</span> SDL_KEYUP:</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keywordtype">int</span> key               = <span class="keyword">event</span>.key.keysym.sym &amp; ~SDLK_SCANCODE_MASK;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            imguiIO.KeysDown[key] = (<span class="keyword">event</span>.type == SDL_KEYDOWN);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            imguiIO.KeyShift      = ((SDL_GetModState() &amp; KMOD_SHIFT) != 0);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            imguiIO.KeyCtrl       = ((SDL_GetModState() &amp; KMOD_CTRL) != 0);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            imguiIO.KeyAlt        = ((SDL_GetModState() &amp; KMOD_ALT) != 0);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            imguiIO.KeySuper      = ((SDL_GetModState() &amp; KMOD_GUI) != 0);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordflow">case</span> SDL_MOUSEWHEEL: { <span class="keywordtype">float</span> mouseWheelY = float(event.wheel.y);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#if SDL_VERSION_ATLEAST(2, 0, 4)</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor"></span>            <span class="keywordflow">if</span> (event.wheel.direction == SDL_MOUSEWHEEL_FLIPPED) mouseWheelY *= -1.f;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor"></span>            <span class="comment">// Accumulate wheel if we have multiple events in one frame</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            imguiIO.MouseWheel += mouseWheelY;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        }</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordflow">case</span> SDL_TEXTINPUT: imguiIO.AddInputCharactersUTF8(event.text.text); <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        }</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    }</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="comment">// Logic update comes here</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="comment">// Imgui</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keyword">const</span> <a class="code" href="structInputs_1_1MouseState.html">Inputs::MouseState</a>&amp; mouseState = inputs.mouseState;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    imguiBeginFrame(</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        int32_t(mouseState.x), int32_t(mouseState.y),</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        0 | (mouseState.buttonsMask &amp; SDL_BUTTON(SDL_BUTTON_LEFT) ? IMGUI_MBUT_LEFT : 0)</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            | (mouseState.buttonsMask &amp; SDL_BUTTON(SDL_BUTTON_RIGHT) ? IMGUI_MBUT_RIGHT : 0)</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            | (mouseState.buttonsMask &amp; SDL_BUTTON(SDL_BUTTON_MIDDLE) ? IMGUI_MBUT_MIDDLE : 0),</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        uint16_t(windowWidth), uint16_t(windowHeight));</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    ImGui::ShowDemoWindow();</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    {</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        ImGui::Begin(<span class="stringliteral">&quot;Debug&quot;</span>);</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        ImGui::Checkbox(<span class="stringliteral">&quot;Display bgfx stats&quot;</span>, &amp;showBgfxStats);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        bgfx::setDebug(BGFX_DEBUG_TEXT | (showBgfxStats ? BGFX_DEBUG_STATS : 0));</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        ImGui::End();</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    }</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    DrawSprite::shutdown();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    imguiDestroy();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    BaseApp::shutdownAppThread();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keywordtype">void</span> RendererApp::executeAppLoopOnce()</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="comment">// Input processing comes here</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">const</span> <a class="code" href="structInputs.html">Inputs</a> inputs = inputsManager.receiveAndProcessEvents();</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">// Ideally we would not set the imgui IO directly here as we should have a</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="comment">// wrapper that parses SDL events</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    ImGuiIO&amp; imguiIO = ImGui::GetIO();</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">const</span> SDL_Event&amp; event : inputs.events)</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordflow">switch</span> (event.type)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordflow">case</span> SDL_QUIT: requireExit(); <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">case</span> SDL_KEYDOWN:</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">if</span> (event.key.keysym.sym == SDLK_F1) {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                showBgfxStats = !showBgfxStats;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <a class="code" href="Platform_8h.html#af99b99e9296ee98d2aea72db714b7c77">WS_FALLTHROUGH</a>;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordflow">case</span> SDL_KEYUP:</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keywordtype">int</span> key               = <span class="keyword">event</span>.key.keysym.sym &amp; ~SDLK_SCANCODE_MASK;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            imguiIO.KeysDown[key] = (<span class="keyword">event</span>.type == SDL_KEYDOWN);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            imguiIO.KeyShift      = ((SDL_GetModState() &amp; KMOD_SHIFT) != 0);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            imguiIO.KeyCtrl       = ((SDL_GetModState() &amp; KMOD_CTRL) != 0);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            imguiIO.KeyAlt        = ((SDL_GetModState() &amp; KMOD_ALT) != 0);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            imguiIO.KeySuper      = ((SDL_GetModState() &amp; KMOD_GUI) != 0);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordflow">case</span> SDL_MOUSEWHEEL: { <span class="keywordtype">float</span> mouseWheelY = float(event.wheel.y);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#if SDL_VERSION_ATLEAST(2, 0, 4)</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor"></span>            <span class="keywordflow">if</span> (event.wheel.direction == SDL_MOUSEWHEEL_FLIPPED) mouseWheelY *= -1.f;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor"></span>            <span class="comment">// Accumulate wheel if we have multiple events in one frame</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            imguiIO.MouseWheel += mouseWheelY;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordflow">case</span> SDL_TEXTINPUT: imguiIO.AddInputCharactersUTF8(event.text.text); <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        }</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="comment">// Logic update comes here</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="comment">// Imgui</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keyword">const</span> <a class="code" href="structInputs_1_1MouseState.html">Inputs::MouseState</a>&amp; mouseState = inputs.mouseState;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    imguiBeginFrame(</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        int32_t(mouseState.x), int32_t(mouseState.y),</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        0 | (mouseState.buttonsMask &amp; SDL_BUTTON(SDL_BUTTON_LEFT) ? IMGUI_MBUT_LEFT : 0)</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            | (mouseState.buttonsMask &amp; SDL_BUTTON(SDL_BUTTON_RIGHT) ? IMGUI_MBUT_RIGHT : 0)</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            | (mouseState.buttonsMask &amp; SDL_BUTTON(SDL_BUTTON_MIDDLE) ? IMGUI_MBUT_MIDDLE : 0),</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        uint16_t(windowWidth), uint16_t(windowHeight));</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    ImGui::ShowDemoWindow();</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    imguiEndFrame();</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="comment">// Set view 0 default viewport.</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    bgfx::setViewRect(0, 0, 0, uint16_t(windowWidth), uint16_t(windowHeight));</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="comment">// This dummy draw call is here to make sure that view 0 is cleared</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="comment">// if no other draw calls are submitted to view 0.</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    bgfx::touch(0);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    {</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        ImGui::Begin(<span class="stringliteral">&quot;Debug&quot;</span>);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        ImGui::Checkbox(<span class="stringliteral">&quot;Display bgfx stats&quot;</span>, &amp;showBgfxStats);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        bgfx::setDebug(BGFX_DEBUG_TEXT | (showBgfxStats ? BGFX_DEBUG_STATS : 0));</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        ImGui::End();</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    }</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    imguiEndFrame();</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    DrawSprite::draw(windowWidth, windowHeight);</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="comment">// Advance to next frame. Rendering thread will be kicked to</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="comment">// process submitted rendering primitives.</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="comment">// This will also wait for the render thread to finish presenting the frame</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    bgfx::frame();</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;}</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="comment">// Set view 0 default viewport.</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    bgfx::setViewRect(0, 0, 0, uint16_t(windowWidth), uint16_t(windowHeight));</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="comment">// This dummy draw call is here to make sure that view 0 is cleared</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="comment">// if no other draw calls are submitted to view 0.</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    bgfx::touch(0);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    DrawSprite::draw(windowWidth, windowHeight);</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="comment">// Advance to next frame. Rendering thread will be kicked to</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="comment">// process submitted rendering primitives.</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="comment">// This will also wait for the render thread to finish presenting the frame</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    bgfx::frame();</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;}</div>
 <div class="ttc" id="structInputs_html"><div class="ttname"><a href="structInputs.html">Inputs</a></div><div class="ttdef"><b>Definition:</b> <a href="Inputs_8h_source.html#l00008">Inputs.h:8</a></div></div>
 <div class="ttc" id="FileStream_8h_html"><div class="ttname"><a href="FileStream_8h.html">FileStream.h</a></div></div>
 <div class="ttc" id="structWorldStone_1_1Palette_1_1Color_html"><div class="ttname"><a href="structWorldStone_1_1Palette_1_1Color.html">WorldStone::Palette::Color</a></div><div class="ttdef"><b>Definition:</b> <a href="palette_8h_source.html#l00023">palette.h:23</a></div></div>
+<div class="ttc" id="structWorldStone_1_1Palette_1_1Color24Bits_html"><div class="ttname"><a href="structWorldStone_1_1Palette_1_1Color24Bits.html">WorldStone::Palette::Color24Bits</a></div><div class="ttdef"><b>Definition:</b> <a href="palette_8h_source.html#l00029">palette.h:29</a></div></div>
 <div class="ttc" id="classWorldStone_1_1DCC_html"><div class="ttname"><a href="classWorldStone_1_1DCC.html">WorldStone::DCC</a></div><div class="ttdoc">Decoder for the DCC image format. </div><div class="ttdef"><b>Definition:</b> <a href="dcc_8h_source.html#l00048">dcc.h:48</a></div></div>
-<div class="ttc" id="Platform_8h_html_af99b99e9296ee98d2aea72db714b7c77"><div class="ttname"><a href="Platform_8h.html#af99b99e9296ee98d2aea72db714b7c77">WS_FALLTHROUGH</a></div><div class="ttdeci">#define WS_FALLTHROUGH</div><div class="ttdoc">Used to annotate implicit fallthroughs in a switch. </div><div class="ttdef"><b>Definition:</b> <a href="Platform_8h_source.html#l00056">Platform.h:56</a></div></div>
+<div class="ttc" id="Platform_8h_html_af99b99e9296ee98d2aea72db714b7c77"><div class="ttname"><a href="Platform_8h.html#af99b99e9296ee98d2aea72db714b7c77">WS_FALLTHROUGH</a></div><div class="ttdeci">#define WS_FALLTHROUGH</div><div class="ttdoc">Equivalent to the [[fallthrough]] attribute when supported Used to annotate implicit fallthroughs in ...</div><div class="ttdef"><b>Definition:</b> <a href="Platform_8h_source.html#l00157">Platform.h:157</a></div></div>
 <div class="ttc" id="classWorldStone_1_1SimpleImageProvider_html"><div class="ttname"><a href="classWorldStone_1_1SimpleImageProvider.html">WorldStone::SimpleImageProvider</a></div><div class="ttdoc">A simple image provider that allocates a new buffer for each call to getNewImage() ...</div><div class="ttdef"><b>Definition:</b> <a href="ImageView_8h_source.html#l00140">ImageView.h:140</a></div></div>
 <div class="ttc" id="classWorldStone_1_1SimpleImageProvider_html_a8dc415eb85e8dc4c120ec1dad966dce3"><div class="ttname"><a href="classWorldStone_1_1SimpleImageProvider.html#a8dc415eb85e8dc4c120ec1dad966dce3">WorldStone::SimpleImageProvider::getImage</a></div><div class="ttdeci">ImageView&lt; Color &gt; getImage(size_t imageIndex)</div><div class="ttdef"><b>Definition:</b> <a href="ImageView_8h_source.html#l00168">ImageView.h:168</a></div></div>
 <div class="ttc" id="dcc_8h_html"><div class="ttname"><a href="dcc_8h.html">dcc.h</a></div><div class="ttdoc">Implementation of a DCC file decoder. </div></div>
@@ -259,7 +267,7 @@ $(document).ready(function(){initNavTree('RendererApp_8cpp_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="dir_d4997a96f2e948238c4ace8570226aa1.html">tools</a></li><li class="navelem"><a class="el" href="dir_6bb00da5264f0867a3437473136cb3a5.html">RendererApp</a></li><li class="navelem"><b>RendererApp.cpp</b></li>
-    <li class="footer">Generated on Wed May 9 2018 08:51:58 for Worldstone by
+    <li class="footer">Generated on Sat Sep 1 2018 11:09:54 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

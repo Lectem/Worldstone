@@ -185,10 +185,10 @@ $(document).ready(function(){initNavTree('tools_2DCxViewer_2main_8cpp_source.htm
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keywordtype">void</span> DCxViewerApp::updateMpqFileList()</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;{</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">if</span> (!mpqArchive) <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    std::vector&lt;MpqArchive::path&gt; files = mpqArchive-&gt;findFiles();</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">auto</span> files = mpqArchive-&gt;findFiles();</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    mpqFiles.clear();</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    emit fileListUpdated();</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">for</span> (std::string&amp; file : files)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">const</span> std::string&amp; file : files)</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        mpqFiles.push_back(QString::fromStdString(file));</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    mpqFiles.sort();</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    emit fileListUpdated();</div>
@@ -233,7 +233,7 @@ $(document).ready(function(){initNavTree('tools_2DCxViewer_2main_8cpp_source.htm
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="dir_d4997a96f2e948238c4ace8570226aa1.html">tools</a></li><li class="navelem"><a class="el" href="dir_944f5cf43582d10fda2c3f338ff04cc9.html">DCxViewer</a></li><li class="navelem"><b>main.cpp</b></li>
-    <li class="footer">Generated on Wed May 9 2018 08:51:58 for Worldstone by
+    <li class="footer">Generated on Sat Sep 1 2018 11:09:54 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

@@ -108,19 +108,101 @@ $(document).ready(function(){initNavTree('Platform_8h.html','');});
 <div class="title">Platform.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;stddef.h&gt;</code><br/>
+
+<p>Platform specific tools and macros.  
+<a href="#details">More...</a></p>
+<div class="textblock"><code>#include &lt;intrin.h&gt;</code><br/>
+<code>#include &lt;stddef.h&gt;</code><br/>
 <code>#include &lt;stdint.h&gt;</code><br/>
 </div>
 <p><a href="Platform_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ad0eb1e03540a4548b1af274ed3c56ea7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad0eb1e03540a4548b1af274ed3c56ea7"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>WS_32BITS</b></td></tr>
-<tr class="separator:ad0eb1e03540a4548b1af274ed3c56ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d602959aa64c23457e1a51a775f702e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8d602959aa64c23457e1a51a775f702e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#a8d602959aa64c23457e1a51a775f702e">WS_PLATFORM_WINDOWS</a></td></tr>
+<tr class="memdesc:a8d602959aa64c23457e1a51a775f702e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined if we are building for Windows. <br/></td></tr>
+<tr class="separator:a8d602959aa64c23457e1a51a775f702e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6eb46a97a2ffab28eeeb73f8b49692e6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6eb46a97a2ffab28eeeb73f8b49692e6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#a6eb46a97a2ffab28eeeb73f8b49692e6">WS_PLATFORM_LINUX</a></td></tr>
+<tr class="memdesc:a6eb46a97a2ffab28eeeb73f8b49692e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined if we are building for Linux. <br/></td></tr>
+<tr class="separator:a6eb46a97a2ffab28eeeb73f8b49692e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8dd37b254b2167e374b5b89b2c1ba922"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8dd37b254b2167e374b5b89b2c1ba922"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#a8dd37b254b2167e374b5b89b2c1ba922">WS_PLATFORM_MAC</a></td></tr>
+<tr class="memdesc:a8dd37b254b2167e374b5b89b2c1ba922"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined if we are building for Mac based platform (OSX,iOS...) <br/></td></tr>
+<tr class="separator:a8dd37b254b2167e374b5b89b2c1ba922"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a230ca17a8bb16ad5163e8ac6edde7cd1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a230ca17a8bb16ad5163e8ac6edde7cd1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#a230ca17a8bb16ad5163e8ac6edde7cd1">WS_PLATFORM_IOS</a></td></tr>
+<tr class="memdesc:a230ca17a8bb16ad5163e8ac6edde7cd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined if we are building for iOS. <br/></td></tr>
+<tr class="separator:a230ca17a8bb16ad5163e8ac6edde7cd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71d1975670124ccc599f651e11841cd6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a71d1975670124ccc599f651e11841cd6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#a71d1975670124ccc599f651e11841cd6">WS_PLATFORM_EMSCRIPTEN</a></td></tr>
+<tr class="memdesc:a71d1975670124ccc599f651e11841cd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined if we are building for Emscripten. <br/></td></tr>
+<tr class="separator:a71d1975670124ccc599f651e11841cd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a631482065b1bffaa66e1a7e80820bf98"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a631482065b1bffaa66e1a7e80820bf98"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>WS_STRINGIZE</b>(_x)&#160;&#160;&#160;#_x</td></tr>
+<tr class="separator:a631482065b1bffaa66e1a7e80820bf98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af99b99e9296ee98d2aea72db714b7c77"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#af99b99e9296ee98d2aea72db714b7c77">WS_FALLTHROUGH</a>&#160;&#160;&#160;((void)0)</td></tr>
-<tr class="memdesc:af99b99e9296ee98d2aea72db714b7c77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to annotate implicit fallthroughs in a switch.  <a href="#af99b99e9296ee98d2aea72db714b7c77">More...</a><br/></td></tr>
+<tr class="memdesc:af99b99e9296ee98d2aea72db714b7c77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equivalent to the [[fallthrough]] attribute when supported Used to annotate implicit fallthroughs in a switch.  <a href="#af99b99e9296ee98d2aea72db714b7c77">More...</a><br/></td></tr>
 <tr class="separator:af99b99e9296ee98d2aea72db714b7c77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Compiler defines</div></td></tr>
+<tr class="memitem:acd787a5505f894410666db3cc3e82a57"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acd787a5505f894410666db3cc3e82a57"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#acd787a5505f894410666db3cc3e82a57">WS_GCC_FAMILY</a></td></tr>
+<tr class="memdesc:acd787a5505f894410666db3cc3e82a57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined if we are using gcc/clang or any gnuc compatible compiler. <br/></td></tr>
+<tr class="separator:acd787a5505f894410666db3cc3e82a57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac805ad3c5cb44c838c40a4a3c63c5b94"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac805ad3c5cb44c838c40a4a3c63c5b94"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#ac805ad3c5cb44c838c40a4a3c63c5b94">WS_CLANG</a></td></tr>
+<tr class="memdesc:ac805ad3c5cb44c838c40a4a3c63c5b94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined if the compiler is clang. <br/></td></tr>
+<tr class="separator:ac805ad3c5cb44c838c40a4a3c63c5b94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89d9c98319007a263cc9c87e5b7ccbfd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a89d9c98319007a263cc9c87e5b7ccbfd"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#a89d9c98319007a263cc9c87e5b7ccbfd">WS_GCC</a></td></tr>
+<tr class="memdesc:a89d9c98319007a263cc9c87e5b7ccbfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined if the compiler is GCC (not clang) <br/></td></tr>
+<tr class="separator:a89d9c98319007a263cc9c87e5b7ccbfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45dfa774e4ac01716551d5cd93ae9c2e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a45dfa774e4ac01716551d5cd93ae9c2e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#a45dfa774e4ac01716551d5cd93ae9c2e">WS_MSC</a></td></tr>
+<tr class="memdesc:a45dfa774e4ac01716551d5cd93ae9c2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined if compiling using MS visual compiler (Cl.exe) <br/></td></tr>
+<tr class="separator:a45dfa774e4ac01716551d5cd93ae9c2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4649dce73b68f5ca8a82a8d893cb6ab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa4649dce73b68f5ca8a82a8d893cb6ab"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#aa4649dce73b68f5ca8a82a8d893cb6ab">WS_64BITS</a></td></tr>
+<tr class="memdesc:aa4649dce73b68f5ca8a82a8d893cb6ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined if compiling for a 64-bits architecture. <br/></td></tr>
+<tr class="separator:aa4649dce73b68f5ca8a82a8d893cb6ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0eb1e03540a4548b1af274ed3c56ea7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad0eb1e03540a4548b1af274ed3c56ea7"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#ad0eb1e03540a4548b1af274ed3c56ea7">WS_32BITS</a></td></tr>
+<tr class="memdesc:ad0eb1e03540a4548b1af274ed3c56ea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined if compiling for a 32-bits architecture. <br/></td></tr>
+<tr class="separator:ad0eb1e03540a4548b1af274ed3c56ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0eb1e03540a4548b1af274ed3c56ea7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad0eb1e03540a4548b1af274ed3c56ea7"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#ad0eb1e03540a4548b1af274ed3c56ea7">WS_32BITS</a></td></tr>
+<tr class="memdesc:ad0eb1e03540a4548b1af274ed3c56ea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined if compiling for a 32-bits architecture. <br/></td></tr>
+<tr class="separator:ad0eb1e03540a4548b1af274ed3c56ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Macros to silence warnings</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>Here is a sample on how to use those macros</p>
+<div class="fragment"><div class="line"><a class="code" href="Platform_8h.html#aed1ffbe752984ffaeaca6cd3a85b0277">WS_PRAGMA_DIAGNOSTIC_IGNORED_GNU</a>(<span class="stringliteral">&quot;-Wunused-parameter&quot;</span>)</div>
+<div class="line"><a class="code" href="Platform_8h.html#a37ec4a0317496b4efd7f9bb16c831c64">WS_PRAGMA_DIAGNOSTIC_IGNORED_MSC</a>(4100) <span class="comment">// warning C4100: &#39;&#39; : unreferenced formal parameter</span></div>
+</div><!-- fragment --> </div></td></tr>
+<tr class="memitem:a5c18d1b8f3dff23937c6d5991845b796"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c18d1b8f3dff23937c6d5991845b796"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#a5c18d1b8f3dff23937c6d5991845b796">WS_PRAGMA_DIAGNOSTIC_PUSH</a>()</td></tr>
+<tr class="memdesc:a5c18d1b8f3dff23937c6d5991845b796"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves the current state of the compiler warnings. <br/></td></tr>
+<tr class="separator:a5c18d1b8f3dff23937c6d5991845b796"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af096c46ad8dc5ff351d25bf0f8c3f9fe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af096c46ad8dc5ff351d25bf0f8c3f9fe"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#af096c46ad8dc5ff351d25bf0f8c3f9fe">WS_PRAGMA_DIAGNOSTIC_POP</a>()</td></tr>
+<tr class="memdesc:af096c46ad8dc5ff351d25bf0f8c3f9fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restores the previous state of the compiler warnings. <br/></td></tr>
+<tr class="separator:af096c46ad8dc5ff351d25bf0f8c3f9fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed1ffbe752984ffaeaca6cd3a85b0277"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aed1ffbe752984ffaeaca6cd3a85b0277"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#aed1ffbe752984ffaeaca6cd3a85b0277">WS_PRAGMA_DIAGNOSTIC_IGNORED_GNU</a>(_x)</td></tr>
+<tr class="memdesc:aed1ffbe752984ffaeaca6cd3a85b0277"><td class="mdescLeft">&#160;</td><td class="mdescRight">Silence GCC/clang-specific warnings. <br/></td></tr>
+<tr class="separator:aed1ffbe752984ffaeaca6cd3a85b0277"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9eb816f9942d9a7988872f1e41164ed2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9eb816f9942d9a7988872f1e41164ed2"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#a9eb816f9942d9a7988872f1e41164ed2">WS_PRAGMA_DIAGNOSTIC_IGNORED_GCC</a>(_x)</td></tr>
+<tr class="memdesc:a9eb816f9942d9a7988872f1e41164ed2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Silence GCC-specific warnings. <br/></td></tr>
+<tr class="separator:a9eb816f9942d9a7988872f1e41164ed2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f7183f3511600d378d4e3ae7ded622d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3f7183f3511600d378d4e3ae7ded622d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#a3f7183f3511600d378d4e3ae7ded622d">WS_PRAGMA_DIAGNOSTIC_IGNORED_CLANG</a>(_x)</td></tr>
+<tr class="memdesc:a3f7183f3511600d378d4e3ae7ded622d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Silence clang-specific warnings. <br/></td></tr>
+<tr class="separator:a3f7183f3511600d378d4e3ae7ded622d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37ec4a0317496b4efd7f9bb16c831c64"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a37ec4a0317496b4efd7f9bb16c831c64"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Platform_8h.html#a37ec4a0317496b4efd7f9bb16c831c64">WS_PRAGMA_DIAGNOSTIC_IGNORED_MSC</a>(_x)</td></tr>
+<tr class="memdesc:a37ec4a0317496b4efd7f9bb16c831c64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Silence MSC-specific warnings. <br/></td></tr>
+<tr class="separator:a37ec4a0317496b4efd7f9bb16c831c64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -129,7 +211,8 @@ Functions</h2></td></tr>
 <tr class="separator:aff6e2446c74b6ea6603c85c3ffd6b825"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section author"><dt>Author</dt><dd>Lectem </dd></dl>
+<div class="textblock"><p>Platform specific tools and macros. </p>
+<dl class="section author"><dt>Author</dt><dd>Lectem </dd></dl>
 
 <p>Definition in file <a class="el" href="Platform_8h_source.html">Platform.h</a>.</p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
@@ -143,7 +226,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Used to annotate implicit fallthroughs in a switch. </p>
+<p>Equivalent to the [[fallthrough]] attribute when supported Used to annotate implicit fallthroughs in a switch. </p>
 <p>Here is an example: </p>
 <div class="fragment"><div class="line"><span class="keywordflow">switch</span>(foo)</div>
 <div class="line">{</div>
@@ -157,7 +240,7 @@ Functions</h2></td></tr>
 <div class="line">        <span class="keywordflow">break</span>;</div>
 <div class="line">}</div>
 </div><!-- fragment --> 
-<p>Definition at line <a class="el" href="Platform_8h_source.html#l00056">56</a> of file <a class="el" href="Platform_8h_source.html">Platform.h</a>.</p>
+<p>Definition at line <a class="el" href="Platform_8h_source.html#l00157">157</a> of file <a class="el" href="Platform_8h_source.html">Platform.h</a>.</p>
 
 </div>
 </div>
@@ -180,7 +263,7 @@ Functions</h2></td></tr>
 <p>User litteral for size_t (ie: size_t s = 10_z) </p>
 <dl class="section return"><dt>Returns</dt><dd>The integer value as a size_t </dd></dl>
 
-<p>Definition at line <a class="el" href="Platform_8h_source.html#l00067">67</a> of file <a class="el" href="Platform_8h_source.html">Platform.h</a>.</p>
+<p>Definition at line <a class="el" href="Platform_8h_source.html#l00169">169</a> of file <a class="el" href="Platform_8h_source.html">Platform.h</a>.</p>
 
 </div>
 </div>
@@ -190,7 +273,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="dir_770ba6fa46f3bfe7608bb8b841a04fae.html">system</a></li><li class="navelem"><a class="el" href="dir_e1f934d12cc201af1e31517dc1cb2f75.html">include</a></li><li class="navelem"><a class="el" href="Platform_8h.html">Platform.h</a></li>
-    <li class="footer">Generated on Wed May 9 2018 08:51:58 for Worldstone by
+    <li class="footer">Generated on Sat Sep 1 2018 11:09:54 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

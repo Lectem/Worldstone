@@ -1,7 +1,6 @@
 var NAVTREE =
 [
   [ "Worldstone", "index.html", [
-    [ "Copyright", "md_source_decoders_tests_workingDirectory_Copyright.html", null ],
     [ "Tests List", "test.html", "test" ],
     [ "Todo List", "todo.html", null ],
     [ "Classes", null, [
@@ -32,7 +31,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classWorldStone_1_1MpqFileStream.html#ade225f1321d8b490a814907adf89134c"
+"classWorldStone_1_1IStream.html#aef0f13d53737334b47f992a3dbb99f39",
+"structWorldStone_1_1Palette.html#a107144c0be9df259e96109e8049ff5a1"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

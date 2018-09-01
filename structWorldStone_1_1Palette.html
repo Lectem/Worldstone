@@ -123,18 +123,23 @@ $(document).ready(function(){initNavTree('structWorldStone_1_1Palette.html','');
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWorldStone_1_1Palette_1_1Color.html">Color</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWorldStone_1_1Palette_1_1Color24Bits.html">Color24Bits</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a12df442bb4f5d6664ad13d11edfe6dab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a12df442bb4f5d6664ad13d11edfe6dab"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>decode</b> (const char *filename)</td></tr>
-<tr class="separator:a12df442bb4f5d6664ad13d11edfe6dab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33962413d14d673ef2b030d07e602dfa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a33962413d14d673ef2b030d07e602dfa"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>decode</b> (<a class="el" href="classWorldStone_1_1IStream.html">IStream</a> *file)</td></tr>
-<tr class="separator:a33962413d14d673ef2b030d07e602dfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeef1a5cf4e53fc93d7e7f43f82772983"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeef1a5cf4e53fc93d7e7f43f82772983"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValid</b> () const </td></tr>
-<tr class="separator:aeef1a5cf4e53fc93d7e7f43f82772983"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63cb82033481dc779e2f26f816fb2262"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a63cb82033481dc779e2f26f816fb2262"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>decode</b> (const char *filename)</td></tr>
+<tr class="separator:a63cb82033481dc779e2f26f816fb2262"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a533011669167aeca8d9c56cc092055ce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a533011669167aeca8d9c56cc092055ce"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>decode</b> (<a class="el" href="classWorldStone_1_1IStream.html">IStream</a> *file)</td></tr>
+<tr class="separator:a533011669167aeca8d9c56cc092055ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a107144c0be9df259e96109e8049ff5a1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a107144c0be9df259e96109e8049ff5a1"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>GetClosestColorIndex</b> (<a class="el" href="structWorldStone_1_1Palette_1_1Color.html">Color</a> color)</td></tr>
+<tr class="separator:a107144c0be9df259e96109e8049ff5a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad14ebc3d492192ec6bda718341b90319"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad14ebc3d492192ec6bda718341b90319"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="structWorldStone_1_1Palette.html">Palette</a> &amp;rhs) const </td></tr>
+<tr class="separator:ad14ebc3d492192ec6bda718341b90319"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -144,9 +149,9 @@ std::array&lt; <a class="el" href="structWorldStone_1_1Palette_1_1Color.html">Co
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a4b482b2f4c0b34cf6486f0b9f94b458a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4b482b2f4c0b34cf6486f0b9f94b458a"></a>
-static const int&#160;</td><td class="memItemRight" valign="bottom"><b>colorCount</b> = 256</td></tr>
-<tr class="separator:a4b482b2f4c0b34cf6486f0b9f94b458a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f2e7c5844328da6809c2573c485a904"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5f2e7c5844328da6809c2573c485a904"></a>
+static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>colorCount</b> = 256</td></tr>
+<tr class="separator:a5f2e7c5844328da6809c2573c485a904"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Helper to load a Diablo 2 palette (.pal/.dat format) </p>
@@ -163,7 +168,7 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><b>colorCoun
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>WorldStone</b></li><li class="navelem"><a class="el" href="structWorldStone_1_1Palette.html">Palette</a></li>
-    <li class="footer">Generated on Wed May 9 2018 08:51:58 for Worldstone by
+    <li class="footer">Generated on Sat Sep 1 2018 11:09:54 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

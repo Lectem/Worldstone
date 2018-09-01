@@ -117,33 +117,35 @@ $(document).ready(function(){initNavTree('DC6extract_8cpp_source.html','');});
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keywordflow">if</span> (argc == 4) {</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <a class="code" href="structWorldStone_1_1Palette.html">Palette</a> palette;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        palette.decode(argv[2]);</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <a class="code" href="classWorldStone_1_1DC6.html">DC6</a> dc6;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <span class="keywordflow">if</span> (dc6.<a class="code" href="classWorldStone_1_1DC6.html#a6d4e3074dac58d2b2dec6ef801426f0f">initDecoder</a>(std::make_unique&lt;FileStream&gt;(argv[1]))) {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <span class="keywordtype">int</span> frameIndex = 0;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; frameHeader : dc6.getFrameHeaders())</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            {</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;                fmt::print(<span class="stringliteral">&quot;\nframe index {}\n&quot;</span>, frameIndex);</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                fmt::print(<span class="stringliteral">&quot;flip {}\n&quot;</span>, frameHeader.flip);</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                fmt::print(<span class="stringliteral">&quot;width {}\n&quot;</span>, frameHeader.width);</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;                fmt::print(<span class="stringliteral">&quot;height {}\n&quot;</span>, frameHeader.height);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                fmt::print(<span class="stringliteral">&quot;offsetX {}\n&quot;</span>, frameHeader.offsetX);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;                fmt::print(<span class="stringliteral">&quot;offsetY {}\n&quot;</span>, frameHeader.offsetY);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;                fmt::print(<span class="stringliteral">&quot;allocatedSize {}\n&quot;</span>, frameHeader.allocSize);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                fmt::print(<span class="stringliteral">&quot;nextBlock {}\n&quot;</span>, frameHeader.nextBlock);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                fmt::print(<span class="stringliteral">&quot;length {}\n&quot;</span>, frameHeader.length);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            }</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            dc6.exportToPPM(argv[3], palette);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        }</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    }</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        fmt::print(<span class="stringliteral">&quot;Usage : DC6extract file.dc6 palette.dat output\n&quot;</span>);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        fmt::print(</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="stringliteral">&quot;This tool will extract all frames of dc6 file to output[direction][frame].ppm\n&quot;</span>);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    }</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <span class="keywordflow">if</span> (!palette.decode(argv[2])) {</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            fmt::print(<span class="stringliteral">&quot;Couldn&#39;t read the palette file\n&quot;</span>);</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        }</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <a class="code" href="classWorldStone_1_1DC6.html">DC6</a> dc6;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="keywordflow">if</span> (dc6.<a class="code" href="classWorldStone_1_1DC6.html#a6d4e3074dac58d2b2dec6ef801426f0f">initDecoder</a>(std::make_unique&lt;FileStream&gt;(argv[1]))) {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            <span class="keywordtype">int</span> frameIndex = 0;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; frameHeader : dc6.getFrameHeaders())</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;                fmt::print(<span class="stringliteral">&quot;\nframe index {}\n&quot;</span>, frameIndex);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                fmt::print(<span class="stringliteral">&quot;flip {}\n&quot;</span>, frameHeader.flip);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;                fmt::print(<span class="stringliteral">&quot;width {}\n&quot;</span>, frameHeader.width);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;                fmt::print(<span class="stringliteral">&quot;height {}\n&quot;</span>, frameHeader.height);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                fmt::print(<span class="stringliteral">&quot;offsetX {}\n&quot;</span>, frameHeader.offsetX);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                fmt::print(<span class="stringliteral">&quot;offsetY {}\n&quot;</span>, frameHeader.offsetY);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                fmt::print(<span class="stringliteral">&quot;allocatedSize {}\n&quot;</span>, frameHeader.allocSize);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                fmt::print(<span class="stringliteral">&quot;nextBlock {}\n&quot;</span>, frameHeader.nextBlock);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                fmt::print(<span class="stringliteral">&quot;length {}\n&quot;</span>, frameHeader.length);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            }</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            dc6.exportToPPM(argv[3], palette);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    }</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    fmt::print(<span class="stringliteral">&quot;Usage : DC6extract file.dc6 palette.dat output\n&quot;</span>);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    fmt::print(<span class="stringliteral">&quot;This tool will extract all frames of dc6 file to output[direction][frame].ppm\n&quot;</span>);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
 <div class="ttc" id="FileStream_8h_html"><div class="ttname"><a href="FileStream_8h.html">FileStream.h</a></div></div>
 <div class="ttc" id="classWorldStone_1_1DC6_html_a6d4e3074dac58d2b2dec6ef801426f0f"><div class="ttname"><a href="classWorldStone_1_1DC6.html#a6d4e3074dac58d2b2dec6ef801426f0f">WorldStone::DC6::initDecoder</a></div><div class="ttdeci">bool initDecoder(StreamPtr &amp;&amp;streamPtr)</div><div class="ttdoc">Start decoding the stream and preparing data. </div><div class="ttdef"><b>Definition:</b> <a href="dc6_8cpp_source.html#l00016">dc6.cpp:16</a></div></div>
 <div class="ttc" id="classWorldStone_1_1DC6_html"><div class="ttname"><a href="classWorldStone_1_1DC6.html">WorldStone::DC6</a></div><div class="ttdoc">Decoder for the DC6 image format. </div><div class="ttdef"><b>Definition:</b> <a href="dc6_8h_source.html#l00039">dc6.h:39</a></div></div>
@@ -155,7 +157,7 @@ $(document).ready(function(){initNavTree('DC6extract_8cpp_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="dir_d4997a96f2e948238c4ace8570226aa1.html">tools</a></li><li class="navelem"><b>DC6extract.cpp</b></li>
-    <li class="footer">Generated on Wed May 9 2018 08:51:58 for Worldstone by
+    <li class="footer">Generated on Sat Sep 1 2018 11:09:54 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

@@ -106,54 +106,140 @@ $(document).ready(function(){initNavTree('Platform_8h_source.html','');});
 </div><!--header-->
 <div class="contents">
 <a href="Platform_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor"></span><span class="comment">// We&#39;re disabling clang format here, as IndentPPDirectives is only in clang-format v6</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// clang-format off</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#if defined(__clang__)</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_CLANG      </span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#if defined(__GNUC__) || defined(__GNUG__)</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_GCC_FAMILY </span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#   ifndef WS_CLANG</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_GCC    </span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#   endif</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#elif defined(_MSC_VER)</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_MSC        </span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#ifdef WS_MSC</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   include &lt;intrin.h&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#if defined(__x86_64__) || defined(_WIN64)</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_64BITS</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_32BITS</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#ifdef WS_CLANG</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   if __cplusplus &gt;= 201103L &amp;&amp; defined(__has_warning)</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       if __has_feature(cxx_attributes) &amp;&amp; __has_warning(&quot;-Wimplicit-fallthrough&quot;)</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#           define WS_FALLTHROUGH [[clang::fallthrough]]</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       endif</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   endif</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#elif defined(WS_GCC) &amp;&amp; __GNUC__ &gt;= 7</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_FALLTHROUGH __attribute__((fallthrough))</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="Platform_8h.html#af99b99e9296ee98d2aea72db714b7c77">   56</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_FALLTHROUGH ((void)0)</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor"></span><span class="comment">// clang-format on</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment"></span><span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="Platform_8h.html#aff6e2446c74b6ea6603c85c3ffd6b825">   67</a></span>&#160;constexpr <span class="keywordtype">size_t</span> <span class="keyword">operator</span><span class="stringliteral">&quot;&quot;</span> _z(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> n) { <span class="keywordflow">return</span> size_t(n); }</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor"></span><span class="comment">// We&#39;re disabling clang format here, as IndentPPDirectives is only in clang-format v6</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// clang-format off</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#ifdef FORCE_DOXYGEN</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="Platform_8h.html#acd787a5505f894410666db3cc3e82a57">   14</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_GCC_FAMILY </span></div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="Platform_8h.html#ac805ad3c5cb44c838c40a4a3c63c5b94">   15</a></span>&#160;<span class="preprocessor">#   define WS_CLANG      </span></div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="Platform_8h.html#a89d9c98319007a263cc9c87e5b7ccbfd">   16</a></span>&#160;<span class="preprocessor">#   define WS_GCC        </span></div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="Platform_8h.html#a45dfa774e4ac01716551d5cd93ae9c2e">   17</a></span>&#160;<span class="preprocessor">#   define WS_MSC        </span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="Platform_8h.html#aa4649dce73b68f5ca8a82a8d893cb6ab">   19</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_64BITS     </span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#   define WS_32BITS     </span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#if defined(__GNUC__) || defined(__GNUG__)</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_GCC_FAMILY</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   if defined(__clang__)</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_CLANG</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   else</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_GCC</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   endif</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#elif defined(_MSC_VER)</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_MSC</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   error &quot;Unknown compiler&quot;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#ifdef WS_MSC</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   include &lt;intrin.h&gt;</span> <span class="comment">// MSVC requires this header to use intrinsics</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#if defined(__LP64__) || defined(_WIN64)</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_64BITS</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="Platform_8h.html#ad0eb1e03540a4548b1af274ed3c56ea7">   43</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_32BITS</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#ifdef FORCE_DOXYGEN</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="Platform_8h.html#a8d602959aa64c23457e1a51a775f702e">   51</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_PLATFORM_WINDOWS    </span></div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="Platform_8h.html#a6eb46a97a2ffab28eeeb73f8b49692e6">   52</a></span>&#160;<span class="preprocessor">#   define WS_PLATFORM_LINUX      </span></div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="Platform_8h.html#a8dd37b254b2167e374b5b89b2c1ba922">   53</a></span>&#160;<span class="preprocessor">#   define WS_PLATFORM_MAC        </span></div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="Platform_8h.html#a230ca17a8bb16ad5163e8ac6edde7cd1">   54</a></span>&#160;<span class="preprocessor">#   define WS_PLATFORM_IOS        </span></div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="Platform_8h.html#a71d1975670124ccc599f651e11841cd6">   55</a></span>&#160;<span class="preprocessor">#   define WS_PLATFORM_EMSCRIPTEN </span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#if defined(_WIN32) || defined(_WIN64)</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   ifndef NOMINMAX</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define NOMINMAX // Already set by CMake, but might be required for consumers</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   endif // NOMINMAX</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_PLATFORM_WINDOWS</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#elif defined(__linux__)</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_PLATFORM_LINUX</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#elif __APPLE__</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_PLATFORM_MAC</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   include &lt;TargetConditionals.h&gt;</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#   if defined(TARGET_OS_IOS)</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_PLATFORM_IOS</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   endif</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#elif defined(__EMSCRIPTEN__)</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_PLATFORM_EMSCRIPTEN</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   error &quot;Unknown platform&quot;</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#define WS_STRINGIZE(_x) #_x</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#ifdef FORCE_DOXYGEN</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="Platform_8h.html#a5c18d1b8f3dff23937c6d5991845b796">   93</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_PRAGMA_DIAGNOSTIC_PUSH()            </span></div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="Platform_8h.html#af096c46ad8dc5ff351d25bf0f8c3f9fe">   94</a></span>&#160;<span class="preprocessor">#   define WS_PRAGMA_DIAGNOSTIC_POP()             </span></div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="Platform_8h.html#aed1ffbe752984ffaeaca6cd3a85b0277">   95</a></span>&#160;<span class="preprocessor">#   define WS_PRAGMA_DIAGNOSTIC_IGNORED_GNU(_x)   </span></div>
+<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="Platform_8h.html#a9eb816f9942d9a7988872f1e41164ed2">   96</a></span>&#160;<span class="preprocessor">#   define WS_PRAGMA_DIAGNOSTIC_IGNORED_GCC(_x)   </span></div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="Platform_8h.html#a3f7183f3511600d378d4e3ae7ded622d">   97</a></span>&#160;<span class="preprocessor">#   define WS_PRAGMA_DIAGNOSTIC_IGNORED_CLANG(_x) </span></div>
+<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="Platform_8h.html#a37ec4a0317496b4efd7f9bb16c831c64">   98</a></span>&#160;<span class="preprocessor">#   define WS_PRAGMA_DIAGNOSTIC_IGNORED_MSC(_x)   </span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   if defined(WS_CLANG)</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_PRAGMA_DIAGNOSTIC_PUSH()              _Pragma(&quot;clang diagnostic push&quot;)</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_PRAGMA_DIAGNOSTIC_POP()               _Pragma(&quot;clang diagnostic pop&quot;)</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_PRAGMA_DIAGNOSTIC_IGNORED_CLANG(_x)   _Pragma(WS_STRINGIZE(clang diagnostic ignored _x))</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_PRAGMA_DIAGNOSTIC_IGNORED_GNU(_x)     WS_PRAGMA_DIAGNOSTIC_IGNORED_CLANG(_x)</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   else</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_PRAGMA_DIAGNOSTIC_IGNORED_CLANG(_x)</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   endif</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   if defined(WS_GCC)</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_PRAGMA_DIAGNOSTIC_PUSH()              _Pragma(&quot;GCC diagnostic push&quot;)</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_PRAGMA_DIAGNOSTIC_POP()               _Pragma(&quot;GCC diagnostic pop&quot;)</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_PRAGMA_DIAGNOSTIC_IGNORED_GCC(_x)     _Pragma(WS_STRINGIZE(GCC diagnostic ignored _x) )</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_PRAGMA_DIAGNOSTIC_IGNORED_GNU(_x)     WS_PRAGMA_DIAGNOSTIC_IGNORED_GCC(_x)</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   else</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_PRAGMA_DIAGNOSTIC_IGNORED_GCC(_x)</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   endif</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   if defined(WS_MSC)</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_PRAGMA_DIAGNOSTIC_PUSH()              __pragma(warning(push) )</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_PRAGMA_DIAGNOSTIC_POP()               __pragma(warning(pop) )</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_PRAGMA_DIAGNOSTIC_IGNORED_MSC(_x)     __pragma(warning(disable:_x) )</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_PRAGMA_DIAGNOSTIC_IGNORED_GNU(_x)</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   else</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       define WS_PRAGMA_DIAGNOSTIC_IGNORED_MSC(_x)</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   endif</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="preprocessor">#if __cplusplus &gt;= 201703 || (defined(_MSVC_LANG) &amp;&amp; _MSVC_LANG &gt;= 201703)</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_FALLTHROUGH [[fallthrough]]</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#elif defined(WS_CLANG)</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   if __cplusplus &gt;= 201103L &amp;&amp; defined(__has_warning)</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       if __has_feature(cxx_attributes) &amp;&amp; __has_warning(&quot;-Wimplicit-fallthrough&quot;)</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#           define WS_FALLTHROUGH [[clang::fallthrough]]</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#       endif</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   endif</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#elif defined(WS_GCC) &amp;&amp; __GNUC__ &gt;= 7</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_FALLTHROUGH __attribute__((fallthrough))</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#ifndef WS_FALLTHROUGH</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="Platform_8h.html#af99b99e9296ee98d2aea72db714b7c77">  157</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#   define WS_FALLTHROUGH ((void)0)</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="preprocessor"></span><span class="comment">// clang-format on</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="preprocessor">#include &lt;stddef.h&gt;</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno"><a class="line" href="Platform_8h.html#aff6e2446c74b6ea6603c85c3ffd6b825">  169</a></span>&#160;constexpr <span class="keywordtype">size_t</span> <span class="keyword">operator</span><span class="stringliteral">&quot;&quot;</span> _z(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> n) { <span class="keywordflow">return</span> size_t(n); }</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="dir_770ba6fa46f3bfe7608bb8b841a04fae.html">system</a></li><li class="navelem"><a class="el" href="dir_e1f934d12cc201af1e31517dc1cb2f75.html">include</a></li><li class="navelem"><a class="el" href="Platform_8h.html">Platform.h</a></li>
-    <li class="footer">Generated on Wed May 9 2018 08:51:58 for Worldstone by
+    <li class="footer">Generated on Sat Sep 1 2018 11:09:53 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

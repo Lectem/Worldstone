@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['width',['width',['../structWorldStone_1_1DC6_1_1FrameHeader.html#a915f067f3a7d0eb754c8abcf609a8c87',1,'WorldStone::DC6::FrameHeader::width()'],['../structWorldStone_1_1ImageView.html#af11fa7d61c3d795968aef2acf5486704',1,'WorldStone::ImageView::width()']]],
-  ['widthbits',['widthBits',['../structWorldStone_1_1DCC_1_1DirectionHeader.html#aecf594babb23e110b2a811dc9d6f3dee',1,'WorldStone::DCC::DirectionHeader']]]
+  ['variable0bits',['variable0Bits',['../structWorldStone_1_1DCC_1_1DirectionHeader.html#a311c894de86c3e4e02914ef2e92b2213',1,'WorldStone::DCC::DirectionHeader']]],
+  ['version',['version',['../structWorldStone_1_1COF_1_1Header.html#a60f74da534a76786324a1387c11c8dbf',1,'WorldStone::COF::Header::version()'],['../structWorldStone_1_1DC6_1_1Header.html#a7d10747f6fe2ad4fe19966f39bf10835',1,'WorldStone::DC6::Header::version()'],['../structWorldStone_1_1DCC_1_1Header.html#ac8c11ebccfd2eab51c4dbf637f6cdae0',1,'WorldStone::DCC::Header::version()']]]
 ];

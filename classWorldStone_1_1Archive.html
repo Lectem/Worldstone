@@ -135,12 +135,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6d03d96837dab7e6a85186f4d15a7300"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6d03d96837dab7e6a85186f4d15a7300"></a>
 <a class="el" href="classWorldStone_1_1Archive.html">Archive</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classWorldStone_1_1Archive.html">Archive</a> &amp;)=delete</td></tr>
 <tr class="separator:a6d03d96837dab7e6a85186f4d15a7300"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5fab3501c7132e391621a5628f423a53"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5fab3501c7132e391621a5628f423a53"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>exists</b> (const path &amp;filePath)=0</td></tr>
-<tr class="separator:a5fab3501c7132e391621a5628f423a53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9488e405bd072cd8a63a4e35c507f974"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9488e405bd072cd8a63a4e35c507f974"></a>
-virtual StreamPtr&#160;</td><td class="memItemRight" valign="bottom"><b>open</b> (const path &amp;filePath)=0</td></tr>
-<tr class="separator:a9488e405bd072cd8a63a4e35c507f974"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d9e50dbdca96381d45b9d9c61f9b378"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d9e50dbdca96381d45b9d9c61f9b378"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>exists</b> (const Path &amp;filePath)=0</td></tr>
+<tr class="separator:a1d9e50dbdca96381d45b9d9c61f9b378"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d3f3273e82f89af477970e02060e6f7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d3f3273e82f89af477970e02060e6f7"></a>
+virtual StreamPtr&#160;</td><td class="memItemRight" valign="bottom"><b>open</b> (const Path &amp;filePath)=0</td></tr>
+<tr class="separator:a1d3f3273e82f89af477970e02060e6f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b39fc550b0ff18f815a854310067ae3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8b39fc550b0ff18f815a854310067ae3"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>isThreadSafe</b> ()</td></tr>
 <tr class="separator:a8b39fc550b0ff18f815a854310067ae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -180,9 +180,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setstate</b> (iostate
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_types_classWorldStone_1_1IOBase"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classWorldStone_1_1IOBase')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classWorldStone_1_1IOBase.html">WorldStone::IOBase</a></td></tr>
-<tr class="memitem:ad948fc2280c35cc7f21549da6238f07b inherit pub_types_classWorldStone_1_1IOBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad948fc2280c35cc7f21549da6238f07b"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>path</b> = std::string</td></tr>
-<tr class="separator:ad948fc2280c35cc7f21549da6238f07b inherit pub_types_classWorldStone_1_1IOBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba5f6a8fe241d270aa367a96df209a0b inherit pub_types_classWorldStone_1_1IOBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba5f6a8fe241d270aa367a96df209a0b"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>Path</b> = std::string</td></tr>
+<tr class="separator:aba5f6a8fe241d270aa367a96df209a0b inherit pub_types_classWorldStone_1_1IOBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9ce640319f14982a6e6473c1e1391d8 inherit pub_types_classWorldStone_1_1IOBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9ce640319f14982a6e6473c1e1391d8"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>iostate</b> = std::ios_base::iostate</td></tr>
 <tr class="separator:ad9ce640319f14982a6e6473c1e1391d8 inherit pub_types_classWorldStone_1_1IOBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -217,7 +217,7 @@ static const iostate&#160;</td><td class="memItemRight" valign="bottom"><b>failb
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>WorldStone</b></li><li class="navelem"><a class="el" href="classWorldStone_1_1Archive.html">Archive</a></li>
-    <li class="footer">Generated on Wed May 9 2018 08:51:58 for Worldstone by
+    <li class="footer">Generated on Sat Sep 1 2018 11:09:54 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

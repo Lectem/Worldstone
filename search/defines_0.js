@@ -1,5 +1,22 @@
 var searchData=
 [
+  ['ws_5f32bits',['WS_32BITS',['../Platform_8h.html#ad0eb1e03540a4548b1af274ed3c56ea7',1,'WS_32BITS():&#160;Platform.h'],['../Platform_8h.html#ad0eb1e03540a4548b1af274ed3c56ea7',1,'WS_32BITS():&#160;Platform.h']]],
+  ['ws_5f64bits',['WS_64BITS',['../Platform_8h.html#aa4649dce73b68f5ca8a82a8d893cb6ab',1,'Platform.h']]],
+  ['ws_5fclang',['WS_CLANG',['../Platform_8h.html#ac805ad3c5cb44c838c40a4a3c63c5b94',1,'Platform.h']]],
   ['ws_5ffallthrough',['WS_FALLTHROUGH',['../Platform_8h.html#af99b99e9296ee98d2aea72db714b7c77',1,'Platform.h']]],
+  ['ws_5fgcc',['WS_GCC',['../Platform_8h.html#a89d9c98319007a263cc9c87e5b7ccbfd',1,'Platform.h']]],
+  ['ws_5fgcc_5ffamily',['WS_GCC_FAMILY',['../Platform_8h.html#acd787a5505f894410666db3cc3e82a57',1,'Platform.h']]],
+  ['ws_5fmsc',['WS_MSC',['../Platform_8h.html#a45dfa774e4ac01716551d5cd93ae9c2e',1,'Platform.h']]],
+  ['ws_5fplatform_5femscripten',['WS_PLATFORM_EMSCRIPTEN',['../Platform_8h.html#a71d1975670124ccc599f651e11841cd6',1,'Platform.h']]],
+  ['ws_5fplatform_5fios',['WS_PLATFORM_IOS',['../Platform_8h.html#a230ca17a8bb16ad5163e8ac6edde7cd1',1,'Platform.h']]],
+  ['ws_5fplatform_5flinux',['WS_PLATFORM_LINUX',['../Platform_8h.html#a6eb46a97a2ffab28eeeb73f8b49692e6',1,'Platform.h']]],
+  ['ws_5fplatform_5fmac',['WS_PLATFORM_MAC',['../Platform_8h.html#a8dd37b254b2167e374b5b89b2c1ba922',1,'Platform.h']]],
+  ['ws_5fplatform_5fwindows',['WS_PLATFORM_WINDOWS',['../Platform_8h.html#a8d602959aa64c23457e1a51a775f702e',1,'Platform.h']]],
+  ['ws_5fpragma_5fdiagnostic_5fignored_5fclang',['WS_PRAGMA_DIAGNOSTIC_IGNORED_CLANG',['../Platform_8h.html#a3f7183f3511600d378d4e3ae7ded622d',1,'Platform.h']]],
+  ['ws_5fpragma_5fdiagnostic_5fignored_5fgcc',['WS_PRAGMA_DIAGNOSTIC_IGNORED_GCC',['../Platform_8h.html#a9eb816f9942d9a7988872f1e41164ed2',1,'Platform.h']]],
+  ['ws_5fpragma_5fdiagnostic_5fignored_5fgnu',['WS_PRAGMA_DIAGNOSTIC_IGNORED_GNU',['../Platform_8h.html#aed1ffbe752984ffaeaca6cd3a85b0277',1,'Platform.h']]],
+  ['ws_5fpragma_5fdiagnostic_5fignored_5fmsc',['WS_PRAGMA_DIAGNOSTIC_IGNORED_MSC',['../Platform_8h.html#a37ec4a0317496b4efd7f9bb16c831c64',1,'Platform.h']]],
+  ['ws_5fpragma_5fdiagnostic_5fpop',['WS_PRAGMA_DIAGNOSTIC_POP',['../Platform_8h.html#af096c46ad8dc5ff351d25bf0f8c3f9fe',1,'Platform.h']]],
+  ['ws_5fpragma_5fdiagnostic_5fpush',['WS_PRAGMA_DIAGNOSTIC_PUSH',['../Platform_8h.html#a5c18d1b8f3dff23937c6d5991845b796',1,'Platform.h']]],
   ['ws_5funused',['WS_UNUSED',['../SystemUtils_8h.html#aef59fcdfd59b2866d1730dfbcfeb4824',1,'SystemUtils.h']]]
 ];

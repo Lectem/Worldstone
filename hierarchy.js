@@ -7,6 +7,7 @@ var hierarchy =
     ] ],
     [ "WorldStone::COF", "classWorldStone_1_1COF.html", null ],
     [ "WorldStone::Palette::Color", "structWorldStone_1_1Palette_1_1Color.html", null ],
+    [ "WorldStone::Palette::Color24Bits", "structWorldStone_1_1Palette_1_1Color24Bits.html", null ],
     [ "WorldStone::DC6", "classWorldStone_1_1DC6.html", null ],
     [ "WorldStone::DCC", "classWorldStone_1_1DCC.html", null ],
     [ "DCxSprite", "structDCxSprite.html", [
@@ -39,6 +40,8 @@ var hierarchy =
     [ "WorldStone::COF::Layer", "structWorldStone_1_1COF_1_1Layer.html", null ],
     [ "Inputs::MouseState", "structInputs_1_1MouseState.html", null ],
     [ "WorldStone::Palette", "structWorldStone_1_1Palette.html", null ],
+    [ "WorldStone::PalShiftTransform", "structWorldStone_1_1PalShiftTransform.html", null ],
+    [ "WorldStone::PL2", "structWorldStone_1_1PL2.html", null ],
     [ "QApplication", null, [
       [ "DCxViewerApp", "classDCxViewerApp.html", null ]
     ] ],

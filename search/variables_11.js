@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['xlower',['xLower',['../structWorldStone_1_1AABB.html#a2e7fdd1dbd0b4cdf26431cc6bad3d1a3',1,'WorldStone::AABB']]],
-  ['xoffsetbits',['xOffsetBits',['../structWorldStone_1_1DCC_1_1DirectionHeader.html#a1776b415977fc2545dc568bf558cf03c',1,'WorldStone::DCC::DirectionHeader']]],
-  ['xupper',['xUpper',['../structWorldStone_1_1AABB.html#a905545b57e38e7ecc10f45741b826089',1,'WorldStone::AABB']]]
+  ['width',['width',['../structWorldStone_1_1DC6_1_1FrameHeader.html#a915f067f3a7d0eb754c8abcf609a8c87',1,'WorldStone::DC6::FrameHeader::width()'],['../structWorldStone_1_1ImageView.html#af11fa7d61c3d795968aef2acf5486704',1,'WorldStone::ImageView::width()']]],
+  ['widthbits',['widthBits',['../structWorldStone_1_1DCC_1_1DirectionHeader.html#aecf594babb23e110b2a811dc9d6f3dee',1,'WorldStone::DCC::DirectionHeader']]]
 ];

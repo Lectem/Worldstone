@@ -143,10 +143,10 @@ $(document).ready(function(){initNavTree('MpqArchive_8cpp_source.html','');});
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordflow">if</span> (SFileAddListFile(mpqHandle, listFilePath) != ERROR_SUCCESS) setstate(failbit);</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;}</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;std::vector&lt;MpqArchive::path&gt; MpqArchive::findFiles(<span class="keyword">const</span> path&amp; searchMask)</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;std::vector&lt;MpqArchive::Path&gt; MpqArchive::findFiles(<span class="keyword">const</span> Path&amp; searchMask)</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordflow">if</span> (!mpqHandle) <span class="keywordflow">return</span> {};</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    std::vector&lt;path&gt; list;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    std::vector&lt;Path&gt; list;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    SFILE_FIND_DATA   findFileData;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    HANDLE findHandle = SFileFindFirstFile(mpqHandle, searchMask.c_str(), &amp;findFileData, <span class="keyword">nullptr</span>);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">if</span> (!findHandle) <span class="keywordflow">return</span> {};</div>
@@ -176,19 +176,19 @@ $(document).ready(function(){initNavTree('MpqArchive_8cpp_source.html','');});
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">return</span> good();</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keywordtype">bool</span> MpqArchive::exists(<span class="keyword">const</span> path&amp; filePath) { <span class="keywordflow">return</span> SFileHasFile(mpqHandle, filePath.c_str()); }</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keywordtype">bool</span> MpqArchive::exists(<span class="keyword">const</span> Path&amp; filePath) { <span class="keywordflow">return</span> SFileHasFile(mpqHandle, filePath.c_str()); }</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;StreamPtr MpqArchive::open(<span class="keyword">const</span> path&amp; filePath)</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;StreamPtr MpqArchive::open(<span class="keyword">const</span> Path&amp; filePath)</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;{</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    StreamPtr tmp = std::make_unique&lt;MpqFileStream&gt;(*<span class="keyword">this</span>, filePath);</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">return</span> tmp-&gt;good() ? std::move(tmp) : nullptr;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;MpqFileStream::MpqFileStream(MpqArchive&amp; archive, <span class="keyword">const</span> path&amp; filename) { open(archive, filename); }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;MpqFileStream::MpqFileStream(MpqArchive&amp; archive, <span class="keyword">const</span> Path&amp; filename) { open(archive, filename); }</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;MpqFileStream::~MpqFileStream() { close(); }</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keywordtype">bool</span> MpqFileStream::open(MpqArchive&amp; archive, <span class="keyword">const</span> path&amp; filename)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keywordtype">bool</span> MpqFileStream::open(MpqArchive&amp; archive, <span class="keyword">const</span> Path&amp; filename)</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;{</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordflow">if</span> (!archive || !SFileOpenFileEx(archive.getInternalHandle(), filename.c_str(), 0, &amp;file))</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        setstate(failbit);</div>
@@ -256,7 +256,7 @@ $(document).ready(function(){initNavTree('MpqArchive_8cpp_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="dir_770ba6fa46f3bfe7608bb8b841a04fae.html">system</a></li><li class="navelem"><a class="el" href="dir_d0e21e8705de25abdec4d380be84e870.html">src</a></li><li class="navelem"><b>MpqArchive.cpp</b></li>
-    <li class="footer">Generated on Wed May 9 2018 08:51:58 for Worldstone by
+    <li class="footer">Generated on Sat Sep 1 2018 11:09:54 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

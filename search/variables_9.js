@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['nextblock',['nextBlock',['../structWorldStone_1_1DC6_1_1FrameHeader.html#afe7993e1cfd84e4018ebef37e5369fad',1,'WorldStone::DC6::FrameHeader']]]
+  ['multiplicativeblend',['multiplicativeBlend',['../structWorldStone_1_1PL2.html#a4656d2b617571747f3cf4175519f8afb',1,'WorldStone::PL2']]]
 ];

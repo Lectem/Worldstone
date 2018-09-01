@@ -147,29 +147,28 @@ $(document).ready(function(){initNavTree('utils_8cpp_source.html','');});
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                 <span class="keyword">const</span> Palette&amp; palette)</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    assert(width &gt; 0 &amp;&amp; height &gt; 0);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    assert(palette.isValid());</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    FILE* file = fopen(output, <span class="stringliteral">&quot;wb&quot;</span>);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">if</span> (file) {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        fmt::print(file, <span class="stringliteral">&quot;P6 {} {} 255\n&quot;</span>, width, height);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; static_cast&lt;size_t&gt;(width * height); ++i)</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span>&amp; colors = palette.colors;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            fputc(colors[data[i]].r, file);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            fputc(colors[data[i]].g, file);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            fputc(colors[data[i]].b, file);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        fclose(file);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;} <span class="comment">// namespace Utils</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;} <span class="comment">// namespace WorldStone</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    FILE* file = fopen(output, <span class="stringliteral">&quot;wb&quot;</span>);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">if</span> (file) {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        fmt::print(file, <span class="stringliteral">&quot;P6 {} {} 255\n&quot;</span>, width, height);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; static_cast&lt;size_t&gt;(width * height); ++i)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keyword">const</span> <span class="keyword">auto</span>&amp; colors = palette.colors;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            fputc(colors[data[i]].r, file);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            fputc(colors[data[i]].g, file);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            fputc(colors[data[i]].b, file);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        }</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        fclose(file);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;} <span class="comment">// namespace Utils</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;} <span class="comment">// namespace WorldStone</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="dir_7c3a1345283c9702e0309ab160183c1c.html">decoders</a></li><li class="navelem"><a class="el" href="dir_9e37d6c7910cf7ade220699283f37021.html">src</a></li><li class="navelem"><b>utils.cpp</b></li>
-    <li class="footer">Generated on Wed May 9 2018 08:51:58 for Worldstone by
+    <li class="footer">Generated on Sat Sep 1 2018 11:09:53 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

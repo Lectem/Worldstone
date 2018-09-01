@@ -1,8 +1,10 @@
 var structWorldStone_1_1Palette =
 [
     [ "Color", "structWorldStone_1_1Palette_1_1Color.html", "structWorldStone_1_1Palette_1_1Color" ],
-    [ "decode", "structWorldStone_1_1Palette.html#a12df442bb4f5d6664ad13d11edfe6dab", null ],
-    [ "decode", "structWorldStone_1_1Palette.html#a33962413d14d673ef2b030d07e602dfa", null ],
-    [ "isValid", "structWorldStone_1_1Palette.html#aeef1a5cf4e53fc93d7e7f43f82772983", null ],
+    [ "Color24Bits", "structWorldStone_1_1Palette_1_1Color24Bits.html", "structWorldStone_1_1Palette_1_1Color24Bits" ],
+    [ "decode", "structWorldStone_1_1Palette.html#a63cb82033481dc779e2f26f816fb2262", null ],
+    [ "decode", "structWorldStone_1_1Palette.html#a533011669167aeca8d9c56cc092055ce", null ],
+    [ "GetClosestColorIndex", "structWorldStone_1_1Palette.html#a107144c0be9df259e96109e8049ff5a1", null ],
+    [ "operator==", "structWorldStone_1_1Palette.html#ad14ebc3d492192ec6bda718341b90319", null ],
     [ "colors", "structWorldStone_1_1Palette.html#aac1446a80fac64566642fd3cf312dbb4", null ]
 ];

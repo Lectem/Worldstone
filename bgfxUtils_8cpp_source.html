@@ -128,7 +128,7 @@ $(document).ready(function(){initNavTree('bgfxUtils_8cpp_source.html','');});
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    }</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    bx::debugPrintf(<span class="stringliteral">&quot;Failed to load %s.\n&quot;</span>, _filePath);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordflow">return</span> NULL;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;}</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">static</span> bgfx::ShaderHandle loadShader(bx::FileReaderI* _reader, <span class="keyword">const</span> <span class="keywordtype">char</span>* _name)</div>
@@ -174,7 +174,7 @@ $(document).ready(function(){initNavTree('bgfxUtils_8cpp_source.html','');});
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    bgfx::ShaderHandle vsh = loadShader(_reader, _vsName);</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    bgfx::ShaderHandle fsh = BGFX_INVALID_HANDLE;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">if</span> (NULL != _fsName)</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">nullptr</span> != _fsName)</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    {</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        fsh = loadShader(_reader, _fsName);</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    }</div>
@@ -193,7 +193,7 @@ $(document).ready(function(){initNavTree('bgfxUtils_8cpp_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="dir_d4997a96f2e948238c4ace8570226aa1.html">tools</a></li><li class="navelem"><a class="el" href="dir_6bb00da5264f0867a3437473136cb3a5.html">RendererApp</a></li><li class="navelem"><b>bgfxUtils.cpp</b></li>
-    <li class="footer">Generated on Wed May 9 2018 08:51:58 for Worldstone by
+    <li class="footer">Generated on Sat Sep 1 2018 11:09:54 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
