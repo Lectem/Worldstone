@@ -2,10 +2,10 @@
 // Created by Lectem on 06/11/2016.
 //
 
-#include "palette.h"
+#include "Palette.h"
+#include <Platform.h>
 #include <stdio.h>
 #include <FileStream.h>
-#include <Platform.h>
 #include <algorithm>
 #include <cassert>
 #include <cmath>
@@ -539,6 +539,17 @@ std::unique_ptr<PL2> PL2::CreateFromPalette(const Palette& palette)
     PL2CreateDarkenedUnitShift(pl2);
     PL2CreateTextColorshifts(pl2);
     return pl2Ptr;
+}
+
+std::unique_ptr<PL2> PL2::ReadFromStream(IStream* stream)
+{
+    static_assert(sizeof(PL2) == 443175, "PL2 struct does not match the size of the files");
+    static_assert(std::is_trivially_copyable<PL2>::value, "PL2 is not trivially copyable");
+    if (stream && stream->good()) {
+        auto pl2 = std::make_unique<PL2>();
+        if (stream->read(pl2.get(), sizeof(PL2)) == sizeof(PL2)) return pl2;
+    }
+    return nullptr;
 }
 
 } // namespace WorldStone

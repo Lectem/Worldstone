@@ -10,7 +10,7 @@
 #include <assert.h>
 #include <fmt/format.h>
 #include "ImageView.h"
-#include "palette.h"
+#include "Palette.h"
 #include "utils.h"
 
 namespace WorldStone

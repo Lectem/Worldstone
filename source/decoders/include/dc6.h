@@ -5,7 +5,7 @@
 #include <memory>
 #include <type_traits>
 #include <vector>
-#include "palette.h"
+#include "Palette.h"
 
 namespace WorldStone
 {
@@ -81,7 +81,7 @@ public:
      * @return true on success
      *
      * Prepares the decoder to read the frames using @ref decompressFrame.
-     * Basically calls extractHeaders, so that you can call @ref getHeader and @ref getFrameHeaders.
+     * Basically calls extractHeaders(), so that you can call getHeader() and getFrameHeaders().
      */
     bool initDecoder(StreamPtr&& streamPtr);
 

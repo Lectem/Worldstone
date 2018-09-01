@@ -5,7 +5,7 @@
 #include "dc6.h"
 #include <FileStream.h>
 #include <fmt/format.h>
-#include "palette.h"
+#include "Palette.h"
 #include "utils.h"
 
 // TODO : Remove asserts and replace with proper error handling

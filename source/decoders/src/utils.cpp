@@ -4,7 +4,7 @@
 #include "utils.h"
 #include <stdio.h>
 #include <fmt/format.h>
-#include "palette.h"
+#include "Palette.h"
 
 namespace WorldStone
 {

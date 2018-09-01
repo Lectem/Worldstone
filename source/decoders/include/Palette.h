@@ -46,6 +46,19 @@ struct Palette
 struct PalShiftTransform
 {
     std::array<uint8_t, Palette::colorCount> indices;
+
+    Palette::Color GetTranformedColor(const Palette& palette, uint8_t colorIndex) const
+    {
+        return palette.colors[indices[colorIndex]];
+    }
+
+    void GetTranformedPalette(Palette& outputPalette, const Palette& basePalette) const
+    {
+        for (size_t i = 0; i < Palette::colorCount; i++)
+        {
+            outputPalette.colors[i] = basePalette.colors[indices[i]];
+        }
+    }
 };
 
 /**
@@ -76,6 +89,7 @@ struct PL2
     PalShiftTransform    textColorShifts[13];
 
     static std::unique_ptr<PL2> CreateFromPalette(const Palette& palette);
+    static std::unique_ptr<PL2> ReadFromStream(IStream* stream);
 };
 
 } // namespace WorldStone

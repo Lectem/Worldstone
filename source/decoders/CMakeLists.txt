@@ -4,7 +4,7 @@ set(DECODERS_SOURCES
     src/cof.cpp
     src/dc6.cpp
     src/dcc.cpp
-    src/palette.cpp
+    src/Palette.cpp
     src/utils.cpp
 )
 
@@ -15,7 +15,7 @@ set(DECODERS_HEADERS
     include/dcc.h
     include/ImageView.h
     include/utils.h
-    include/palette.h
+    include/Palette.h
 )
 
 add_library(ws_decoders ${DECODERS_SOURCES} ${DECODERS_HEADERS})

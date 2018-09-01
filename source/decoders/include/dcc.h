@@ -10,7 +10,7 @@
 #include <type_traits>
 #include "AABB.h"
 #include "ImageView.h"
-#include "palette.h"
+#include "Palette.h"
 
 namespace WorldStone
 {

@@ -6,7 +6,7 @@
 
 #include <stdint.h>
 #include "ImageView.h"
-#include "palette.h"
+#include "Palette.h"
 
 namespace WorldStone
 {
