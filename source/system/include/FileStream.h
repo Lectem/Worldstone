@@ -18,10 +18,10 @@ class FileStream : public IStream
     FILE* file = nullptr;
 
 public:
-    FileStream(const path& filename);
+    FileStream(const Path& filename);
     ~FileStream() override;
 
-    bool open(const path& filename);
+    bool open(const Path& filename);
     bool is_open() const { return file != nullptr; }
     bool close();
 

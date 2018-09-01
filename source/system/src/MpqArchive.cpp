@@ -36,10 +36,10 @@ void MpqArchive::addListFile(const char* listFilePath)
     if (SFileAddListFile(mpqHandle, listFilePath) != ERROR_SUCCESS) setstate(failbit);
 }
 
-std::vector<MpqArchive::path> MpqArchive::findFiles(const path& searchMask)
+std::vector<MpqArchive::Path> MpqArchive::findFiles(const Path& searchMask)
 {
     if (!mpqHandle) return {};
-    std::vector<path> list;
+    std::vector<Path> list;
     SFILE_FIND_DATA   findFileData;
     HANDLE findHandle = SFileFindFirstFile(mpqHandle, searchMask.c_str(), &findFileData, nullptr);
     if (!findHandle) return {};
@@ -69,19 +69,19 @@ bool MpqArchive::unload()
     return good();
 }
 
-bool MpqArchive::exists(const path& filePath) { return SFileHasFile(mpqHandle, filePath.c_str()); }
+bool MpqArchive::exists(const Path& filePath) { return SFileHasFile(mpqHandle, filePath.c_str()); }
 
-StreamPtr MpqArchive::open(const path& filePath)
+StreamPtr MpqArchive::open(const Path& filePath)
 {
     StreamPtr tmp = std::make_unique<MpqFileStream>(*this, filePath);
     return tmp->good() ? std::move(tmp) : nullptr;
 }
 
-MpqFileStream::MpqFileStream(MpqArchive& archive, const path& filename) { open(archive, filename); }
+MpqFileStream::MpqFileStream(MpqArchive& archive, const Path& filename) { open(archive, filename); }
 
 MpqFileStream::~MpqFileStream() { close(); }
 
-bool MpqFileStream::open(MpqArchive& archive, const path& filename)
+bool MpqFileStream::open(MpqArchive& archive, const Path& filename)
 {
     if (!archive || !SFileOpenFileEx(archive.getInternalHandle(), filename.c_str(), 0, &file))
         setstate(failbit);

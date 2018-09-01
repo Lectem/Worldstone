@@ -24,20 +24,20 @@ public:
     MpqArchive& operator=(MpqArchive&& toMove);
     ~MpqArchive() override;
 
-    bool exists(const path& filePath) override;
-    StreamPtr open(const path& filePath) override;
+    bool exists(const Path& filePath) override;
+    StreamPtr open(const Path& filePath) override;
 
     HANDLE getInternalHandle() { return mpqHandle; }
 
     void addListFile(const char* listFilePAth);
-    std::vector<path> findFiles(const path& searchMask = "*");
+    std::vector<Path> findFiles(const Path& searchMask = "*");
 
 private:
     bool load() override;
     bool is_loaded() override;
     bool unload() override;
 
-    path   mpqFileName;
+    Path   mpqFileName;
     HANDLE mpqHandle = nullptr;
 };
 
@@ -53,8 +53,8 @@ class MpqFileStream : public IStream
 protected:
     MpqFileStream() = default; // Needed to make tests easier
 public:
-    MpqFileStream(MpqArchive& archive, const path& filename);
-    bool open(MpqArchive& archive, const path& filename);
+    MpqFileStream(MpqArchive& archive, const Path& filename);
+    bool open(MpqArchive& archive, const Path& filename);
     bool is_open() const { return file != nullptr; }
     bool close();
 

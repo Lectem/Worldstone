@@ -8,11 +8,11 @@
 namespace WorldStone
 {
 
-FileStream::FileStream(const path& filename) { open(filename); }
+FileStream::FileStream(const Path& filename) { open(filename); }
 
 FileStream::~FileStream() { close(); }
 
-bool FileStream::open(const path& filename)
+bool FileStream::open(const Path& filename)
 {
     file = fopen(filename.c_str(), "rb");
     if (!file) setstate(failbit);

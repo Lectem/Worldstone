@@ -17,7 +17,7 @@ namespace WorldStone
 class IOBase
 {
 public:
-    using path    = std::string;
+    using Path    = std::string;
     using iostate = std::ios_base::iostate;
 
 protected:

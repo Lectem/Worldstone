@@ -78,10 +78,10 @@ void DCxViewerApp::setPaletteFile(const QUrl& paletteUrl)
 void DCxViewerApp::updateMpqFileList()
 {
     if (!mpqArchive) return;
-    std::vector<MpqArchive::path> files = mpqArchive->findFiles();
+    auto files = mpqArchive->findFiles();
     mpqFiles.clear();
     emit fileListUpdated();
-    for (std::string& file : files)
+    for (const std::string& file : files)
         mpqFiles.push_back(QString::fromStdString(file));
     mpqFiles.sort();
     emit fileListUpdated();
