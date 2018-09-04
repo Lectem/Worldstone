@@ -34,7 +34,7 @@ struct PosColorTexcoordVertex
 };
 
 WS_PRAGMA_DIAGNOSTIC_PUSH()
-WS_PRAGMA_DIAGNOSTIC_IGNORED_GNU("-Wglobal-constructors")
+WS_PRAGMA_DIAGNOSTIC_IGNORED_CLANG("-Wglobal-constructors")
 bgfx::VertexDecl PosColorTexcoordVertex::ms_decl;
 WS_PRAGMA_DIAGNOSTIC_POP()
 
