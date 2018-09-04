@@ -7,7 +7,7 @@
 class BaseApp
 {
 private:
-    std::atomic_bool stopRunning = ATOMIC_VAR_INIT(false);
+    std::atomic_bool stopRunning = ATOMIC_VAR_INIT(true);
     SDL_Window*      mainWindow  = nullptr;
 
     int init();
@@ -30,7 +30,10 @@ protected:
     void         requireExit() { stopRunning = true; }
 
 public:
-    BaseApp() { init(); }
+    BaseApp()
+    {
+        if (init()) requireExit();
+    }
     virtual ~BaseApp() { shutdown(); }
 
     void run();
