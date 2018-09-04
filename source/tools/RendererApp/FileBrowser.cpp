@@ -192,10 +192,11 @@ struct DccView : public FileBrowser::IFileView
             const float arrowsSize = 10.f;
             drawList->AddLine(pos, ImVec2{pos.x + arrowsSize, pos.y}, 0xFF0000FF, 1.f);
             drawList->AddLine(pos, ImVec2{pos.x, pos.y + arrowsSize}, 0xFF00FF00, 1.f);
-            drawList->AddRect(
-                ImVec2{pos.x + currentDir.extents.xLower, pos.y + currentDir.extents.yLower},
-                ImVec2{pos.x + currentDir.extents.xUpper, pos.y + currentDir.extents.yUpper},
-                0xFFAAAAAA);
+            drawList->AddRect(ImVec2{pos.x + currentDir.extents.xLower * scale,
+                                     pos.y + currentDir.extents.yLower * scale},
+                              ImVec2{pos.x + currentDir.extents.xUpper * scale,
+                                     pos.y + currentDir.extents.yUpper * scale},
+                              0xFFAAAAAA);
             drawList->AddCircle(pos, 20.f, 0xFF00FFFF);
             drawList->PopClipRect();
 
