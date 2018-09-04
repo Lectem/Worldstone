@@ -146,5 +146,12 @@ inline uint64_t popCount(uint64_t value)
 #endif
 }
 
+template<class T, std::size_t N>
+constexpr size_t Size(const T (&array)[N]) noexcept
+{
+    WS_UNUSED(array);
+    return N;
+}
+
 } // namespace Utils
 } // namespace WorldStone
