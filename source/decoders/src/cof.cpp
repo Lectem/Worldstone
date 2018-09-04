@@ -13,6 +13,9 @@
 namespace WorldStone
 {
 
+constexpr const char* COF::componentsNames[];
+constexpr uint8_t     COF::componentsNumber;
+
 bool COF::read(const StreamPtr& streamPtr)
 {
     if (streamPtr && streamPtr->good()) {
@@ -30,7 +33,7 @@ bool COF::read(const StreamPtr& streamPtr)
         for (const Layer& layer : layers)
         {
             WS_UNUSED(layer);
-            assert(layer.szWeaponClass[3] == '\0');
+            assert(layer.weaponClass[3] == '\0');
         }
 
         keyframes.resize(header.frames);

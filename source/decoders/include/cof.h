@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <Stream.h>
+#include <SystemUtils.h>
 #include <Vector.h>
 #include <memory>
 #include <type_traits>
@@ -30,7 +31,7 @@ public:
         uint8_t  frames;     ///< Number of frames in the animation
         uint8_t  directions; ///< Number of directions in the animation
         uint8_t  version;    ///< The version of the COF, always 20 in the game files.
-        uint32_t unknown1;   ///< Possible bitfield values : loopAnim / Overlay color when hit
+        uint32_t unknown1;   ///< Possible bitfield values : loopAnim / underlay color when hit
         ///@name Bounding box
         ///@{
         int32_t xMin;
@@ -38,18 +39,18 @@ public:
         int32_t yMin;
         int32_t yMax;
         ///@}
-        int16_t animRate; ///< Animation rate(speed). 256
+        int16_t animRate; ///< Default animation rate(speed) in 8-bit fixed-point: 256 == 1.f.
         int16_t zeros;    ///< Always zero
     };
 
     struct Layer
     {
-        uint8_t nComponent;
-        uint8_t bShadow;
-        uint8_t bSelectable;
-        uint8_t nOverrideTranslvl;
-        uint8_t nNewTranslvl;
-        char    szWeaponClass[4];
+        uint8_t component;        ///< See componentsNames
+        uint8_t castsShadow;      ///< Does this layer cast a shadow
+        uint8_t isSelectable;     ///< Can the layer be selected and used for the "hit" underlay
+        uint8_t overrideTranslvl; ///<
+        uint8_t newTranslvl;      ///<
+        char    weaponClass[4];   ///<
     };
 
     /// Frame trigger type
@@ -81,7 +82,7 @@ public:
     static constexpr const char* componentsNames[] = {"HD", "TR", "LG", "RA", "LA", "RH",
                                                       "LH", "SH", "S1", "S2", "S3", "S4",
                                                       "S5", "S6", "S7", "S8"};
-    static constexpr uint8_t componentsNumber = std::extent<decltype(COF::componentsNames)>::value;
+    static constexpr uint8_t componentsNumber = (uint8_t)Utils::Size(COF::componentsNames);
 
 private:
     Header           header;
