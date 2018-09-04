@@ -1,9 +1,14 @@
 #include "RendererApp.h"
 #include <FileStream.h>
+#include <MpqArchive.h>
 #include <bgfx/bgfx.h>
 #include <dcc.h>
 #include "DrawSprite.h"
+#include "FileBrowser.h"
 #include "imgui/imgui_bgfx.h"
+
+RendererApp::RendererApp()  = default;
+RendererApp::~RendererApp() = default;
 
 bool RendererApp::initAppThread()
 {
@@ -12,7 +17,7 @@ bool RendererApp::initAppThread()
     imguiCreate(imguiAllocator);
 
     ImGuiIO& io                    = ImGui::GetIO();
-    io.KeyMap[ImGuiKey_Tab]        = SDLK_TAB;
+    io.KeyMap[ImGuiKey_Tab]        = SDL_SCANCODE_TAB;
     io.KeyMap[ImGuiKey_LeftArrow]  = SDL_SCANCODE_LEFT;
     io.KeyMap[ImGuiKey_RightArrow] = SDL_SCANCODE_RIGHT;
     io.KeyMap[ImGuiKey_UpArrow]    = SDL_SCANCODE_UP;
@@ -22,46 +27,38 @@ bool RendererApp::initAppThread()
     io.KeyMap[ImGuiKey_Home]       = SDL_SCANCODE_HOME;
     io.KeyMap[ImGuiKey_End]        = SDL_SCANCODE_END;
     io.KeyMap[ImGuiKey_Insert]     = SDL_SCANCODE_INSERT;
-    io.KeyMap[ImGuiKey_Delete]     = SDLK_DELETE;
-    io.KeyMap[ImGuiKey_Backspace]  = SDLK_BACKSPACE;
-    io.KeyMap[ImGuiKey_Enter]      = SDLK_RETURN;
-    io.KeyMap[ImGuiKey_Escape]     = SDLK_ESCAPE;
-    io.KeyMap[ImGuiKey_A]          = SDLK_a;
-    io.KeyMap[ImGuiKey_C]          = SDLK_c;
-    io.KeyMap[ImGuiKey_V]          = SDLK_v;
-    io.KeyMap[ImGuiKey_X]          = SDLK_x;
-    io.KeyMap[ImGuiKey_Y]          = SDLK_y;
-    io.KeyMap[ImGuiKey_Z]          = SDLK_z;
+    io.KeyMap[ImGuiKey_Delete]     = SDL_SCANCODE_DELETE;
+    io.KeyMap[ImGuiKey_Backspace]  = SDL_SCANCODE_BACKSPACE;
+    io.KeyMap[ImGuiKey_Space]      = SDL_SCANCODE_SPACE;
+    io.KeyMap[ImGuiKey_Enter]      = SDL_SCANCODE_RETURN;
+    io.KeyMap[ImGuiKey_Escape]     = SDL_SCANCODE_ESCAPE;
+    io.KeyMap[ImGuiKey_A]          = SDL_SCANCODE_A;
+    io.KeyMap[ImGuiKey_C]          = SDL_SCANCODE_C;
+    io.KeyMap[ImGuiKey_V]          = SDL_SCANCODE_V;
+    io.KeyMap[ImGuiKey_X]          = SDL_SCANCODE_X;
+    io.KeyMap[ImGuiKey_Y]          = SDL_SCANCODE_Y;
+    io.KeyMap[ImGuiKey_Z]          = SDL_SCANCODE_Z;
+
+    io.ConfigFlags = 0 | ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableGamepad;
 
     io.SetClipboardTextFn = [](void*, const char* text) { SDL_SetClipboardText(text); };
     io.GetClipboardTextFn = [](void*) -> const char* { return SDL_GetClipboardText(); };
 
-    using WorldStone::DCC;
-    DCC testDCC;
-    testDCC.initDecoder(std::make_unique<WorldStone::FileStream>("sprites/CRHDBRVDTHTH.dcc"));
-    DCC::Direction                           firstDir;
-    WorldStone::SimpleImageProvider<uint8_t> imageprovider;
-    testDCC.readDirection(firstDir, 0, imageprovider);
-    const auto&         firstFrame = firstDir.frameHeaders[0];
+    io.IniFilename = "imgui.ini";
+    io.LogFilename = nullptr; // "imgui_log.txt";
 
     WorldStone::Palette pal;
-    if(!pal.decode("palettes/pal.dat")) return false;
+    if (!pal.decode("palettes/pal.dat")) return false;
+    spriteRenderer.init(pal);
 
-    static_assert(sizeof(WorldStone::Palette::Color24Bits) == 3, "");
-    WorldStone::Vector<WorldStone::Palette::Color24Bits> paletteRGB888(WorldStone::Palette::colorCount);
-    for (size_t i = 0; i < WorldStone::Palette::colorCount; i++)
-    {
-        const WorldStone::Palette::Color color                      = pal.colors[i];
-        paletteRGB888[i] = {color.r, color.g, color.b};
-    }
-    DrawSprite::init({uint16_t(firstFrame.width), uint16_t(firstFrame.height),
-                      imageprovider.getImage(0).buffer, (const uint8_t*)paletteRGB888.data()});
+    fileBrowser = std::make_unique<FileBrowser>();
     return true;
 }
 
 void RendererApp::shutdownAppThread()
 {
-    DrawSprite::shutdown();
+    fileBrowser.reset(nullptr);
+    spriteRenderer.shutdown();
     imguiDestroy();
     BaseApp::shutdownAppThread();
 }
@@ -86,7 +83,8 @@ void RendererApp::executeAppLoopOnce()
             WS_FALLTHROUGH;
         case SDL_KEYUP:
         {
-            int key               = event.key.keysym.sym & ~SDLK_SCANCODE_MASK;
+            int key = event.key.keysym.scancode;
+            IM_ASSERT(key >= 0 && key < IM_ARRAYSIZE(imguiIO.KeysDown));
             imguiIO.KeysDown[key] = (event.type == SDL_KEYDOWN);
             imguiIO.KeyShift      = ((SDL_GetModState() & KMOD_SHIFT) != 0);
             imguiIO.KeyCtrl       = ((SDL_GetModState() & KMOD_CTRL) != 0);
@@ -126,6 +124,8 @@ void RendererApp::executeAppLoopOnce()
         ImGui::End();
     }
 
+    fileBrowser->display(spriteRenderer);
+
     imguiEndFrame();
 
     // Set view 0 default viewport.
@@ -135,7 +135,7 @@ void RendererApp::executeAppLoopOnce()
     // if no other draw calls are submitted to view 0.
     bgfx::touch(0);
 
-    DrawSprite::draw(windowWidth, windowHeight);
+    spriteRenderer.draw(windowWidth, windowHeight);
 
     // Advance to next frame. Rendering thread will be kicked to
     // process submitted rendering primitives.

@@ -1,5 +1,3 @@
-project(RendererApp)
-
 if(NOT WS_WITH_BGFX)
     return()
 endif()
@@ -24,6 +22,8 @@ set(SRC_LIST
     RendererApp.cpp
     bgfxUtils.cpp
     DrawSprite.cpp
+    SearchableListWidget.cpp
+    FileBrowser.cpp
 )
 set(HDR_LIST
     main.h
@@ -32,6 +32,8 @@ set(HDR_LIST
     Inputs.h
     bgfxUtils.h
     DrawSprite.h
+    SearchableListWidget.h
+    FileBrowser.h
 )
 
 set(SHADERS_LIST
@@ -79,6 +81,7 @@ target_link_libraries(RendererApp
 
 set_target_properties(RendererApp PROPERTIES
     VS_DEBUGGER_WORKING_DIRECTORY ${RendererAppWorkDir}
+    FOLDER ${PROJECT_NAME}
 )
 
 target_enable_lto(RendererApp optimized)
