@@ -45,8 +45,10 @@ static WorldStone::IOBase::Path GetInstallDirectory()
     return {};
 }
 
-constexpr const char* FileBrowser::mpqFiles[];
-constexpr const char* FileBrowser::listFiles[];
+char const* const FileBrowser::mpqFiles[]  = {"d2char.mpq",  "d2data.mpq",  "d2exp.mpq",
+                                             "d2music.mpq", "d2sfx.mpq",   "d2speech.mpq",
+                                             "d2video.mpq", "d2xtalk.mpq", "d2xvideo.mpq"};
+char const* const FileBrowser::listFiles[] = {"listfile.txt"};
 
 FileBrowser::IFileView::~IFileView() {}
 

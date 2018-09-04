@@ -13,8 +13,8 @@
 namespace WorldStone
 {
 
-constexpr const char* COF::componentsNames[];
 constexpr uint8_t     COF::componentsNumber;
+constexpr const char* COF::componentsNames[COF::componentsNumber];
 
 bool COF::read(const StreamPtr& streamPtr)
 {

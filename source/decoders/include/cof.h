@@ -2,7 +2,6 @@
 
 #include <stdint.h>
 #include <Stream.h>
-#include <SystemUtils.h>
 #include <Vector.h>
 #include <memory>
 #include <type_traits>
@@ -79,10 +78,10 @@ public:
         return &layersOrder[frameIdx];
     }
     /// @note This list of components comes from the file data\\global\\excel\\Composit.txt
-    static constexpr const char* componentsNames[] = {"HD", "TR", "LG", "RA", "LA", "RH",
-                                                      "LH", "SH", "S1", "S2", "S3", "S4",
-                                                      "S5", "S6", "S7", "S8"};
-    static constexpr uint8_t componentsNumber = (uint8_t)Utils::Size(COF::componentsNames);
+    static constexpr uint8_t     componentsNumber                  = 16;
+    static constexpr const char* componentsNames[componentsNumber] = {
+        "HD", "TR", "LG", "RA", "LA", "RH", "LH", "SH",
+        "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"};
 
 private:
     Header           header;

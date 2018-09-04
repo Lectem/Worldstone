@@ -128,7 +128,10 @@ static bgfx::TextureHandle createTextureFromSprite(const SpriteRenderer::Frame& 
 
 static FrameRenderData createFrameRenderData(const SpriteRenderer::Frame& frame)
 {
-    return {createTextureFromSprite(frame), createVertexBufferFromSpriteFrame(frame)};
+    FrameRenderData renderData;
+    renderData.spriteTexture = createTextureFromSprite(frame);
+    renderData.vertexBuffer  = createVertexBufferFromSpriteFrame(frame);
+    return renderData;
 }
 static void destroy(FrameRenderData& frameRenderData)
 {
