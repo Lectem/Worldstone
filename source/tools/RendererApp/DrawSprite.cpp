@@ -122,7 +122,7 @@ static bgfx::TextureHandle createTextureFromSprite(const SpriteRenderer::Frame& 
     spriteTexture                     = bgfx::createTexture2D(
         frame.width, frame.height, false, 1, bgfx::TextureFormat::R8U, flagsSprite,
         bgfx::copy(frame.data, frame.width * frame.height * sizeof(uint8_t)));
-    bgfx::setName(spriteTexture, "SpriteTexture");
+    if (bgfx::isValid(spriteTexture)) bgfx::setName(spriteTexture, "SpriteTexture");
     return spriteTexture;
 }
 

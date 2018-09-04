@@ -46,6 +46,11 @@ if(WS_WITH_BGFX)
 
     add_subdirectory(bgfx.cmake)
     target_set_warnings(bgfx DISABLE ALL)
+    target_compile_definitions(bgfx 
+        PRIVATE 
+        BGFX_CONFIG_MAX_COMMAND_BUFFER_SIZE=128<<10 # Since we load all frames as seperate textures for now, we need to bump this value
+    )
+    
     add_library(external::bgfx ALIAS bgfx)
     include( bgfx.cmake/cmake/3rdparty/dear-imgui.cmake )
     target_set_warnings(dear-imgui DISABLE ALL)

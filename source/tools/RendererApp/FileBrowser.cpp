@@ -139,16 +139,90 @@ void FileBrowser::displayMenuBar()
 
 namespace
 {
-struct DccView : public FileBrowser::IFileView
+
+struct SpriteAnim
 {
-    WorldStone::DCC                        dccFile;
-    WorldStone::DCC::Direction             currentDir;
+
     SpriteRenderer::SpriteRenderDataHandle spriteDataHdl;
 
-    ImVec2 pos{200.f, 200.f};
-    float  scale           = 1.f;
-    float  animationTime   = 0.f;
-    float  framesPerSecond = 20.f;
+    ImVec2                    pos{200.f, 200.f};
+    float                     scale           = 1.f;
+    float                     animationTime   = 0.f;
+    float                     framesPerSecond = 20.f;
+    uint32_t                  nbFrames        = 0;
+    WorldStone::AABB<int32_t> extents;
+
+    // Options
+    bool drawAABB  = true;
+    bool drawGizmo = true;
+
+    void Display(SpriteRenderer& spriteRenderer)
+    {
+        ImGui::InputFloat2("Translation", (float*)&pos);
+        ImGui::InputFloat("Scale", &scale);
+
+        float curFrameFloat = animationTime * framesPerSecond;
+
+        ImGui::SliderFloat("FPS", &framesPerSecond, 0.f, 255.f);
+        if (framesPerSecond > 0.f) {
+            ImGui::Text("Current frame: %f ", double(curFrameFloat));
+        }
+        else
+        {
+            int sliderFrame = int(animationTime);
+            ImGui::SliderInt("Current frame", &sliderFrame, 0, int(nbFrames - 1));
+            sliderFrame   = std::min(std::max(sliderFrame, 0), int(nbFrames - 1));
+            curFrameFloat = animationTime = float(sliderFrame);
+        }
+
+        assert(curFrameFloat >= 0);
+        const uint32_t curFrame = uint32_t(curFrameFloat);
+        assert(curFrame < nbFrames);
+
+        { // Render
+            ImDrawList* drawList = ImGui::GetWindowDrawList();
+            drawList->PushClipRectFullScreen();
+
+            // Bounding box
+            ImGui::Checkbox("Box", &drawAABB);
+            if (drawAABB) {
+                drawList->AddRect(
+                    ImVec2{pos.x + extents.xLower * scale, pos.y + extents.yLower * scale},
+                    ImVec2{pos.x + extents.xUpper * scale, pos.y + extents.yUpper * scale},
+                    0xFFAAAAAA);
+            }
+            ImGui::SameLine();
+            ImGui::Checkbox("Gizmo", &drawGizmo);
+            if (drawGizmo) {
+                const float gizmoSize = 10.f;
+                drawList->AddLine(pos, ImVec2{pos.x + gizmoSize, pos.y}, 0xFF0000FF, 1.f);
+                drawList->AddLine(pos, ImVec2{pos.x, pos.y + gizmoSize}, 0xFF00FF00, 1.f);
+
+                drawList->AddCircle(pos, 20.f, 0xFF00FFFF);
+            }
+            drawList->PopClipRect();
+
+            spriteRenderer.pushDrawRequest(spriteDataHdl, {{pos.x, pos.y}, curFrame, scale});
+        }
+
+        // Advance timer
+        if (nbFrames && framesPerSecond > 0.f) {
+            animationTime += ImGui::GetIO().DeltaTime;
+            if (uint32_t(animationTime * framesPerSecond) >= nbFrames)
+                animationTime = std::fmod(animationTime, nbFrames / framesPerSecond);
+            assert(uint32_t(animationTime * framesPerSecond) < nbFrames);
+        }
+    }
+};
+
+struct DccView : public FileBrowser::IFileView
+{
+
+    WorldStone::DCC                        dccFile;
+    WorldStone::DCC::Direction             currentDir;
+    int                                    currentDirIndex = 0;
+
+    SpriteAnim spriteAnim;
 
     void display(SpriteRenderer& spriteRenderer) override
     {
@@ -164,73 +238,56 @@ struct DccView : public FileBrowser::IFileView
                 ImGui::Separator();
             // clang-format on
         }
-        uint32_t direction = 0;
-        if (spriteDataHdl.expired()) {
-            spriteDataHdl                  = spriteRenderer.createSpriteRenderData();
-            const auto spriteRenderDataPtr = spriteDataHdl.lock();
 
-            currentDir = {};
-            WorldStone::SimpleImageProvider<uint8_t> imageprovider;
-            if (dccFile.readDirection(currentDir, direction, imageprovider)) {
-                for (size_t i = 0; i < currentDir.frameHeaders.size(); i++)
-                {
-                    const auto& frameHeader = currentDir.frameHeaders[i];
-                    spriteRenderDataPtr->addSpriteFrame(
-                        {int16_t(frameHeader.extents.xLower), int16_t(frameHeader.extents.yLower),
-                         uint16_t(frameHeader.extents.width()),
-                         uint16_t(frameHeader.extents.height()), imageprovider.getImage(i).buffer});
-                }
-            }
-            animationTime = 0.f;
+        bool dirChanged =
+            ImGui::SliderInt("Direction", &currentDirIndex, 0, int(header.directions - 1));
+        currentDirIndex = std::min(std::max(currentDirIndex, 0), int(header.directions - 1));
+        if (spriteAnim.spriteDataHdl.expired() || dirChanged) {
+            loadDirectionIntoAnim(uint32_t(currentDirIndex), spriteRenderer);
         }
-        if (!spriteDataHdl.expired()) {
-            ImGui::InputFloat2("Translation", (float*)&pos);
-            ImGui::InputFloat("Scale", &scale);
-
-            ImDrawList* drawList = ImGui::GetWindowDrawList();
-            drawList->PushClipRectFullScreen();
-            const float arrowsSize = 10.f;
-            drawList->AddLine(pos, ImVec2{pos.x + arrowsSize, pos.y}, 0xFF0000FF, 1.f);
-            drawList->AddLine(pos, ImVec2{pos.x, pos.y + arrowsSize}, 0xFF00FF00, 1.f);
-            drawList->AddRect(ImVec2{pos.x + currentDir.extents.xLower * scale,
-                                     pos.y + currentDir.extents.yLower * scale},
-                              ImVec2{pos.x + currentDir.extents.xUpper * scale,
-                                     pos.y + currentDir.extents.yUpper * scale},
-                              0xFFAAAAAA);
-            drawList->AddCircle(pos, 20.f, 0xFF00FFFF);
-            drawList->PopClipRect();
-
-            const float curFrameFloat = animationTime * framesPerSecond;
-            assert(curFrameFloat >= 0);
-            const uint32_t curFrame = uint32_t(curFrameFloat);
-            assert(curFrame < header.framesPerDir);
-            spriteRenderer.pushDrawRequest(spriteDataHdl, {{pos.x, pos.y}, curFrame, scale});
-
-            ImGui::SliderFloat("FPS", &framesPerSecond, 0.0, 255.f);
-            ImGui::Text("Current frame: %f ", double(curFrameFloat));
-
-            if (header.framesPerDir && framesPerSecond > 0.f) {
-                animationTime += ImGui::GetIO().DeltaTime;
-                if (int(animationTime * framesPerSecond) >= header.framesPerDir)
-                    animationTime = std::fmod(animationTime, header.framesPerDir / framesPerSecond);
-                assert(int(animationTime * framesPerSecond) < header.framesPerDir);
-            }
+        if (!spriteAnim.spriteDataHdl.expired()) {
+            spriteAnim.Display(spriteRenderer);
         }
         else
         {
             ImGui::Separator();
-            ImGui::TextColored(ImVec4{1.f, 0.f, 0.f, 1.f}, "Unable to decode direction %d",
-                               direction);
+            const ImVec4 red{1.f, 0.f, 0.f, 1.f};
+            ImGui::TextColored(red, "Unable to decode direction %d", currentDirIndex);
         }
         ImGui::End();
+    }
+    void loadDirectionIntoAnim(uint32_t direction, SpriteRenderer& spriteRenderer)
+    {
+        spriteAnim = {}; // Reset the sprite animation
+
+        spriteAnim.spriteDataHdl       = spriteRenderer.createSpriteRenderData();
+        const auto spriteRenderDataPtr = spriteAnim.spriteDataHdl.lock();
+
+        const auto& header = dccFile.getHeader();
+        currentDir         = {};
+        WorldStone::SimpleImageProvider<uint8_t> imageprovider;
+        if (dccFile.readDirection(currentDir, direction, imageprovider)) {
+            for (size_t i = 0; i < currentDir.frameHeaders.size(); i++)
+            {
+                const auto& frameHeader = currentDir.frameHeaders[i];
+                spriteRenderDataPtr->addSpriteFrame(
+                    {int16_t(frameHeader.extents.xLower), int16_t(frameHeader.extents.yLower),
+                     uint16_t(frameHeader.extents.width()), uint16_t(frameHeader.extents.height()),
+                     imageprovider.getImage(i).buffer});
+            }
+            spriteAnim.extents  = currentDir.extents;
+            spriteAnim.nbFrames = header.framesPerDir;
+        }
     }
 };
 
 struct Dc6View : public FileBrowser::IFileView
 {
     WorldStone::DC6 dc6File;
+    SpriteAnim      spriteAnim;
+    int             currentDirIndex = 0;
 
-    void display() override
+    void display(SpriteRenderer& spriteRenderer) override
     {
         const auto& header = dc6File.getHeader();
         if (ImGui::Begin("DC6")) {
@@ -244,7 +301,72 @@ struct Dc6View : public FileBrowser::IFileView
                 ImGui::Separator();
             // clang-format on
         }
+
+        bool dirChanged =
+            ImGui::SliderInt("Direction", &currentDirIndex, 0, int(header.directions - 1));
+        currentDirIndex = std::min(std::max(currentDirIndex, 0), int(header.directions - 1));
+        if (spriteAnim.spriteDataHdl.expired() || dirChanged) {
+            loadDirectionIntoAnim(uint32_t(currentDirIndex), spriteRenderer);
+        }
+        if (!spriteAnim.spriteDataHdl.expired()) {
+            spriteAnim.Display(spriteRenderer);
+        }
+        else
+        {
+            ImGui::Separator();
+            const ImVec4 red{1.f, 0.f, 0.f, 1.f};
+            ImGui::TextColored(red, "Unable to decode direction %d", currentDirIndex);
+        }
+
+        static bool warningIgnored = false;
+        if (!warningIgnored && ImGui::BeginPopupModal("Warning")) {
+            ImGui::Text("This file contains a lot of frames.\nThis is poorly handled right now and "
+                        "might crash if you reload such files too quickly.");
+            if (ImGui::Button("Ignore")) {
+                warningIgnored = true;
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Close")) ImGui::CloseCurrentPopup();
+            ImGui::EndPopup();
+        }
+
         ImGui::End();
+    }
+
+    void loadDirectionIntoAnim(uint32_t direction, SpriteRenderer& spriteRenderer)
+    {
+        spriteAnim = {}; // Reset the sprite animation
+
+        spriteAnim.spriteDataHdl       = spriteRenderer.createSpriteRenderData();
+        const auto spriteRenderDataPtr = spriteAnim.spriteDataHdl.lock();
+
+        const auto&  header               = dc6File.getHeader();
+        const auto&  frameHeaders         = dc6File.getFrameHeaders();
+        const size_t directionFrameOffset = direction * header.framesPerDir;
+
+        spriteAnim.extents.initializeForExtension();
+        if (header.framesPerDir > 500) ImGui::OpenPopup("Warning");
+
+        for (size_t frameIndex = 0; frameIndex < header.framesPerDir; frameIndex++)
+        {
+            const size_t                    frameIndexInFile = directionFrameOffset + frameIndex;
+            const auto&                     frameHeader      = frameHeaders[frameIndexInFile];
+            const WorldStone::AABB<int32_t> frameExtents{frameHeader.offsetX, frameHeader.offsetY,
+                                                         frameHeader.offsetX + frameHeader.width,
+                                                         frameHeader.offsetY + frameHeader.height};
+            assert(frameExtents.width() == frameHeader.width);
+            assert(frameExtents.height() == frameHeader.height);
+
+            spriteAnim.extents.extend(frameExtents);
+            auto frameData = dc6File.decompressFrame(frameIndexInFile);
+            spriteRenderDataPtr->addSpriteFrame(
+                {int16_t(frameExtents.xLower), int16_t(frameExtents.yLower),
+                 uint16_t(frameExtents.width()), uint16_t(frameExtents.height()),
+                 frameData.data()});
+
+            spriteAnim.nbFrames = header.framesPerDir;
+        }
     }
 };
 
