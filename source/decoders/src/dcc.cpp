@@ -6,6 +6,7 @@
 
 #include "dcc.h"
 #include <BitStream.h>
+#include <SystemUtils.h>
 #include <array>
 #include <assert.h>
 #include <fmt/format.h>
@@ -124,11 +125,13 @@ static bool readFrameHeaders(uint8_t nbFrames, DCC::Direction& outDir, BitStream
         if (fHdr.frameBottomUp) {
             assert(false && "Please report the name of the DCC file to the devs!");
             fHdr.extents.yLower = fHdr.yOffset;
+            // Upper excluded (max==upper-1)
             fHdr.extents.yUpper = fHdr.yOffset + int32_t(fHdr.height);
         }
         else // top-down
         {
             fHdr.extents.yLower = fHdr.yOffset - int32_t(fHdr.height) + 1;
+            // Upper excluded (max==upper-1)
             fHdr.extents.yUpper = fHdr.yOffset + 1;
         }
     }
