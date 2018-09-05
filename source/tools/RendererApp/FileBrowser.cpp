@@ -119,7 +119,7 @@ void FileBrowser::displayMenuBar()
             else
             {
                 fileListWidget.replaceElements({});
-                currentArchive = nullptr;
+                currentArchive = WorldStone::MpqArchive{};
                 ImGui::OpenPopup("Error");
             }
         }
