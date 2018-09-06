@@ -26,18 +26,16 @@ namespace WorldStone
  * This format is usually used with COF files, which describe the animations and blending of
  * multiple DCC files.
  *
- * Layout of a DC6 file:
- * | Name                       | Type                         | Size in bytes                               | Offsets                   |
- * | -------------------------- | ---------------------------- | ------------------------------------------- | ------------------------- |
- * | header                     | DC6::Header                  | 24                                          | 0x00                      |
- * | framePointers              | uint32_t[dirs][framesPerDir] | 4 * header.directions * header.framesPerDir | 0x18                      |
- * | frameHeader[0]             | DC6::FrameHeader             | 32                                          | framePointers[0]          |
- * | frameData[0]               | uint8_t[frameHeader.length]  | frameHeader[0].length                       | ^                         |
- * | termination[0]             | uint8_t[3]                   | 3                                           | ^                         |
- * | ... other frames ...       ||||
- * | frameHeader[totalFrames-1] | DC6::FrameHeader             | 32                                          | framePointers[nbFrames-1] |
- * | frameData[totalFrames-1]   | uint8_t[frameHeader.length]  | frameHeader[nbFrames-1].length              | ^                         |
- * | termination[totalFrames-1] | uint8_t[3]                   | 3                                           | ^                         |
+ * Layout of a DCC file:
+ * | Name                        | Type                         | Size in Bytes                                 | Offsets                         |
+ * | --------------------------- | ---------------------------- | --------------------------------------------- | ------------------------------- |
+ * | header                      | DCC::Header                  | 15                                            | 0x00                            |
+ * | directionsOffsets           | uint32_t[dirs]               | 4 * header.directions                         | 0x0F                            |
+ * | First Direction             | DCC::Direction               | directionsOffsets[1] - directionsOffsets[0]   | directionsOffsets[0]            |
+ * |            ***              ||||
+ * | Last Direction              | DCC::Direction               | filesize - directionsOffsets[directions-1]    | directionsOffsets[directions-1] |
+ *
+ * @copydetails DCC::Direction
  *
  * @test{Decoders,DCC_BaalSpirit}
  * @test{Decoders,DCC_CRHDBRVDTHTH}
@@ -56,8 +54,7 @@ public:
         uint8_t  signature;    ///< Magic number for DCC files, must be 0x74
         uint8_t  version;      ///< DCC major version, usually 6
         uint8_t  directions;   ///< Number of directions in this file, max 32
-        uint8_t  framesPerDir; ///< Frames number for each direction(0-255? Max seen in-game is 200)
-        uint8_t  padding0[3];  ///< Some padding, might actually still be framesPerDir
+        uint32_t framesPerDir; ///< Frames number for each direction
         uint32_t tag;          ///< Seems to be always 1 ?
 
         /// Size of the decoded image in bytes
@@ -109,6 +106,35 @@ public:
         Extents extents;
     };
 
+    // clang-format off
+    /**
+     * @details
+     * Direction layout:
+     * | Name                            | Type                         | Size                                            |
+     * | ------------------------------- | ---------------------------- | ----------------------------------------------- |
+     * | dirHeader[0]                    | DCC::DirectionHeader         | 32 + 30 bits                                    |
+     * ||||
+     * | frameHeader[0]                  | DCC::FrameHeader             | Based on the DirectionHeader values             |
+     * |             ***                 |||
+     * | frameHeader[framesPerDir-1]     | DCC::FrameHeader             | Based on the DirectionHeader values             |
+     * ||||
+     * | align                           | (unused)                     | Align to byte if any frame has additionnal data |
+     * | Frame 0 additionnal data        | byte[]                       | frameHeader[0].optionalBytes                    |
+     * |             ***                 |||
+     * | Last frame additionnal data     | byte[]                       | frameHeader[framesPerDir-1].optionalBytes       |
+     * ||||
+     * | equalCellsBitStreamSize         | uint20_t                     | 20 bits (only if compressEqualCells is true)    |
+     * | pixelMaskBitStreamSize          | uint20_t                     | 20 bits                                         |
+     * | encodingTypeBitsreamSize        | uint20_t                     | 20 bits (only if hasRawPixelEncoding is true)   |
+     * | rawPixelCodesBitStreamSize      | uint20_t                     | 20 bits (only if hasRawPixelEncoding is true)   |
+     * | codeToPixelValue                | bitset<256>                  | 256 bits                                        |
+     * | equalCellBitStream              | BitStream                    | equalCellsBitStreamSize                         |
+     * | pixelMaskBitStream              | BitStream                    | pixelMaskBitStreamSize                          |
+     * | rawPixelUsageBitStream          | BitStream                    | encodingTypeBitsreamSize                        |
+     * | rawPixelCodesBitStream          | BitStream                    | rawPixelCodesBitStreamSize                      |
+     * | pixelCodesDisplacementBitStream | BitStream                    | Until end of the direction                      |
+     */
+    // clang-format on
     struct Direction
     {
         ///@name Values in file

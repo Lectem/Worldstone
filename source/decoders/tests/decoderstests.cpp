@@ -24,9 +24,6 @@ TEST_CASE("DCC decoding BaalSpirit.dcc")
     CHECK(header.version      ==      6);
     CHECK(header.directions   ==      1);
     CHECK(header.framesPerDir ==    200);
-    CHECK(header.padding0[0]  ==      0);
-    CHECK(header.padding0[1]  ==      0);
-    CHECK(header.padding0[2]  ==      0);
     CHECK(header.tag          ==      1);
     CHECK(header.finalDc6Size == 547757);
 
@@ -68,9 +65,6 @@ TEST_CASE("DCC decoding CRHDBRVDTHTH.dcc")
     CHECK(header.version      ==     6);
     CHECK(header.directions   ==     8);
     CHECK(header.framesPerDir ==    24);
-    CHECK(header.padding0[0]  ==     0);
-    CHECK(header.padding0[1]  ==     0);
-    CHECK(header.padding0[2]  ==     0);
     CHECK(header.tag          ==     1);
     CHECK(header.finalDc6Size == 59600);
 
@@ -113,9 +107,6 @@ TEST_CASE("DCC decoding BloodSmall01.dcc")
     CHECK(header.version      ==     6);
     CHECK(header.directions   ==     8);
     CHECK(header.framesPerDir ==     9);
-    CHECK(header.padding0[0]  ==     0);
-    CHECK(header.padding0[1]  ==     0);
-    CHECK(header.padding0[2]  ==     0);
     CHECK(header.tag          ==     1);
     CHECK(header.finalDc6Size == 14200);
 
@@ -157,9 +148,6 @@ TEST_CASE("DCC decoding HZTRLITA1HTH.dcc")
     CHECK(header.version      ==     6);
     CHECK(header.directions   ==     8);
     CHECK(header.framesPerDir ==    12);
-    CHECK(header.padding0[0]  ==     0);
-    CHECK(header.padding0[1]  ==     0);
-    CHECK(header.padding0[2]  ==     0);
     CHECK(header.tag          ==     1);
     CHECK(header.finalDc6Size == 92732);
 

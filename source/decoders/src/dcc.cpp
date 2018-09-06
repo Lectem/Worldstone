@@ -60,13 +60,9 @@ bool DCC::extractHeaderAndOffsets()
     stream->readRaw(header.signature);
     stream->readRaw(header.version);
     stream->readRaw(header.directions);
-    stream->readRaw(header.framesPerDir);
-    stream->readRaw(header.padding0);
+    stream->readRaw(header.framesPerDir);   // TODO : ENDIAN
     stream->readRaw(header.tag);            // TODO : ENDIAN
     stream->readRaw(header.finalDc6Size);   // TODO : ENDIAN
-
-    assert(header.padding0[0] == 0 && header.padding0[1] == 0 && header.padding0[2] == 0 &&
-           "Assumed there are 255 frames max, but Paul Siramy's doc mentions 256 as max ?");
 
     directionsOffsets.resize(header.directions + 1);
     directionsOffsets[header.directions] = uint32_t(stream->size());
@@ -97,7 +93,7 @@ static bool readDirHeader(DCC::DirectionHeader& dirHeader, BitStreamView& bitStr
     return bitStream.good();
 }
 
-static bool readFrameHeaders(uint8_t nbFrames, DCC::Direction& outDir, BitStreamView& bitStream)
+static bool readFrameHeaders(uint32_t nbFrames, DCC::Direction& outDir, BitStreamView& bitStream)
 {
     constexpr auto              bitsWidthTable = DCC::bitsWidthTable;
     const DCC::DirectionHeader& dirHeader = outDir.header;
