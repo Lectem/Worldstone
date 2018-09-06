@@ -106,15 +106,17 @@ void FileBrowser::displayMenuBar()
         ImGui::Combo("Mpq File", &item, mpqFiles, sizeof(mpqFiles) / sizeof(*mpqFiles));
 
         if (ImGui::Button("Open")) {
-            ImGui::CloseCurrentPopup();
 
             currentView    = nullptr;
             currentArchive = WorldStone::MpqArchive{(mpqDirectory + mpqFiles[item]).c_str(),
                                                     (mpqDirectory + listFiles[0]).c_str()};
+            if (!currentArchive.good())
+                currentArchive = WorldStone::MpqArchive{(mpqDirectory + mpqFiles[item]).c_str()};
             if (currentArchive.good()) {
                 auto fileList = currentArchive.findFiles();
                 std::sort(fileList.begin(), fileList.end());
                 fileListWidget.replaceElements(std::move(fileList));
+                ImGui::CloseCurrentPopup();
             }
             else
             {
