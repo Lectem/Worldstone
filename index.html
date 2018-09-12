@@ -100,10 +100,18 @@ $(document).ready(function(){initNavTree('index.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a href="https://travis-ci.org/Lectem/Worldstone">![Travis build Status](https://travis-ci.org/Lectem/Worldstone.svg?branch=master)</a> <a href="https://ci.appveyor.com/project/Lectem/Worldstone/branch/master">![Appveyor build status](https://ci.appveyor.com/api/projects/status/537k5bthitwtplta/branch/master?svg=true)</a> <a href="https://codecov.io/gh/Lectem/Worldstone">![Coverage](https://codecov.io/gh/Lectem/Worldstone/branch/master/graph/badge.svg)</a> <a href="http://my.cdash.org/index.php?project=Worldstone">![CDash dashboard](https://img.shields.io/badge/CDash-Access-blue.svg)</a> <a href="https://github.com/Lectem/Worldstone/pulls">![Pull requests](https://img.shields.io/github/issues-pr-raw/Lectem/Worldstone.svg)</a> <a href="https://github.com/Lectem/Worldstone/issues">![Opened issues](https://img.shields.io/github/issues-raw/Lectem/Worldstone.svg)</a> <a href="https://gitter.im/Worldstone/Lobby">![Gitter chat](https://badges.gitter.im/Lectem/Worldstone.png)</a> <a href="https://lectem.github.io/Worldstone">![Documentation](https://img.shields.io/badge/Documentation-latest-blue.svg)</a></p>
-<p>Diablo 2 tools and engine reimplementation in 'modern' C++ (see <a href="#c-usage">C++ Usage</a>).</p>
+<p>Diablo 2 tools and engine reimplementation in C++.</p>
 <p>It aims to be portable/cross-platform.</p>
 <h2>Status of the project</h2>
-<p>DC6 and DCC (sprites) decoders are now working. Work is progressing slowly. While not reflected in the repo, a lot of documentation has been gathered for future work !</p>
+<p>DC6 and DCC (sprites) decoders and renderer are now working. PL2 file (palette shifts) generation is working and gives the same results as if created by the game. Optional fixes are available for more accurate palette shifts.</p>
+<p>The <a href="https://github.com/Lectem/Worldstone/tree/master/source/tools/RendererApp">viewer app</a> can be used to browse Mpq files and display the following:</p>
+<ul>
+<li>.dc6 sprites</li>
+<li>.dcc sprites</li>
+<li>.dat and .pl2 palettes and palshifts</li>
+<li>.cof animation files information (no sprite display yet)</li>
+</ul>
+<p>Work is progressing slowly. While not reflected in the repo, a lot of documentation has been gathered for future work !</p>
 <h2>Building</h2>
 <h3>Prerequisites</h3>
 <ul>
@@ -115,7 +123,6 @@ $(document).ready(function(){initNavTree('index.html','');});
 </ul>
 </li>
 <li>Bzip2 for Stormlib(libbz2-dev on debian/ubuntu)</li>
-<li>QT 5.x (only for the tools)</li>
 </ul>
 <h3>Copy-paste from command line (in the project directory):</h3>
 <pre class="fragment">git submodule update --init --recursive
@@ -125,12 +132,12 @@ cmake --build .
 </pre><h3>Configuration</h3>
 <p>You can tweak the configuration using the following CMake variables (I suggest using ccmake or cmake-gui)</p>
 <ul>
-<li>CMAKE_PREFIX_PATH : You might need to add your Qt path to this variable</li>
-<li>ENABLE_LTO : Use link time optimization on non debug builds if available</li>
-<li>ENABLE_WARNINGS_SETTINGS : Set to false to remove warning flags added by the project</li>
-<li>BUILD_TESTING : Disable all testing features</li>
-<li>WS_BUILD_TESTS : Disable Worldstone tests</li>
-<li>WS_USE_DOXYGEN : Should we (try to) add a doc target</li>
+<li>ENABLE_LTO: Use link time optimization on non debug builds if available</li>
+<li>ENABLE_WARNINGS_SETTINGS: Set to false to remove warning flags added by the project</li>
+<li>BUILD_TESTING: Disable all testing features</li>
+<li>WS_BUILD_TESTS: Disable Worldstone tests</li>
+<li>WS_USE_DOXYGEN: Should we (try to) add a doc target</li>
+<li>WS_WITH_BGFX: Build targets that require bgfx (Anything doing rendering)</li>
 </ul>
 <h3>On Windows</h3>
 <ul>
@@ -138,33 +145,16 @@ cmake --build .
 </ul>
 <h2>Short-term objectives</h2>
 <ul>
-<li>DC6/DCC viewer</li>
+<li>COF viewer</li>
 <li>DT1 viewer</li>
 </ul>
-<p>For a more detailed list of what will need to do to have an engine, check the TODO list.</p>
-<h2>C++ Usage</h2>
-<p>While this project tends to use modern features of C++, it tries to use them sparingly. It is not <a href="https://gist.github.com/bkaradzic/2e39896bc7d8c34e042b">Orthodox C++</a>, but is still similar. Basically, if you can do something without the latest X or Y fancy feature, then don't use the feature.</p>
-<p>For example:</p>
-<ul>
-<li>IOstreams are banned (anybody asking why can lookup the reason easily)</li>
-<li>Don't use a feature just because you can. (ie. don't put lambdas, SFINAE and auto where it is not needed)</li>
-<li>Try not to overuse templates (too much).</li>
-<li>Use the good stuff !<ul>
-<li>static_assert</li>
-<li>move-semantics</li>
-<li>custom litterals</li>
-<li>atomics</li>
-<li>unique_ptr</li>
-<li>... </li>
-</ul>
-</li>
-</ul>
+<p>For a more detailed list of what will need to do to have an engine, check the TODO list. There is also a contributing guide available. </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Sep 1 2018 11:09:54 for Worldstone by
+    <li class="footer">Generated on Wed Sep 12 2018 20:02:05 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

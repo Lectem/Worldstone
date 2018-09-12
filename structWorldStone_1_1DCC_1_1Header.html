@@ -130,14 +130,10 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWorldStone_1_1DCC_1_1Header.html#ac31af9f7a3c85e7d09f8ae3b588b3613">directions</a></td></tr>
 <tr class="memdesc:ac31af9f7a3c85e7d09f8ae3b588b3613"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of directions in this file, max 32. <br/></td></tr>
 <tr class="separator:ac31af9f7a3c85e7d09f8ae3b588b3613"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9fa39c1e8902015f06effeb45073c21"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9fa39c1e8902015f06effeb45073c21"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWorldStone_1_1DCC_1_1Header.html#ad9fa39c1e8902015f06effeb45073c21">framesPerDir</a></td></tr>
-<tr class="memdesc:ad9fa39c1e8902015f06effeb45073c21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frames number for each direction(0-255? Max seen in-game is 200) <br/></td></tr>
-<tr class="separator:ad9fa39c1e8902015f06effeb45073c21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e5e48e2448be3c294294420588375ab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0e5e48e2448be3c294294420588375ab"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWorldStone_1_1DCC_1_1Header.html#a0e5e48e2448be3c294294420588375ab">padding0</a> [3]</td></tr>
-<tr class="memdesc:a0e5e48e2448be3c294294420588375ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some padding, might actually still be framesPerDir. <br/></td></tr>
-<tr class="separator:a0e5e48e2448be3c294294420588375ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08a9da8d3414ab79ba799b2e63a51a39"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a08a9da8d3414ab79ba799b2e63a51a39"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWorldStone_1_1DCC_1_1Header.html#a08a9da8d3414ab79ba799b2e63a51a39">framesPerDir</a></td></tr>
+<tr class="memdesc:a08a9da8d3414ab79ba799b2e63a51a39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frames number for each direction. <br/></td></tr>
+<tr class="separator:a08a9da8d3414ab79ba799b2e63a51a39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52087e5c9612e8716ff988aecfaf1561"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52087e5c9612e8716ff988aecfaf1561"></a>
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structWorldStone_1_1DCC_1_1Header.html#a52087e5c9612e8716ff988aecfaf1561">tag</a></td></tr>
 <tr class="memdesc:a52087e5c9612e8716ff988aecfaf1561"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seems to be always 1 ? <br/></td></tr>
@@ -150,7 +146,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The header of the file, contains global information about the encoded image. </p>
 
-<p>Definition at line <a class="el" href="dcc_8h_source.html#l00054">54</a> of file <a class="el" href="dcc_8h_source.html">dcc.h</a>.</p>
+<p>Definition at line <a class="el" href="dcc_8h_source.html#l00052">52</a> of file <a class="el" href="dcc_8h_source.html">dcc.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>source/decoders/include/<a class="el" href="dcc_8h_source.html">dcc.h</a></li>
 </ul>
@@ -160,7 +156,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>WorldStone</b></li><li class="navelem"><a class="el" href="classWorldStone_1_1DCC.html">DCC</a></li><li class="navelem"><a class="el" href="structWorldStone_1_1DCC_1_1Header.html">Header</a></li>
-    <li class="footer">Generated on Sat Sep 1 2018 11:09:54 for Worldstone by
+    <li class="footer">Generated on Wed Sep 12 2018 20:02:04 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

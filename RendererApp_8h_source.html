@@ -108,25 +108,34 @@ $(document).ready(function(){initNavTree('RendererApp_8h_source.html','');});
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;bx/allocator.h&gt;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;BaseApp.h&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
-<div class="line"><a name="l00005"></a><span class="lineno"><a class="line" href="classRendererApp.html">    5</a></span>&#160;<span class="keyword">class </span><a class="code" href="classRendererApp.html">RendererApp</a> : <span class="keyword">public</span> <a class="code" href="classBaseApp.html">BaseApp</a></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    <span class="keywordtype">bool</span> initAppThread() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    <span class="keywordtype">void</span> shutdownAppThread() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keywordtype">void</span> executeAppLoopOnce() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keywordtype">bool</span>                 showBgfxStats = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    bx::DefaultAllocator imguiAllocator;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;};</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;DrawSprite.h&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
+<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="classRendererApp.html">    6</a></span>&#160;<span class="keyword">class </span><a class="code" href="classRendererApp.html">RendererApp</a> : <span class="keyword">public</span> <a class="code" href="classBaseApp.html">BaseApp</a></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;{</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <a class="code" href="classRendererApp.html">RendererApp</a>();</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    ~<a class="code" href="classRendererApp.html">RendererApp</a>();</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keywordtype">bool</span> initAppThread() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keywordtype">void</span> shutdownAppThread() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordtype">void</span> executeAppLoopOnce() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordtype">bool</span>                 showBgfxStats = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    bx::DefaultAllocator imguiAllocator;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    std::unique_ptr&lt;class FileBrowser&gt; fileBrowser;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="classSpriteRenderer.html">SpriteRenderer</a>                     spriteRenderer;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;};</div>
+<div class="ttc" id="classSpriteRenderer_html"><div class="ttname"><a href="classSpriteRenderer.html">SpriteRenderer</a></div><div class="ttdef"><b>Definition:</b> <a href="DrawSprite_8h_source.html#l00008">DrawSprite.h:8</a></div></div>
 <div class="ttc" id="classBaseApp_html"><div class="ttname"><a href="classBaseApp.html">BaseApp</a></div><div class="ttdef"><b>Definition:</b> <a href="BaseApp_8h_source.html#l00007">BaseApp.h:7</a></div></div>
-<div class="ttc" id="classRendererApp_html"><div class="ttname"><a href="classRendererApp.html">RendererApp</a></div><div class="ttdef"><b>Definition:</b> <a href="RendererApp_8h_source.html#l00005">RendererApp.h:5</a></div></div>
+<div class="ttc" id="classRendererApp_html"><div class="ttname"><a href="classRendererApp.html">RendererApp</a></div><div class="ttdef"><b>Definition:</b> <a href="RendererApp_8h_source.html#l00006">RendererApp.h:6</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="dir_d4997a96f2e948238c4ace8570226aa1.html">tools</a></li><li class="navelem"><a class="el" href="dir_6bb00da5264f0867a3437473136cb3a5.html">RendererApp</a></li><li class="navelem"><b>RendererApp.h</b></li>
-    <li class="footer">Generated on Sat Sep 1 2018 11:09:54 for Worldstone by
+    <li class="footer">Generated on Wed Sep 12 2018 20:02:04 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

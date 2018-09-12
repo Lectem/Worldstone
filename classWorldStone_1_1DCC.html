@@ -185,28 +185,67 @@ Vector&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>f
 <p>The <a class="el" href="classWorldStone_1_1DCC.html" title="Decoder for the DCC image format. ">DCC</a> format is a compressed sprite image format. It can store multiple directions and frames in a single file. A palette is used to generate the colors, but the file itself doesn't have any information about the palette to use, it is up to the user to know which one to use. </p>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="structWorldStone_1_1Palette.html" title="Helper to load a Diablo 2 palette (.pal/.dat format) ">WorldStone::Palette</a></dd></dl>
 <p>This format is usually used with <a class="el" href="classWorldStone_1_1COF.html" title="Decoder for the COF (Components Object File) file format. ">COF</a> files, which describe the animations and blending of multiple <a class="el" href="classWorldStone_1_1DCC.html" title="Decoder for the DCC image format. ">DCC</a> files.</p>
-<p>Layout of a <a class="el" href="classWorldStone_1_1DC6.html" title="Decoder for the DC6 image format. ">DC6</a> file: </p>
+<p>Layout of a <a class="el" href="classWorldStone_1_1DCC.html" title="Decoder for the DCC image format. ">DCC</a> file: </p>
 <table class="doxtable">
 <tr>
-<th>Name </th><th>Type </th><th>Size in bytes </th><th>Offsets  </th></tr>
+<th>Name </th><th>Type </th><th>Size in Bytes </th><th>Offsets  </th></tr>
 <tr>
-<td>header </td><td><a class="el" href="structWorldStone_1_1DC6_1_1Header.html">DC6::Header</a> </td><td>24 </td><td>0x00 </td></tr>
+<td>header </td><td><a class="el" href="structWorldStone_1_1DCC_1_1Header.html" title="The header of the file, contains global information about the encoded image. ">DCC::Header</a> </td><td>15 </td><td>0x00 </td></tr>
 <tr>
-<td>framePointers </td><td>uint32_t[dirs][framesPerDir] </td><td>4 * header.directions * header.framesPerDir </td><td>0x18 </td></tr>
+<td>directionsOffsets </td><td>uint32_t[dirs] </td><td>4 * header.directions </td><td>0x0F </td></tr>
 <tr>
-<td>frameHeader[0] </td><td><a class="el" href="structWorldStone_1_1DC6_1_1FrameHeader.html">DC6::FrameHeader</a> </td><td>32 </td><td>framePointers[0] </td></tr>
+<td>First <a class="el" href="structWorldStone_1_1DCC_1_1Direction.html">Direction</a> </td><td><a class="el" href="structWorldStone_1_1DCC_1_1Direction.html">DCC::Direction</a> </td><td>directionsOffsets[1] - directionsOffsets[0] </td><td>directionsOffsets[0] </td></tr>
 <tr>
-<td>frameData[0] </td><td>uint8_t[frameHeader.length] </td><td>frameHeader[0].length </td><td>^ </td></tr>
+<td>*** </td><td></td><td></td></tr>
 <tr>
-<td>termination[0] </td><td>uint8_t[3] </td><td>3 </td><td>^ </td></tr>
+<td>Last <a class="el" href="structWorldStone_1_1DCC_1_1Direction.html">Direction</a> </td><td><a class="el" href="structWorldStone_1_1DCC_1_1Direction.html">DCC::Direction</a> </td><td>filesize - directionsOffsets[directions-1] </td><td>directionsOffsets[directions-1] </td></tr>
+</table>
+<p><a class="el" href="structWorldStone_1_1DCC_1_1Direction.html">Direction</a> layout: </p>
+<table class="doxtable">
 <tr>
-<td>... other frames ... </td><td></td><td></td></tr>
+<th>Name </th><th>Type </th><th>Size  </th></tr>
 <tr>
-<td>frameHeader[totalFrames-1] </td><td><a class="el" href="structWorldStone_1_1DC6_1_1FrameHeader.html">DC6::FrameHeader</a> </td><td>32 </td><td>framePointers[nbFrames-1] </td></tr>
+<td>dirHeader[0] </td><td><a class="el" href="structWorldStone_1_1DCC_1_1DirectionHeader.html" title="Represents a direction header. ">DCC::DirectionHeader</a> </td><td>32 + 30 bits </td></tr>
 <tr>
-<td>frameData[totalFrames-1] </td><td>uint8_t[frameHeader.length] </td><td>frameHeader[nbFrames-1].length </td><td>^ </td></tr>
+<td></td><td></td></tr>
 <tr>
-<td>termination[totalFrames-1] </td><td>uint8_t[3] </td><td>3 </td><td>^ </td></tr>
+<td>frameHeader[0] </td><td><a class="el" href="structWorldStone_1_1DCC_1_1FrameHeader.html">DCC::FrameHeader</a> </td><td>Based on the <a class="el" href="structWorldStone_1_1DCC_1_1DirectionHeader.html" title="Represents a direction header. ">DirectionHeader</a> values </td></tr>
+<tr>
+<td>*** </td><td></td></tr>
+<tr>
+<td>frameHeader[framesPerDir-1] </td><td><a class="el" href="structWorldStone_1_1DCC_1_1FrameHeader.html">DCC::FrameHeader</a> </td><td>Based on the <a class="el" href="structWorldStone_1_1DCC_1_1DirectionHeader.html" title="Represents a direction header. ">DirectionHeader</a> values </td></tr>
+<tr>
+<td></td><td></td></tr>
+<tr>
+<td>align </td><td>(unused) </td><td>Align to byte if any frame has additionnal data </td></tr>
+<tr>
+<td>Frame 0 additionnal data </td><td>byte[] </td><td>frameHeader[0].optionalBytes </td></tr>
+<tr>
+<td>*** </td><td></td></tr>
+<tr>
+<td>Last frame additionnal data </td><td>byte[] </td><td>frameHeader[framesPerDir-1].optionalBytes </td></tr>
+<tr>
+<td></td><td></td></tr>
+<tr>
+<td>equalCellsBitStreamSize </td><td>uint20_t </td><td>20 bits (only if compressEqualCells is true) </td></tr>
+<tr>
+<td>pixelMaskBitStreamSize </td><td>uint20_t </td><td>20 bits </td></tr>
+<tr>
+<td>encodingTypeBitsreamSize </td><td>uint20_t </td><td>20 bits (only if hasRawPixelEncoding is true) </td></tr>
+<tr>
+<td>rawPixelCodesBitStreamSize </td><td>uint20_t </td><td>20 bits (only if hasRawPixelEncoding is true) </td></tr>
+<tr>
+<td>codeToPixelValue </td><td>bitset&lt;256&gt; </td><td>256 bits </td></tr>
+<tr>
+<td>equalCellBitStream </td><td>BitStream </td><td>equalCellsBitStreamSize </td></tr>
+<tr>
+<td>pixelMaskBitStream </td><td>BitStream </td><td>pixelMaskBitStreamSize </td></tr>
+<tr>
+<td>rawPixelUsageBitStream </td><td>BitStream </td><td>encodingTypeBitsreamSize </td></tr>
+<tr>
+<td>rawPixelCodesBitStream </td><td>BitStream </td><td>rawPixelCodesBitStreamSize </td></tr>
+<tr>
+<td>pixelCodesDisplacementBitStream </td><td>BitStream </td><td>Until end of the direction </td></tr>
 </table>
 <dl class="Decoders_tests"><dt><b><a class="el" href="Decoders_tests.html#_Decoders_tests000001">Tests:</a></b></dt><dd><p class="startdd"><a class="el" href="decoderstests_8cpp.html#TEST_DCC_BaalSpirit">DCC_BaalSpirit</a> </p>
 <p><a class="el" href="decoderstests_8cpp.html#TEST_DCC_CRHDBRVDTHTH">DCC_CRHDBRVDTHTH</a> </p>
@@ -214,7 +253,7 @@ Vector&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>f
 <p class="enddd"><a class="el" href="decoderstests_8cpp.html#TEST_DCC_HZTRLITA1HTH">DCC_HZTRLITA1HTH</a> </p>
 </dd></dl>
 
-<p>Definition at line <a class="el" href="dcc_8h_source.html#l00048">48</a> of file <a class="el" href="dcc_8h_source.html">dcc.h</a>.</p>
+<p>Definition at line <a class="el" href="dcc_8h_source.html#l00046">46</a> of file <a class="el" href="dcc_8h_source.html">dcc.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a3d5f642826809d8b433a48f97b07e1ce"></a>
 <div class="memitem">
@@ -234,7 +273,7 @@ Vector&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>f
 <dl class="section return"><dt>Returns</dt><dd>true on success</dd></dl>
 <p>Prepares the decoder to read the frames using <a class="el" href="classWorldStone_1_1DCC.html#a491736b40cf82ec189e9284b4cbb24b7">readDirection</a>. Basically calls extractHeaderAndOffsets, so that you can call <a class="el" href="classWorldStone_1_1DCC.html#aa94dc2287793a15b06b56f959d689fc6">getHeader</a>. </p>
 
-<p>Definition at line <a class="el" href="dcc_8cpp_source.html#l00043">43</a> of file <a class="el" href="dcc_8cpp_source.html">dcc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="dcc_8cpp_source.html#l00044">44</a> of file <a class="el" href="dcc_8cpp_source.html">dcc.cpp</a>.</p>
 
 </div>
 </div>
@@ -280,7 +319,7 @@ Vector&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>f
 <dl class="section return"><dt>Returns</dt><dd>true on success</dd></dl>
 <p>Use <a class="el" href="classWorldStone_1_1DCC.html#aa94dc2287793a15b06b56f959d689fc6">getHeader</a> and the <a class="el" href="structWorldStone_1_1DCC_1_1Header.html#ac31af9f7a3c85e7d09f8ae3b588b3613">Header::directions</a> member to know how many directions are in the file. The frames will be allocated+decoded in order, hence using the images allocated using the image provider will be in the order of the file. </p>
 
-<p>Definition at line <a class="el" href="dcc_8cpp_source.html#l00618">618</a> of file <a class="el" href="dcc_8cpp_source.html">dcc.cpp</a>.</p>
+<p>Definition at line <a class="el" href="dcc_8cpp_source.html#l00617">617</a> of file <a class="el" href="dcc_8cpp_source.html">dcc.cpp</a>.</p>
 
 </div>
 </div>
@@ -308,7 +347,7 @@ Vector&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>f
 <p>An array that maps an encoded 4-bit size to the real size in bits. </p>
 <p>The values are { 0, 1, 2, 4, 6, 8, 10, 12, 14, 16, 20, 24, 26, 28, 30, 32 } </p>
 
-<p>Definition at line <a class="el" href="dcc_8h_source.html#l00134">134</a> of file <a class="el" href="dcc_8h_source.html">dcc.h</a>.</p>
+<p>Definition at line <a class="el" href="dcc_8h_source.html#l00160">160</a> of file <a class="el" href="dcc_8h_source.html">dcc.h</a>.</p>
 
 </div>
 </div>
@@ -333,7 +372,7 @@ Vector&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>f
 <p>Offset of each direction header in the file, follows the <a class="el" href="structWorldStone_1_1DCC_1_1Header.html">Header</a>. </p>
 <p>Actually holds directions+1 values, the last one being the size of the file It lets us compute the size of a direction by substracting the next offset by the current one. </p>
 
-<p>Definition at line <a class="el" href="dcc_8h_source.html#l00145">145</a> of file <a class="el" href="dcc_8h_source.html">dcc.h</a>.</p>
+<p>Definition at line <a class="el" href="dcc_8h_source.html#l00171">171</a> of file <a class="el" href="dcc_8h_source.html">dcc.h</a>.</p>
 
 </div>
 </div>
@@ -347,7 +386,7 @@ Vector&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>f
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>WorldStone</b></li><li class="navelem"><a class="el" href="classWorldStone_1_1DCC.html">DCC</a></li>
-    <li class="footer">Generated on Sat Sep 1 2018 11:09:54 for Worldstone by
+    <li class="footer">Generated on Wed Sep 12 2018 20:02:04 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

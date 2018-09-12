@@ -111,6 +111,8 @@ $(document).ready(function(){initNavTree('structWorldStone_1_1DCC_1_1Direction.h
 <div class="title">WorldStone::DCC::Direction Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="dcc_8h_source.html">dcc.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -131,8 +133,55 @@ Vector&lt; <a class="el" href="structWorldStone_1_1DCC_1_1FrameHeader.html">Fram
 <tr class="separator:a152d4445cf7f02188d9808864d398adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="dcc_8h_source.html#l00112">112</a> of file <a class="el" href="dcc_8h_source.html">dcc.h</a>.</p>
+<div class="textblock"><p><a class="el" href="structWorldStone_1_1DCC_1_1Direction.html">Direction</a> layout: </p>
+<table class="doxtable">
+<tr>
+<th>Name </th><th>Type </th><th>Size  </th></tr>
+<tr>
+<td>dirHeader[0] </td><td><a class="el" href="structWorldStone_1_1DCC_1_1DirectionHeader.html" title="Represents a direction header. ">DCC::DirectionHeader</a> </td><td>32 + 30 bits </td></tr>
+<tr>
+<td></td><td></td></tr>
+<tr>
+<td>frameHeader[0] </td><td><a class="el" href="structWorldStone_1_1DCC_1_1FrameHeader.html">DCC::FrameHeader</a> </td><td>Based on the <a class="el" href="structWorldStone_1_1DCC_1_1DirectionHeader.html" title="Represents a direction header. ">DirectionHeader</a> values </td></tr>
+<tr>
+<td>*** </td><td></td></tr>
+<tr>
+<td>frameHeader[framesPerDir-1] </td><td><a class="el" href="structWorldStone_1_1DCC_1_1FrameHeader.html">DCC::FrameHeader</a> </td><td>Based on the <a class="el" href="structWorldStone_1_1DCC_1_1DirectionHeader.html" title="Represents a direction header. ">DirectionHeader</a> values </td></tr>
+<tr>
+<td></td><td></td></tr>
+<tr>
+<td>align </td><td>(unused) </td><td>Align to byte if any frame has additionnal data </td></tr>
+<tr>
+<td>Frame 0 additionnal data </td><td>byte[] </td><td>frameHeader[0].optionalBytes </td></tr>
+<tr>
+<td>*** </td><td></td></tr>
+<tr>
+<td>Last frame additionnal data </td><td>byte[] </td><td>frameHeader[framesPerDir-1].optionalBytes </td></tr>
+<tr>
+<td></td><td></td></tr>
+<tr>
+<td>equalCellsBitStreamSize </td><td>uint20_t </td><td>20 bits (only if compressEqualCells is true) </td></tr>
+<tr>
+<td>pixelMaskBitStreamSize </td><td>uint20_t </td><td>20 bits </td></tr>
+<tr>
+<td>encodingTypeBitsreamSize </td><td>uint20_t </td><td>20 bits (only if hasRawPixelEncoding is true) </td></tr>
+<tr>
+<td>rawPixelCodesBitStreamSize </td><td>uint20_t </td><td>20 bits (only if hasRawPixelEncoding is true) </td></tr>
+<tr>
+<td>codeToPixelValue </td><td>bitset&lt;256&gt; </td><td>256 bits </td></tr>
+<tr>
+<td>equalCellBitStream </td><td>BitStream </td><td>equalCellsBitStreamSize </td></tr>
+<tr>
+<td>pixelMaskBitStream </td><td>BitStream </td><td>pixelMaskBitStreamSize </td></tr>
+<tr>
+<td>rawPixelUsageBitStream </td><td>BitStream </td><td>encodingTypeBitsreamSize </td></tr>
+<tr>
+<td>rawPixelCodesBitStream </td><td>BitStream </td><td>rawPixelCodesBitStreamSize </td></tr>
+<tr>
+<td>pixelCodesDisplacementBitStream </td><td>BitStream </td><td>Until end of the direction </td></tr>
+</table>
+
+<p>Definition at line <a class="el" href="dcc_8h_source.html#l00138">138</a> of file <a class="el" href="dcc_8h_source.html">dcc.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="afdcfcf0720f3b340a3725b0df9e38025"></a>
 <div class="memitem">
@@ -156,7 +205,7 @@ Vector&lt; <a class="el" href="structWorldStone_1_1DCC_1_1FrameHeader.html">Fram
 </div><div class="memdoc">
 <dl class="section note"><dt>Note</dt><dd>Requires that the frame extents are already computed </dd></dl>
 
-<p>Definition at line <a class="el" href="dcc_8h_source.html#l00123">123</a> of file <a class="el" href="dcc_8h_source.html">dcc.h</a>.</p>
+<p>Definition at line <a class="el" href="dcc_8h_source.html#l00149">149</a> of file <a class="el" href="dcc_8h_source.html">dcc.h</a>.</p>
 
 </div>
 </div>
@@ -169,7 +218,7 @@ Vector&lt; <a class="el" href="structWorldStone_1_1DCC_1_1FrameHeader.html">Fram
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>WorldStone</b></li><li class="navelem"><a class="el" href="classWorldStone_1_1DCC.html">DCC</a></li><li class="navelem"><a class="el" href="structWorldStone_1_1DCC_1_1Direction.html">Direction</a></li>
-    <li class="footer">Generated on Sat Sep 1 2018 11:09:54 for Worldstone by
+    <li class="footer">Generated on Wed Sep 12 2018 20:02:04 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

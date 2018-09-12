@@ -1,9 +1,9 @@
 var structWorldStone_1_1COF_1_1Layer =
 [
-    [ "bSelectable", "structWorldStone_1_1COF_1_1Layer.html#a78040e34cc43557fb4b72c31487d94b0", null ],
-    [ "bShadow", "structWorldStone_1_1COF_1_1Layer.html#abac1c32ede56b7b0b5cfe669d4ae4934", null ],
-    [ "nComponent", "structWorldStone_1_1COF_1_1Layer.html#a79bbabb7aebd75e75d649710831dbf3b", null ],
-    [ "nNewTranslvl", "structWorldStone_1_1COF_1_1Layer.html#a0af6d5f04131afaa0848f2784fc6f709", null ],
-    [ "nOverrideTranslvl", "structWorldStone_1_1COF_1_1Layer.html#ad5fc3ad02dcbfa2c01be341d978c1147", null ],
-    [ "szWeaponClass", "structWorldStone_1_1COF_1_1Layer.html#a60dd07d32b9b69117704337aca6e71b1", null ]
+    [ "castsShadow", "structWorldStone_1_1COF_1_1Layer.html#ab2254d23344f149e6c2a32f187f18964", null ],
+    [ "component", "structWorldStone_1_1COF_1_1Layer.html#a759f6eab330f48cbbfeb5f7a24ab9213", null ],
+    [ "isSelectable", "structWorldStone_1_1COF_1_1Layer.html#ac9b7296d6cbf632026d7e4c659eed009", null ],
+    [ "newTranslvl", "structWorldStone_1_1COF_1_1Layer.html#a34e7712f8cd4b73be717c7cfcca8609c", null ],
+    [ "overrideTranslvl", "structWorldStone_1_1COF_1_1Layer.html#a8a5d50ff9c6fe2940ac0838a73514d75", null ],
+    [ "weaponClass", "structWorldStone_1_1COF_1_1Layer.html#a9d85afffefd6d7ad37785c3eeb55cf7c", null ]
 ];

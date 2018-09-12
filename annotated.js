@@ -1,8 +1,5 @@
 var annotated =
 [
-    [ "DrawSprite", null, [
-      [ "Sprite", "structDrawSprite_1_1Sprite.html", "structDrawSprite_1_1Sprite" ]
-    ] ],
     [ "WorldStone", null, [
       [ "AABB", "structWorldStone_1_1AABB.html", "structWorldStone_1_1AABB" ],
       [ "COF", "classWorldStone_1_1COF.html", "classWorldStone_1_1COF" ],
@@ -23,13 +20,12 @@ var annotated =
       [ "IStream", "classWorldStone_1_1IStream.html", "classWorldStone_1_1IStream" ]
     ] ],
     [ "BaseApp", "classBaseApp.html", "classBaseApp" ],
-    [ "DC6Sprite", "structDC6Sprite.html", "structDC6Sprite" ],
-    [ "DCCSprite", "structDCCSprite.html", "structDCCSprite" ],
-    [ "DCxMainWindow", "classDCxMainWindow.html", "classDCxMainWindow" ],
-    [ "DCxSprite", "structDCxSprite.html", "structDCxSprite" ],
-    [ "DCxView", "classDCxView.html", "classDCxView" ],
-    [ "DCxViewerApp", "classDCxViewerApp.html", "classDCxViewerApp" ],
+    [ "FileBrowser", "classFileBrowser.html", "classFileBrowser" ],
+    [ "FrameRenderData", "structFrameRenderData.html", "structFrameRenderData" ],
     [ "Inputs", "structInputs.html", "structInputs" ],
     [ "InputsManager", "classInputsManager.html", "classInputsManager" ],
-    [ "RendererApp", "classRendererApp.html", null ]
+    [ "RendererApp", "classRendererApp.html", "classRendererApp" ],
+    [ "SearchableListWidget", "classSearchableListWidget.html", "classSearchableListWidget" ],
+    [ "SpriteRenderer", "classSpriteRenderer.html", "classSpriteRenderer" ],
+    [ "SpriteRendererData", "structSpriteRendererData.html", "structSpriteRendererData" ]
 ];

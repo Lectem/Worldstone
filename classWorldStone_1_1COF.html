@@ -163,11 +163,10 @@ const Vector&lt; uint8_t &gt; &amp;&#160;</td><td class="memItemRight" valign="b
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a96858b9a1a5c05db781998b10a8fae2c"><td class="memItemLeft" align="right" valign="top">static constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorldStone_1_1COF.html#a96858b9a1a5c05db781998b10a8fae2c">componentsNames</a> []</td></tr>
-<tr class="separator:a96858b9a1a5c05db781998b10a8fae2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adac079676775dd1f2b835dcfb4f7078b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adac079676775dd1f2b835dcfb4f7078b"></a>
-static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>componentsNumber</b> = std::extent&lt;decltype(<a class="el" href="classWorldStone_1_1COF.html#a96858b9a1a5c05db781998b10a8fae2c">COF::componentsNames</a>)&gt;::value</td></tr>
+<tr class="memitem:adac079676775dd1f2b835dcfb4f7078b"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorldStone_1_1COF.html#adac079676775dd1f2b835dcfb4f7078b">componentsNumber</a> = 16</td></tr>
 <tr class="separator:adac079676775dd1f2b835dcfb4f7078b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f2d92c348eb9cf2511de898745371cf"><td class="memItemLeft" align="right" valign="top">static constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><b>componentsNames</b> [<a class="el" href="classWorldStone_1_1COF.html#adac079676775dd1f2b835dcfb4f7078b">componentsNumber</a>]</td></tr>
+<tr class="separator:a7f2d92c348eb9cf2511de898745371cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Decoder for the <a class="el" href="classWorldStone_1_1COF.html" title="Decoder for the COF (Components Object File) file format. ">COF</a> (Components Object File) file format. </p>
@@ -225,7 +224,7 @@ static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>c
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a96858b9a1a5c05db781998b10a8fae2c"></a>
+<a class="anchor" id="a7f2d92c348eb9cf2511de898745371cf"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -233,7 +232,7 @@ static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>c
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr const char* WorldStone::COF::componentsNames[]</td>
+          <td class="memname">constexpr const char * WorldStone::COF::componentsNames</td>
         </tr>
       </table>
   </td>
@@ -242,10 +241,32 @@ static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>c
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {<span class="stringliteral">&quot;HD&quot;</span>, <span class="stringliteral">&quot;TR&quot;</span>, <span class="stringliteral">&quot;LG&quot;</span>, <span class="stringliteral">&quot;RA&quot;</span>, <span class="stringliteral">&quot;LA&quot;</span>, <span class="stringliteral">&quot;RH&quot;</span>,</div>
-<div class="line">                                                      <span class="stringliteral">&quot;LH&quot;</span>, <span class="stringliteral">&quot;SH&quot;</span>, <span class="stringliteral">&quot;S1&quot;</span>, <span class="stringliteral">&quot;S2&quot;</span>, <span class="stringliteral">&quot;S3&quot;</span>, <span class="stringliteral">&quot;S4&quot;</span>,</div>
-<div class="line">                                                      <span class="stringliteral">&quot;S5&quot;</span>, <span class="stringliteral">&quot;S6&quot;</span>, <span class="stringliteral">&quot;S7&quot;</span>, <span class="stringliteral">&quot;S8&quot;</span>}</div>
-</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>This list of components comes from the file data\global\excel\Composit.txt </dd></dl>
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">        <span class="stringliteral">&quot;HD&quot;</span>, <span class="stringliteral">&quot;TR&quot;</span>, <span class="stringliteral">&quot;LG&quot;</span>, <span class="stringliteral">&quot;RA&quot;</span>, <span class="stringliteral">&quot;LA&quot;</span>, <span class="stringliteral">&quot;RH&quot;</span>, <span class="stringliteral">&quot;LH&quot;</span>, <span class="stringliteral">&quot;SH&quot;</span>,</div>
+<div class="line">        <span class="stringliteral">&quot;S1&quot;</span>, <span class="stringliteral">&quot;S2&quot;</span>, <span class="stringliteral">&quot;S3&quot;</span>, <span class="stringliteral">&quot;S4&quot;</span>, <span class="stringliteral">&quot;S5&quot;</span>, <span class="stringliteral">&quot;S6&quot;</span>, <span class="stringliteral">&quot;S7&quot;</span>, <span class="stringliteral">&quot;S8&quot;</span>}</div>
+</div><!-- fragment -->
+<p>Definition at line <a class="el" href="cof_8h_source.html#l00082">82</a> of file <a class="el" href="cof_8h_source.html">cof.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="adac079676775dd1f2b835dcfb4f7078b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint8_t WorldStone::COF::componentsNumber = 16</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section note"><dt>Note</dt><dd>This list of components comes from the file data\global\excel\Composit.txt </dd></dl>
 
 <p>Definition at line <a class="el" href="cof_8h_source.html#l00081">81</a> of file <a class="el" href="cof_8h_source.html">cof.h</a>.</p>
 
@@ -261,7 +282,7 @@ static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>c
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>WorldStone</b></li><li class="navelem"><a class="el" href="classWorldStone_1_1COF.html">COF</a></li>
-    <li class="footer">Generated on Sat Sep 1 2018 11:09:54 for Worldstone by
+    <li class="footer">Generated on Wed Sep 12 2018 20:02:04 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

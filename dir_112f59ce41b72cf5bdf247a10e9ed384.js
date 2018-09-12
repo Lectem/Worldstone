@@ -15,6 +15,6 @@ var dir_112f59ce41b72cf5bdf247a10e9ed384 =
       [ "IImageProvider", "classWorldStone_1_1IImageProvider.html", "classWorldStone_1_1IImageProvider" ],
       [ "SimpleImageProvider", "classWorldStone_1_1SimpleImageProvider.html", "classWorldStone_1_1SimpleImageProvider" ]
     ] ],
-    [ "palette.h", "palette_8h_source.html", null ],
+    [ "Palette.h", "Palette_8h_source.html", null ],
     [ "utils.h", "utils_8h_source.html", null ]
 ];

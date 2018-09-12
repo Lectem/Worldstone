@@ -10,17 +10,18 @@ var hierarchy =
     [ "WorldStone::Palette::Color24Bits", "structWorldStone_1_1Palette_1_1Color24Bits.html", null ],
     [ "WorldStone::DC6", "classWorldStone_1_1DC6.html", null ],
     [ "WorldStone::DCC", "classWorldStone_1_1DCC.html", null ],
-    [ "DCxSprite", "structDCxSprite.html", [
-      [ "DC6Sprite", "structDC6Sprite.html", null ],
-      [ "DCCSprite", "structDCCSprite.html", null ]
-    ] ],
     [ "WorldStone::DCC::Direction", "structWorldStone_1_1DCC_1_1Direction.html", null ],
     [ "WorldStone::DCC::DirectionHeader", "structWorldStone_1_1DCC_1_1DirectionHeader.html", null ],
-    [ "WorldStone::DCC::FrameHeader", "structWorldStone_1_1DCC_1_1FrameHeader.html", null ],
+    [ "SpriteRenderer::DrawRequest", "structSpriteRenderer_1_1DrawRequest.html", null ],
+    [ "FileBrowser", "classFileBrowser.html", null ],
+    [ "SpriteRenderer::Frame", "structSpriteRenderer_1_1Frame.html", null ],
     [ "WorldStone::DC6::FrameHeader", "structWorldStone_1_1DC6_1_1FrameHeader.html", null ],
+    [ "WorldStone::DCC::FrameHeader", "structWorldStone_1_1DCC_1_1FrameHeader.html", null ],
+    [ "FrameRenderData", "structFrameRenderData.html", null ],
     [ "WorldStone::DCC::Header", "structWorldStone_1_1DCC_1_1Header.html", null ],
     [ "WorldStone::DC6::Header", "structWorldStone_1_1DC6_1_1Header.html", null ],
     [ "WorldStone::COF::Header", "structWorldStone_1_1COF_1_1Header.html", null ],
+    [ "FileBrowser::IFileView", "classFileBrowser_1_1IFileView.html", null ],
     [ "WorldStone::IImageProvider< Color >", "classWorldStone_1_1IImageProvider.html", [
       [ "WorldStone::SimpleImageProvider< Color >", "classWorldStone_1_1SimpleImageProvider.html", null ]
     ] ],
@@ -42,15 +43,10 @@ var hierarchy =
     [ "WorldStone::Palette", "structWorldStone_1_1Palette.html", null ],
     [ "WorldStone::PalShiftTransform", "structWorldStone_1_1PalShiftTransform.html", null ],
     [ "WorldStone::PL2", "structWorldStone_1_1PL2.html", null ],
-    [ "QApplication", null, [
-      [ "DCxViewerApp", "classDCxViewerApp.html", null ]
-    ] ],
-    [ "QMainWindow", null, [
-      [ "DCxMainWindow", "classDCxMainWindow.html", null ]
-    ] ],
-    [ "QWidget", null, [
-      [ "DCxView", "classDCxView.html", null ]
-    ] ],
+    [ "SpriteRenderer::Pos2D", "structSpriteRenderer_1_1Pos2D.html", null ],
     [ "InputsManager::ScopedTransfer", "classInputsManager_1_1ScopedTransfer.html", null ],
-    [ "DrawSprite::Sprite", "structDrawSprite_1_1Sprite.html", null ]
+    [ "SearchableListWidget", "classSearchableListWidget.html", null ],
+    [ "SpriteRenderer::SpriteRenderData", "classSpriteRenderer_1_1SpriteRenderData.html", null ],
+    [ "SpriteRenderer", "classSpriteRenderer.html", null ],
+    [ "SpriteRendererData", "structSpriteRendererData.html", null ]
 ];
