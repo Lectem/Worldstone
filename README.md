@@ -8,13 +8,21 @@
 [![Gitter chat](https://badges.gitter.im/Lectem/Worldstone.png)](https://gitter.im/Worldstone/Lobby)
 [![Documentation](https://img.shields.io/badge/Documentation-latest-blue.svg)](https://lectem.github.io/Worldstone)
 
-Diablo 2 tools and engine reimplementation in 'modern' C++ (see [C++ Usage](#c-usage)).
+Diablo 2 tools and engine reimplementation in C++.
 
 It aims to be portable/cross-platform.
 
 ## Status of the project 
 
-DC6 and DCC (sprites) decoders are now working.
+DC6 and DCC (sprites) decoders and renderer are now working.
+PL2 file (palette shifts) generation is working and gives the same results as if created by the game. Optional fixes are available for more accurate palette shifts.
+
+The [viewer app](https://github.com/Lectem/Worldstone/tree/master/source/tools/RendererApp) can be used to browse Mpq files and display the following:
+* .dc6 sprites
+* .dcc sprites
+* .dat and .pl2 palettes and palshifts
+* .cof animation files information (no sprite display yet)
+
 Work is progressing slowly. While not reflected in the repo, a lot of documentation has been gathered for future work !
 
 ## Building
@@ -49,25 +57,8 @@ You can tweak the configuration using the following CMake variables (I suggest u
 - Required shared libraries should automatically be copied to the executable directory by CMake, but in case where you can't run the tools from Visual, add the QTDIR environment variable with the Qt path as value (example : C:\Qt\5.7\msvc2015_64) then add %QTDIR%\bin and %QTDIR%\plugins to your PATH variable.
 
 ## Short-term objectives
-* DC6/DCC viewer
+* COF viewer
 * DT1 viewer
 
 For a more detailed list of what will need to do to have an engine, check the [TODO](TODO.md) list.
-
-## C++ Usage
-
-While this project tends to use modern features of C++, it tries to use them sparingly. It is not [Orthodox C++](https://gist.github.com/bkaradzic/2e39896bc7d8c34e042b), but is still similar.
-Basically, if you can do something without the latest X or Y fancy feature, then don't use the feature.
-
-For example:
-
-- IOstreams are banned (anybody asking why can lookup the reason easily)
-- Don't use a feature just because you can. (ie. don't put lambdas, SFINAE and auto where it is not needed)
-- Try not to overuse templates (too much).
-- Use the good stuff !
-  * static_assert
-  * move-semantics
-  * custom litterals
-  * atomics
-  * unique_ptr
-  * ...
+There is also a [contributing guide](CONTRIBUTING.md) available.

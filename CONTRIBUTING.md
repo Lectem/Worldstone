@@ -22,6 +22,25 @@ Some exceptions can be made for compatibility with the STL.
 * Template parameters: Same rules as types `template<typename SignedResult, unsigned NbBits, typename InputType>`
 * Macros: Do not use unless you can't do otherwise ! Full caps and underscored `#define WS_UNUSED`
 
+## C++ Usage
+
+While this project tends to use modern features of C++, it tries to use them sparingly. It is not [Orthodox C++](https://gist.github.com/bkaradzic/2e39896bc7d8c34e042b), but is still similar.
+Basically, if you can do something without the latest X or Y fancy feature, then don't use the feature.
+
+For example:
+
+- IOstreams are banned (anybody asking why can lookup the reason easily)
+- Don't use a feature just because you can. (ie. don't put lambdas, SFINAE and auto where it is not needed)
+- Try not to overuse templates (too much).
+- Use the good stuff !
+  * static_assert
+  * move-semantics
+  * custom litterals
+  * atomics
+  * unique_ptr
+  * constexpr
+  * ...
+
 # CMake
 
 Please try to keep the CMakeLists as clean as possible, and follow best (known) practices.
