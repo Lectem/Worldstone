@@ -1,4 +1,4 @@
 # Mark all generated headers as binary
 
 *.h binary
-*.h binary
+*.h linguist-generated

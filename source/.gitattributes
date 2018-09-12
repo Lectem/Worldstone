@@ -1,0 +1,2 @@
+#Make sure linguist treats header files as c++
+*.h linguist-language=C++

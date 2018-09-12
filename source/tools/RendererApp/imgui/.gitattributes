@@ -2,3 +2,5 @@
 
 *.bin.h binary
 *.ttf.h binary
+*.bin.h linguist-generated
+*.ttf.h linguist-generated
