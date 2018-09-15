@@ -23,16 +23,16 @@ namespace WorldStone
  *
  * Layout of a DC6 file:
  * | Name                       | Type                         | Size in bytes                               | Offsets                   |
- * | -------------------------- | ---------------------------- | ------------------------------------------- | ------------------------- |
+ * | ---------------------------| ---------------------------- | ------------------------------------------- | ------------------------- |
  * | header                     | DC6::Header                  | 24                                          | 0x00                      |
  * | framePointers              | uint32_t[dirs][framesPerDir] | 4 * header.directions * header.framesPerDir | 0x18                      |
  * | frameHeader[0]             | DC6::FrameHeader             | 32                                          | framePointers[0]          |
  * | frameData[0]               | uint8_t[frameHeader.length]  | frameHeader[0].length                       | ^                         |
- * | termination[0]             | uint8_t[3]                   | 3                                           | ^                         |
+ * | skipColor[0]               | uint8_t[3]                   | 3                                           | ^                         |
  * | ... other frames ...       ||||
  * | frameHeader[totalFrames-1] | DC6::FrameHeader             | 32                                          | framePointers[nbFrames-1] |
  * | frameData[totalFrames-1]   | uint8_t[frameHeader.length]  | frameHeader[nbFrames-1].length              | ^                         |
- * | termination[totalFrames-1] | uint8_t[3]                   | 3                                           | ^                         |
+ * | skipColor[totalFrames-1]   | uint8_t[3]                   | 3                                           | ^                         |
  *
  */
 // clang-format on
@@ -48,12 +48,12 @@ public:
 
     struct Header
     {
-        int32_t  version;        ///< DC6 major version, usually 6
-        int32_t  flags;          ///< @ref DC6::Flags
-        int32_t  format;         ///< Always 0 in the game files. 0=indexed 2=24bits
-        uint8_t  termination[4]; ///< Three of those bytes are appended at the end of the file.
-        uint32_t directions;     ///< Number of directions in this file
-        uint32_t framesPerDir;   ///< Number of frames for each direction
+        int32_t  version;      ///< DC6 major version, usually 6
+        int32_t  flags;        ///< @ref DC6::Flags
+        int32_t  format;       ///< Always 0 in the game files. 0=indexed 2=24bits
+        uint8_t  skipColor[4]; ///< Skipped RGB color in D2CMP CelIteratePixels (unused in game)
+        uint32_t directions;   ///< Number of directions in this file
+        uint32_t framesPerDir; ///< Number of frames for each direction
     };
 
     struct FrameHeader
@@ -64,7 +64,7 @@ public:
         int32_t  offsetX;   ///< Horizontal offset for left edge of the frame
         int32_t  offsetY;   ///< Vertical offset for bottom(top if flipped) edge of the frame.
         int32_t  allocSize; ///< Used by the game as a slot to store the data size. 0 in the files.
-        int32_t  nextBlock; ///< Pointer to the next frame
+        int32_t  nextBlock; ///< Offset/Pointer to the next frame
         uint32_t length;    ///< Length of the frame in chunks
     };
 
