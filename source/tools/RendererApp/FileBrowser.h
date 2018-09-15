@@ -10,9 +10,13 @@ public:
     class IFileView
     {
     public:
+        IFileView(const WorldStone::MpqArchive::Path& _filePath) : filePath(std::move(_filePath)) {}
         virtual ~IFileView();
-        virtual void display() {}
+        virtual void display() { ImGui::Text("File:%s", filePath.c_str()); }
         virtual void display(class SpriteRenderer&) { display(); }
+
+    protected:
+        WorldStone::MpqArchive::Path filePath;
     };
 
     ~FileBrowser();

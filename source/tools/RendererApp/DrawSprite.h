@@ -34,6 +34,7 @@ public:
 
     void init(const WorldStone::Palette& palette);
     int shutdown();
+    void setPalette(const WorldStone::Palette& palette);
 
     SpriteRenderDataHandle createSpriteRenderData();
     void                   destroySpriteRenderData(SpriteRenderDataHandle);

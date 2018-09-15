@@ -163,21 +163,11 @@ void SpriteRenderer::init(const WorldStone::Palette& palette)
         // Static data can be passed with bgfx::makeRef
         bgfx::makeRef(s_quadTriStrip, sizeof(s_quadTriStrip)));
 
+    // Create the samplers
     data->m_texColor = bgfx::createUniform("s_texColor", bgfx::UniformType::Int1);
     data->m_palColor = bgfx::createUniform("s_palColor", bgfx::UniformType::Int1);
 
-    static_assert(sizeof(WorldStone::Palette::Color24Bits) == 3, "");
-    auto paletteRGB888 =
-        bgfx::alloc(sizeof(WorldStone::Palette::Color24Bits) * WorldStone::Palette::colorCount);
-    for (size_t i = 0; i < WorldStone::Palette::colorCount; i++)
-    {
-        const WorldStone::Palette::Color color                      = palette.colors[i];
-        ((WorldStone::Palette::Color24Bits*)paletteRGB888->data)[i] = {color.r, color.g, color.b};
-    }
-    data->m_paletteColor =
-        bgfx::createTexture2D(256, 1, false, 1, bgfx::TextureFormat::RGB8,
-                              BGFX_TEXTURE_MIN_POINT | BGFX_TEXTURE_MAG_POINT, paletteRGB888);
-    bgfx::setName(data->m_paletteColor, "SpritePalette");
+    setPalette(palette);
 
     // Create program from shaders.
     data->m_program    = loadProgram("vs_sprite", "fs_sprite");
@@ -196,6 +186,24 @@ int SpriteRenderer::shutdown()
     bgfx::destroy(data->m_quadIndexBuf);
 
     return 0;
+}
+
+void SpriteRenderer::setPalette(const WorldStone::Palette& palette)
+{
+    if (bgfx::isValid(data->m_paletteColor)) bgfx::destroy(data->m_paletteColor);
+
+    using Palette = WorldStone::Palette;
+    static_assert(sizeof(Palette::Color24Bits) == 3, "");
+    auto paletteRGB888 = bgfx::alloc(sizeof(Palette::Color24Bits) * Palette::colorCount);
+    for (size_t i = 0; i < Palette::colorCount; i++)
+    {
+        const WorldStone::Palette::Color color                      = palette.colors[i];
+        ((WorldStone::Palette::Color24Bits*)paletteRGB888->data)[i] = {color.r, color.g, color.b};
+    }
+    data->m_paletteColor =
+        bgfx::createTexture2D(Palette::colorCount, 1, false, 1, bgfx::TextureFormat::RGB8,
+                              BGFX_TEXTURE_MIN_POINT | BGFX_TEXTURE_MAG_POINT, paletteRGB888);
+    bgfx::setName(data->m_paletteColor, "SpritePalette");
 }
 
 SpriteRenderer::SpriteRenderDataHandle SpriteRenderer::createSpriteRenderData()

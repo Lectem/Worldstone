@@ -220,6 +220,7 @@ struct SpriteAnim
 struct DccView : public FileBrowser::IFileView
 {
 
+    DccView(const WorldStone::MpqArchive::Path& _filePath) : IFileView(_filePath) {}
     WorldStone::DCC                        dccFile;
     WorldStone::DCC::Direction             currentDir;
     int                                    currentDirIndex = 0;
@@ -230,6 +231,7 @@ struct DccView : public FileBrowser::IFileView
     {
         const auto& header = dccFile.getHeader();
         if (ImGui::Begin("DCC")) {
+            IFileView::display();
             // clang-format off
                 ImGui::Text("Header");
                 ImGui::Separator();
@@ -285,6 +287,7 @@ struct DccView : public FileBrowser::IFileView
 
 struct Dc6View : public FileBrowser::IFileView
 {
+    Dc6View(const WorldStone::MpqArchive::Path& _filePath) : IFileView(_filePath) {}
     WorldStone::DC6 dc6File;
     SpriteAnim      spriteAnim;
     int             currentDirIndex = 0;
@@ -293,6 +296,7 @@ struct Dc6View : public FileBrowser::IFileView
     {
         const auto& header = dc6File.getHeader();
         if (ImGui::Begin("DC6")) {
+            IFileView::display();
             // clang-format off
                 ImGui::Text("Header");
                 ImGui::Separator();
@@ -374,6 +378,7 @@ struct Dc6View : public FileBrowser::IFileView
 
 struct CofView : public FileBrowser::IFileView
 {
+    CofView(const WorldStone::MpqArchive::Path& _filePath) : IFileView(_filePath) {}
     using COF = WorldStone::COF;
     COF cofFile;
     int currentLayerIdx = 1;
@@ -382,6 +387,7 @@ struct CofView : public FileBrowser::IFileView
     {
         const auto& header = cofFile.getHeader();
         if (ImGui::Begin("COF")) {
+            IFileView::display();
             // clang-format off
                 ImGui::Text("Header");
                 ImGui::Separator();
@@ -430,8 +436,10 @@ struct PaletteView final : public FileBrowser::IFileView
     using Palette = WorldStone::Palette;
     std::unique_ptr<Palette> palettePtr;
     bgfx::TextureHandle      paletteTexture = BGFX_INVALID_HANDLE;
+    bool                     alreadySetAsCurrentPalette = false;
 
-    PaletteView(std::unique_ptr<Palette> inPalette) : palettePtr(std::move(inPalette))
+    PaletteView(const WorldStone::MpqArchive::Path& _filePath, std::unique_ptr<Palette> inPalette)
+        : IFileView(_filePath), palettePtr(std::move(inPalette))
     {
         const Palette& palette = *palettePtr;
         static_assert(sizeof(WorldStone::Palette::Color24Bits) == 3, "");
@@ -448,10 +456,15 @@ struct PaletteView final : public FileBrowser::IFileView
                                   BGFX_TEXTURE_MIN_POINT | BGFX_TEXTURE_MAG_POINT, paletteRGB888);
     }
     ~PaletteView() { bgfx::destroy(paletteTexture); }
-    void display() override
+    void display(SpriteRenderer& spriteRenderer) override
     {
         ImGui::SetNextWindowSize(ImGui::GetContentRegionAvail(), ImGuiCond_FirstUseEver);
         if (ImGui::Begin("Palette")) {
+            IFileView::display();
+            if (!alreadySetAsCurrentPalette && ImGui::Button("Set as current palette")) {
+                spriteRenderer.setPalette(*palettePtr);
+                alreadySetAsCurrentPalette = true;
+            }
             // Can add some more info here
             ImVec2 curWindowSize = ImGui::GetContentRegionAvail();
             ImGui::Image(paletteTexture, ImVec2{curWindowSize.x, curWindowSize.y});
@@ -474,7 +487,8 @@ private:
     int currentMax = 0;
 
 public:
-    PL2View(std::unique_ptr<PL2> _pl2) : pl2(std::move(_pl2))
+    PL2View(const WorldStone::MpqArchive::Path& _filePath, std::unique_ptr<PL2> _pl2)
+        : IFileView(_filePath), pl2(std::move(_pl2))
     {
 
         using WorldStone::Utils::Size;
@@ -574,6 +588,7 @@ public:
     {
         ImGui::SetNextWindowSize(ImGui::GetContentRegionAvail(), ImGuiCond_FirstUseEver);
         if (ImGui::Begin("PL2")) {
+            IFileView::display();
             const int maxVal = int(textureHeight - 1);
             ImGui::DragIntRange2("Display range", &currentMin, &currentMax, 1.f, 0, maxVal);
             // Need to clamp, see issue https://github.com/ocornut/imgui/issues/1441
@@ -610,21 +625,21 @@ void FileBrowser::onFileSelected(const char* fileName)
         std::string extension = fileNameStr.substr(lastDot + 1);
         toLowerCase(extension);
         if (extension == "dcc") {
-            auto dccView = std::make_unique<DccView>();
+            auto dccView = std::make_unique<DccView>(fileNameStr);
             if (dccView->dccFile.initDecoder(currentArchive.open(fileNameStr))) {
                 currentView = std::move(dccView);
             }
         }
         else if (extension == "dc6")
         {
-            auto dc6View = std::make_unique<Dc6View>();
+            auto dc6View = std::make_unique<Dc6View>(fileNameStr);
             if (dc6View->dc6File.initDecoder(currentArchive.open(fileNameStr))) {
                 currentView = std::move(dc6View);
             }
         }
         else if (extension == "cof")
         {
-            auto cofView = std::make_unique<CofView>();
+            auto cofView = std::make_unique<CofView>(fileNameStr);
             if (cofView->cofFile.read(currentArchive.open(fileNameStr))) {
                 currentView = std::move(cofView);
             }
@@ -634,7 +649,7 @@ void FileBrowser::onFileSelected(const char* fileName)
             auto palette     = std::make_unique<WorldStone::Palette>();
             auto paletteFile = currentArchive.open(fileNameStr);
             if (palette->decode(paletteFile.get())) {
-                currentView = std::make_unique<PaletteView>(std::move(palette));
+                currentView = std::make_unique<PaletteView>(fileNameStr, std::move(palette));
             }
         }
         else if (extension == "pl2")
@@ -642,7 +657,7 @@ void FileBrowser::onFileSelected(const char* fileName)
             auto paletteFile = currentArchive.open(fileNameStr);
             auto pl2         = WorldStone::PL2::ReadFromStream(paletteFile.get());
             if (pl2) {
-                currentView = std::make_unique<PL2View>(std::move(pl2));
+                currentView = std::make_unique<PL2View>(fileNameStr, std::move(pl2));
             }
         }
         else
