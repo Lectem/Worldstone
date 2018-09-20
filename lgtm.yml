@@ -1,0 +1,13 @@
+---
+path_classifiers:
+  docs:
+    - README.md
+    - LICENSE
+    - CONTRIBUTING.md
+  generated:
+    - "**/*.ttf.h"
+    - "**/*.bin.h"
+  test:
+    - "**/tests/*.cpp"
+queries:
+  - exclude: cpp/ambiguously-signed-bit-field
