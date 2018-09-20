@@ -179,11 +179,13 @@ int SpriteRenderer::shutdown()
     spritesToRender.clear();
     spritesData.clear();
     // Cleanup.
-    bgfx::destroy(data->m_paletteColor);
-    bgfx::destroy(data->m_palColor);
-    bgfx::destroy(data->m_texColor);
-    bgfx::destroy(data->m_program);
-    bgfx::destroy(data->m_quadIndexBuf);
+    if (data) {
+        bgfx::destroy(data->m_paletteColor);
+        bgfx::destroy(data->m_palColor);
+        bgfx::destroy(data->m_texColor);
+        bgfx::destroy(data->m_program);
+        bgfx::destroy(data->m_quadIndexBuf);
+    }
 
     return 0;
 }
