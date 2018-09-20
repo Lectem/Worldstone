@@ -9,8 +9,9 @@
 #include <bx/math.h>
 #include <bx/timer.h>
 #include <dear-imgui/imgui.h>
-#include "IconFontCppHeaders/IconsKenney.h"
+#include <limits>
 #include "IconFontCppHeaders/IconsFontAwesome.h"
+#include "IconFontCppHeaders/IconsKenney.h"
 
 #include "imgui_bgfx.h"
 
@@ -95,29 +96,7 @@ struct OcornutImguiContext
 		bgfx::setViewName(m_viewId, "ImGui");
 		bgfx::setViewMode(m_viewId, bgfx::ViewMode::Sequential);
 
-		const bgfx::HMD*  hmd  = bgfx::getHMD();
 		const bgfx::Caps* caps = bgfx::getCaps();
-		if (nullptr != hmd && 0 != (hmd->flags & BGFX_HMD_RENDERING) )
-		{
-			float proj[16];
-			bx::mtxProj(proj, hmd->eye[0].fov, 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
-
-			static float time = 0.0f;
-			time += 0.05f;
-
-			const float dist = 10.0f;
-			const float offset0 = -proj[8] + (hmd->eye[0].viewOffset[0] / dist * proj[0]);
-			const float offset1 = -proj[8] + (hmd->eye[1].viewOffset[0] / dist * proj[0]);
-
-			float ortho[2][16];
-			const float viewOffset = width/4.0f;
-			const float viewWidth  = width/2.0f;
-			bx::mtxOrtho(ortho[0], viewOffset, viewOffset + viewWidth, height, 0.0f, 0.0f, 1000.0f, offset0, caps->homogeneousDepth);
-			bx::mtxOrtho(ortho[1], viewOffset, viewOffset + viewWidth, height, 0.0f, 0.0f, 1000.0f, offset1, caps->homogeneousDepth);
-			bgfx::setViewTransform(m_viewId, nullptr, ortho[0], BGFX_VIEW_STEREO, ortho[1]);
-			bgfx::setViewRect(m_viewId, 0, 0, hmd->width, hmd->height);
-		}
-		else
 		{
 			float ortho[16];
 			bx::mtxOrtho(ortho, 0.0f, width, height, 0.0f, 0.0f, 1000.0f, 0.0f, caps->homogeneousDepth);
@@ -197,10 +176,10 @@ struct OcornutImguiContext
 					bgfx::setTexture(0, s_tex, th);
 					bgfx::setVertexBuffer(0, &tvb, 0, numVertices);
 					bgfx::setIndexBuffer(&tib, offset, cmd->ElemCount);
-					bgfx::submit(cmd->ViewId, program);
-				}
+                                        bgfx::submit(m_viewId, program);
+                                }
 
-				offset += cmd->ElemCount;
+                                offset += cmd->ElemCount;
 			}
 		}
 	}
@@ -224,7 +203,7 @@ struct OcornutImguiContext
 
 		setupStyle(true);
 
-#if defined(SCI_NAMESPACE)
+#if USE_ENTRY
 		io.KeyMap[ImGuiKey_Tab]        = (int)entry::Key::Tab;
 		io.KeyMap[ImGuiKey_LeftArrow]  = (int)entry::Key::Left;
 		io.KeyMap[ImGuiKey_RightArrow] = (int)entry::Key::Right;
@@ -242,7 +221,7 @@ struct OcornutImguiContext
 		io.KeyMap[ImGuiKey_X]          = (int)entry::Key::KeyX;
 		io.KeyMap[ImGuiKey_Y]          = (int)entry::Key::KeyY;
 		io.KeyMap[ImGuiKey_Z]          = (int)entry::Key::KeyZ;
-#endif // defined(SCI_NAMESPACE)
+#endif // USE_ENTRY
 
 		bgfx::RendererType::Enum type = bgfx::getRendererType();
 		m_program = bgfx::createProgram(
@@ -370,7 +349,7 @@ struct OcornutImguiContext
 		io.MouseDown[1] = 0 != (_button & IMGUI_MBUT_RIGHT);
 		io.MouseDown[2] = 0 != (_button & IMGUI_MBUT_MIDDLE);
 
-#if defined(SCI_NAMESPACE)
+#if USE_ENTRY
 		uint8_t modifiers = inputGetModifiersState();
 		io.KeyShift = 0 != (modifiers & (entry::Modifier::LeftShift | entry::Modifier::RightShift) );
 		io.KeyCtrl  = 0 != (modifiers & (entry::Modifier::LeftCtrl  | entry::Modifier::RightCtrl ) );
@@ -379,19 +358,14 @@ struct OcornutImguiContext
 		{
 			io.KeysDown[ii] = inputGetKeyState(entry::Key::Enum(ii) );
 		}
-#endif // defined(SCI_NAMESPACE)
+#endif // USE_ENTRY
 
 		ImGui::NewFrame();
-        // TODO: remove this as it is useless (pushed in the cmd, but we cant set the cmd viewid by any other mean than beginFrame. So in the end it can only have the value of m_ViewId)
-        // Or... is it ? User could call PushStyleVar himself
-        ImGui::PushStyleVar(ImGuiStyleVar_ViewId, (float)_viewId);
-
 		ImGuizmo::BeginFrame();
 	}
 
 	void endFrame()
 	{
-		ImGui::PopStyleVar(1);
 		ImGui::Render();
 		render(ImGui::GetDrawData() );
 	}

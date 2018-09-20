@@ -65,6 +65,8 @@ void RendererApp::shutdownAppThread()
 
 void RendererApp::executeAppLoopOnce()
 {
+    // Note: we should probably have an output queue too for events such as Mouse hide/show.
+    updateMouseAccordingToImgui();
     // Input processing comes here
     const Inputs inputs = inputsManager.receiveAndProcessEvents();
 
@@ -141,4 +143,48 @@ void RendererApp::executeAppLoopOnce()
     // process submitted rendering primitives.
     // This will also wait for the render thread to finish presenting the frame
     bgfx::frame();
+}
+
+static SDL_SystemCursor ImGuiMouseCursorToSDL(ImGuiMouseCursor imguiCursor)
+{
+    switch (imguiCursor)
+    {
+    case ImGuiMouseCursor_Arrow: return SDL_SYSTEM_CURSOR_ARROW;
+    case ImGuiMouseCursor_TextInput: return SDL_SYSTEM_CURSOR_IBEAM;
+    case ImGuiMouseCursor_ResizeAll: return SDL_SYSTEM_CURSOR_SIZEALL;
+    case ImGuiMouseCursor_ResizeNS: return SDL_SYSTEM_CURSOR_SIZENS;
+    case ImGuiMouseCursor_ResizeEW: return SDL_SYSTEM_CURSOR_SIZEWE;
+    case ImGuiMouseCursor_ResizeNESW: return SDL_SYSTEM_CURSOR_SIZENESW;
+    case ImGuiMouseCursor_ResizeNWSE: return SDL_SYSTEM_CURSOR_SIZENWSE;
+    case ImGuiMouseCursor_Hand: return SDL_SYSTEM_CURSOR_HAND;
+
+    case ImGuiMouseCursor_None:
+    case ImGuiMouseCursor_COUNT:
+    default: assert(false); return SDL_SYSTEM_CURSOR_ARROW;
+    }
+}
+
+void RendererApp::updateMouseAccordingToImgui()
+{
+
+    const ImGuiIO& io = ImGui::GetIO();
+
+    // Set OS mouse position if requested (rarely used, only when
+    // ImGuiConfigFlags_NavEnableSetMousePos is enabled by user)
+    if (io.WantSetMousePos)
+        SDL_WarpMouseInWindow(mainWindow, (int)io.MousePos.x, (int)io.MousePos.y);
+
+    if (io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange) return;
+
+    const ImGuiMouseCursor imguiCursor = ImGui::GetMouseCursor();
+    if (io.MouseDrawCursor || imguiCursor == ImGuiMouseCursor_None) {
+        // Hide OS mouse cursor if imgui is drawing it or if it wants no cursor
+        SDL_ShowCursor(SDL_FALSE);
+    }
+    else
+    {
+        // Show OS mouse cursor
+        SDL_SetCursor(systemCursors[ImGuiMouseCursorToSDL(imguiCursor)]);
+        SDL_ShowCursor(SDL_TRUE);
+    }
 }

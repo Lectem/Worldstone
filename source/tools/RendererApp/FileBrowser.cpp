@@ -453,7 +453,7 @@ struct PaletteView final : public FileBrowser::IFileView
         }
         paletteTexture =
             bgfx::createTexture2D(256, 1, false, 1, bgfx::TextureFormat::RGB8,
-                                  BGFX_TEXTURE_MIN_POINT | BGFX_TEXTURE_MAG_POINT, paletteRGB888);
+                                  BGFX_SAMPLER_MIN_POINT | BGFX_SAMPLER_MAG_POINT, paletteRGB888);
     }
     ~PaletteView() { bgfx::destroy(paletteTexture); }
     void display(SpriteRenderer& spriteRenderer) override
@@ -580,7 +580,7 @@ public:
         assert(textureData == textureDataBegin + textureWidth * textureHeight);
         paletteTexture = bgfx::createTexture2D(
             uint16_t(textureWidth), uint16_t(textureHeight), false, 1, bgfx::TextureFormat::RGB8,
-            BGFX_TEXTURE_MIN_POINT | BGFX_TEXTURE_MAG_POINT, paletteRGB888);
+            BGFX_SAMPLER_MIN_POINT | BGFX_SAMPLER_MAG_POINT, paletteRGB888);
     }
 
     ~PL2View() { bgfx::destroy(paletteTexture); }

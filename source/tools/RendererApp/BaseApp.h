@@ -8,7 +8,6 @@ class BaseApp
 {
 private:
     std::atomic_bool stopRunning = ATOMIC_VAR_INIT(true);
-    SDL_Window*      mainWindow  = nullptr;
 
     int init();
 
@@ -17,6 +16,8 @@ private:
     void executeLoopOnce();
 
 protected:
+    SDL_Window*   mainWindow                            = nullptr;
+    SDL_Cursor*   systemCursors[SDL_NUM_SYSTEM_CURSORS] = {nullptr};
     InputsManager inputsManager;
 
     int windowWidth  = 1280;

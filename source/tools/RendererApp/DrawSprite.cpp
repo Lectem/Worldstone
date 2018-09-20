@@ -118,7 +118,7 @@ createVertexBufferFromSpriteFrame(const SpriteRenderer::Frame& frame)
 static bgfx::TextureHandle createTextureFromSprite(const SpriteRenderer::Frame& frame)
 {
     bgfx::TextureHandle spriteTexture = BGFX_INVALID_HANDLE;
-    uint32_t            flagsSprite   = BGFX_TEXTURE_MIN_POINT | BGFX_TEXTURE_MAG_POINT;
+    uint32_t            flagsSprite   = BGFX_SAMPLER_MIN_POINT | BGFX_SAMPLER_MAG_POINT;
     spriteTexture                     = bgfx::createTexture2D(
         frame.width, frame.height, false, 1, bgfx::TextureFormat::R8U, flagsSprite,
         bgfx::copy(frame.data, frame.width * frame.height * sizeof(uint8_t)));
@@ -202,7 +202,7 @@ void SpriteRenderer::setPalette(const WorldStone::Palette& palette)
     }
     data->m_paletteColor =
         bgfx::createTexture2D(Palette::colorCount, 1, false, 1, bgfx::TextureFormat::RGB8,
-                              BGFX_TEXTURE_MIN_POINT | BGFX_TEXTURE_MAG_POINT, paletteRGB888);
+                              BGFX_SAMPLER_MIN_POINT | BGFX_SAMPLER_MAG_POINT, paletteRGB888);
     bgfx::setName(data->m_paletteColor, "SpritePalette");
 }
 

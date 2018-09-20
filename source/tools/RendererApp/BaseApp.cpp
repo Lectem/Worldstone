@@ -79,6 +79,12 @@ int BaseApp::init()
 #endif
     default: SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Unsupported window system");
     }
+
+    for (int sysCursorIndex = 0; sysCursorIndex < SDL_NUM_SYSTEM_CURSORS; sysCursorIndex++)
+    {
+        systemCursors[sysCursorIndex] = SDL_CreateSystemCursor(SDL_SystemCursor(sysCursorIndex));
+    }
+
     // Let bgfx create the rendering context and back buffers
     pd.context      = nullptr;
     pd.backBuffer   = nullptr;
@@ -108,6 +114,12 @@ void BaseApp::shutdownAppThread() { bgfx::shutdown(); }
 
 void BaseApp::shutdown()
 {
+    for (auto& systemCursorPtr : systemCursors)
+    {
+        SDL_FreeCursor(systemCursorPtr);
+        systemCursorPtr = nullptr;
+    }
+
     SDL_DestroyWindow(mainWindow);
     mainWindow = nullptr;
 
@@ -128,6 +140,9 @@ void BaseApp::executeLoopOnce()
         {
             Inputs::MouseState mouseState;
             mouseState.buttonsMask = SDL_GetMouseState(&mouseState.x, &mouseState.y);
+            if (!(SDL_GetWindowFlags(mainWindow) & SDL_WINDOW_MOUSE_FOCUS)) {
+                mouseState.x = mouseState.y = std::numeric_limits<int>::lowest();
+            }
             transfer.PushMouseState(mouseState);
         }
 
