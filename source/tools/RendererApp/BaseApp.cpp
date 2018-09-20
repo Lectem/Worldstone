@@ -202,6 +202,7 @@ void BaseApp::runAppThread()
 {
     if (!initAppThread()) {
         requireExit();
+        shutdownAppThread();
         return;
     }
     while (!stopRunning)
