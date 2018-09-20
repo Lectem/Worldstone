@@ -4,6 +4,6 @@ var structWorldStone_1_1DC6_1_1Header =
     [ "flags", "structWorldStone_1_1DC6_1_1Header.html#a65064520a78b5a873a933734d50875de", null ],
     [ "format", "structWorldStone_1_1DC6_1_1Header.html#af7e995a6295b3c2b1da65e0d99fc381f", null ],
     [ "framesPerDir", "structWorldStone_1_1DC6_1_1Header.html#a6c9155ef13e70329e16783d54a77d7d5", null ],
-    [ "termination", "structWorldStone_1_1DC6_1_1Header.html#a3e871a19ab17300f16907f8954e2f082", null ],
+    [ "skipColor", "structWorldStone_1_1DC6_1_1Header.html#a039b759b5666f47f22033d6f677ed200", null ],
     [ "version", "structWorldStone_1_1DC6_1_1Header.html#a7d10747f6fe2ad4fe19966f39bf10835", null ]
 ];

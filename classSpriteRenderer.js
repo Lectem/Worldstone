@@ -12,5 +12,6 @@ var classSpriteRenderer =
     [ "draw", "classSpriteRenderer.html#ab42de9c14004d4872e8279076a984a03", null ],
     [ "init", "classSpriteRenderer.html#ab5881ab1f9d287df6ef94ab53087373c", null ],
     [ "pushDrawRequest", "classSpriteRenderer.html#a2b6fb4fec4664ee275a41ba1a5fbaff6", null ],
+    [ "setPalette", "classSpriteRenderer.html#a24c84f6999e20d705b05d5963aa1d77a", null ],
     [ "shutdown", "classSpriteRenderer.html#a7460a39d3cb115e989e1bfd9937aff22", null ]
 ];

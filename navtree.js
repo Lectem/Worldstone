@@ -31,8 +31,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classWorldStone_1_1MpqArchive.html#a083e4ed433b09e050e260f654800f777",
-"structWorldStone_1_1Palette_1_1Color.html#aec50cc14a17461df66d934410b352d65"
+"classWorldStone_1_1IStream.html#ab36335d2d5a04bf7aa5dd7fb59f0fb7e",
+"structWorldStone_1_1Palette.html#ad14ebc3d492192ec6bda718341b90319"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

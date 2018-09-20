@@ -9,6 +9,8 @@ var classBaseApp =
     [ "runAppThread", "classBaseApp.html#ae1f36724573c57dda76a273d655caf54", null ],
     [ "shutdownAppThread", "classBaseApp.html#a338d73fca08850b5a945921186aa9abc", null ],
     [ "inputsManager", "classBaseApp.html#af97312f66e8bf0dfb55904985fe5c433", null ],
+    [ "mainWindow", "classBaseApp.html#af7eb236e97044f0c5278f0465dc38125", null ],
+    [ "systemCursors", "classBaseApp.html#a3be9df07190a60595eb104c712f97e37", null ],
     [ "windowHeight", "classBaseApp.html#a28e7b7060593246ae467c19e2eecc5c8", null ],
     [ "windowWidth", "classBaseApp.html#a47c8e2de291aab38a5e97a4549283eec", null ]
 ];

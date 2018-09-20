@@ -12,6 +12,7 @@ var searchData=
   ['size',['size',['../classWorldStone_1_1FileStream.html#a74ffa1acc0573520803f850cb2e58c9e',1,'WorldStone::FileStream::size()'],['../classWorldStone_1_1MpqFileStream.html#ae0f349ae93756799543670ad4a22538e',1,'WorldStone::MpqFileStream::size()'],['../classWorldStone_1_1IStream.html#a3accaec5f377a254e84a5745388eeba0',1,'WorldStone::IStream::size()']]],
   ['sizeinbits',['sizeInBits',['../classWorldStone_1_1BitStreamView.html#ae9236c632bf4cf8fd7378c1756faa506',1,'WorldStone::BitStreamView']]],
   ['skip',['skip',['../classWorldStone_1_1BitStreamView.html#a54ef136ec792b982390780c5a3530928',1,'WorldStone::BitStreamView']]],
+  ['skipcolor',['skipColor',['../structWorldStone_1_1DC6_1_1Header.html#a039b759b5666f47f22033d6f677ed200',1,'WorldStone::DC6::Header']]],
   ['spriterenderdata',['SpriteRenderData',['../classSpriteRenderer_1_1SpriteRenderData.html',1,'SpriteRenderer']]],
   ['spriterenderer',['SpriteRenderer',['../classSpriteRenderer.html',1,'']]],
   ['spriterendererdata',['SpriteRendererData',['../structSpriteRendererData.html',1,'']]],

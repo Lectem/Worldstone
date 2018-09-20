@@ -1,5 +1,10 @@
 var NAVTREEINDEX1 =
 {
+"classWorldStone_1_1IStream.html#ab36335d2d5a04bf7aa5dd7fb59f0fb7e":[2,0,0,16,2],
+"classWorldStone_1_1IStream.html#ac157e79e9a8fb3ba45ec0dc463a18990":[2,0,0,16,4],
+"classWorldStone_1_1IStream.html#ac3ef79a1f0410a624dd83ffa928f0a24":[2,0,0,16,5],
+"classWorldStone_1_1IStream.html#aef0f13d53737334b47f992a3dbb99f39":[2,0,0,16,6],
+"classWorldStone_1_1MpqArchive.html":[2,0,0,14],
 "classWorldStone_1_1MpqArchive.html#a083e4ed433b09e050e260f654800f777":[2,0,0,14,9],
 "classWorldStone_1_1MpqArchive.html#a0f8ac7d40f8d9212b5f017de3e4fe797":[2,0,0,14,3],
 "classWorldStone_1_1MpqArchive.html#a1a98d11d6d13a2c0e9837bdde673b4f5":[2,0,0,14,0],
@@ -164,7 +169,7 @@ var NAVTREEINDEX1 =
 "structWorldStone_1_1DC6_1_1FrameHeader.html#af78c5f60f9aa05d0304452891dcb5d6b":[2,0,0,2,0,0],
 "structWorldStone_1_1DC6_1_1FrameHeader.html#afe7993e1cfd84e4018ebef37e5369fad":[2,0,0,2,0,4],
 "structWorldStone_1_1DC6_1_1Header.html":[2,0,0,2,1],
-"structWorldStone_1_1DC6_1_1Header.html#a3e871a19ab17300f16907f8954e2f082":[2,0,0,2,1,4],
+"structWorldStone_1_1DC6_1_1Header.html#a039b759b5666f47f22033d6f677ed200":[2,0,0,2,1,4],
 "structWorldStone_1_1DC6_1_1Header.html#a65064520a78b5a873a933734d50875de":[2,0,0,2,1,1],
 "structWorldStone_1_1DC6_1_1Header.html#a6c9155ef13e70329e16783d54a77d7d5":[2,0,0,2,1,3],
 "structWorldStone_1_1DC6_1_1Header.html#a7d10747f6fe2ad4fe19966f39bf10835":[2,0,0,2,1,5],
@@ -244,10 +249,5 @@ var NAVTREEINDEX1 =
 "structWorldStone_1_1Palette.html#a107144c0be9df259e96109e8049ff5a1":[2,0,0,7,4],
 "structWorldStone_1_1Palette.html#a533011669167aeca8d9c56cc092055ce":[2,0,0,7,3],
 "structWorldStone_1_1Palette.html#a63cb82033481dc779e2f26f816fb2262":[2,0,0,7,2],
-"structWorldStone_1_1Palette.html#aac1446a80fac64566642fd3cf312dbb4":[2,0,0,7,6],
-"structWorldStone_1_1Palette.html#ad14ebc3d492192ec6bda718341b90319":[2,0,0,7,5],
-"structWorldStone_1_1Palette_1_1Color.html":[2,0,0,7,0],
-"structWorldStone_1_1Palette_1_1Color.html#a73303b3410ec3065a6880392b75e5bf1":[2,0,0,7,0,3],
-"structWorldStone_1_1Palette_1_1Color.html#a7480f248cf76ad62229de141bcd29f7b":[2,0,0,7,0,0],
-"structWorldStone_1_1Palette_1_1Color.html#a75ef813e7d857f77e665649e0dafb17e":[2,0,0,7,0,4]
+"structWorldStone_1_1Palette.html#aac1446a80fac64566642fd3cf312dbb4":[2,0,0,7,6]
 };
