@@ -4,6 +4,7 @@
 
 #include "dc6.h"
 #include <FileStream.h>
+#include <SystemUtils.h>
 #include <fmt/format.h>
 #include "Palette.h"
 #include "utils.h"
@@ -58,11 +59,11 @@ std::vector<uint8_t> DC6::decompressFrame(size_t frameNumber) const
     // Allocate memory for the decoded data
     std::vector<uint8_t> data(static_cast<size_t>(fHeader.width * fHeader.height));
 
-    decompressFrameIn(frameNumber, data.data());
-    return data;
+    if (decompressFrameIn(frameNumber, data.data()))return data;
+    else return {};
 }
 
-void DC6::decompressFrameIn(size_t frameNumber, uint8_t* data) const
+bool DC6::decompressFrameIn(size_t frameNumber, uint8_t* data) const
 {
     assert(stream != nullptr);
     stream->seek(framePointers[frameNumber] + sizeof(FrameHeader), IStream::beg);
@@ -80,7 +81,7 @@ void DC6::decompressFrameIn(size_t frameNumber, uint8_t* data) const
     {
         int val = stream->getc();
         rawIndex++;
-        if (stream->eof()) throw;
+        if (stream->eof()) return false;
         uint8_t chunkSize = static_cast<uint8_t>(val);
         if (chunkSize == 0x80) // end of line
         {
@@ -97,10 +98,11 @@ void DC6::decompressFrameIn(size_t frameNumber, uint8_t* data) const
             stream->read(data + x + fHeader.width * y, chunkSize);
             rawIndex += chunkSize;
             x += chunkSize;
-            if (stream->eof()) throw;
+            if (stream->eof()) return false;
         }
     }
     assert(fHeader.length == rawIndex);
+    return true;
 }
 
 void DC6::exportToPPM(const char* ppmFilenameBase, const Palette& palette) const
