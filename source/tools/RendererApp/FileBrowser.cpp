@@ -349,7 +349,7 @@ struct Dc6View : public FileBrowser::IFileView
 
         const auto&  header               = dc6File.getHeader();
         const auto&  frameHeaders         = dc6File.getFrameHeaders();
-        const size_t directionFrameOffset = direction * header.framesPerDir;
+        const size_t directionFrameOffset = size_t(direction) * header.framesPerDir;
 
         spriteAnim.extents.initializeForExtension();
         if (header.framesPerDir > 500) ImGui::OpenPopup("Warning");

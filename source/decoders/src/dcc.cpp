@@ -206,7 +206,7 @@ struct FrameData
             if ((tmp % 4) == 0) nbCellsY--;
         }
 
-        cellSameAsPrevious.resize(nbCellsX * nbCellsY);
+        cellSameAsPrevious.resize(size_t(nbCellsX) * size_t(nbCellsY));
 
         // Initialize to 4 by default
         cellWidths.resize(nbCellsX, 4);

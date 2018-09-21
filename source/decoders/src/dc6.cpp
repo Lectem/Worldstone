@@ -31,7 +31,7 @@ bool DC6::extractHeaders()
     stream->read(&header, sizeof(header));
     if (stream->fail()) return false;
 
-    size_t framesNumber = header.directions * header.framesPerDir;
+    size_t framesNumber = size_t(header.directions) * size_t(header.framesPerDir);
     frameHeaders.resize(framesNumber);
 
     framePointers.resize(framesNumber);
@@ -107,7 +107,7 @@ bool DC6::decompressFrameIn(size_t frameNumber, uint8_t* data) const
 
 void DC6::exportToPPM(const char* ppmFilenameBase, const Palette& palette) const
 {
-    for (uint32_t dir = 0; dir < header.directions; ++dir)
+    for (size_t dir = 0; dir < header.directions; ++dir)
     {
         for (size_t frameInDir = 0; frameInDir < header.framesPerDir; ++frameInDir)
         {
