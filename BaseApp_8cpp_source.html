@@ -309,15 +309,16 @@ $(document).ready(function(){initNavTree('BaseApp_8cpp_source.html','');});
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;{</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="keywordflow">if</span> (!initAppThread()) {</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        requireExit();</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    }</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keywordflow">while</span> (!stopRunning)</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    {</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        executeAppLoopOnce();</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    }</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    shutdownAppThread();</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="comment">// End of the app thread</span></div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;}</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        shutdownAppThread();</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    }</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keywordflow">while</span> (!stopRunning)</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    {</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        executeAppLoopOnce();</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    }</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    shutdownAppThread();</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="comment">// End of the app thread</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;}</div>
 <div class="ttc" id="structInputs_html"><div class="ttname"><a href="structInputs.html">Inputs</a></div><div class="ttdef"><b>Definition:</b> <a href="Inputs_8h_source.html#l00008">Inputs.h:8</a></div></div>
 <div class="ttc" id="Platform_8h_html_af096c46ad8dc5ff351d25bf0f8c3f9fe"><div class="ttname"><a href="Platform_8h.html#af096c46ad8dc5ff351d25bf0f8c3f9fe">WS_PRAGMA_DIAGNOSTIC_POP</a></div><div class="ttdeci">#define WS_PRAGMA_DIAGNOSTIC_POP()</div><div class="ttdoc">Restores the previous state of the compiler warnings. </div><div class="ttdef"><b>Definition:</b> <a href="Platform_8h_source.html#l00094">Platform.h:94</a></div></div>
 <div class="ttc" id="Platform_8h_html_a37ec4a0317496b4efd7f9bb16c831c64"><div class="ttname"><a href="Platform_8h.html#a37ec4a0317496b4efd7f9bb16c831c64">WS_PRAGMA_DIAGNOSTIC_IGNORED_MSC</a></div><div class="ttdeci">#define WS_PRAGMA_DIAGNOSTIC_IGNORED_MSC(_x)</div><div class="ttdoc">Silence MSC-specific warnings. </div><div class="ttdef"><b>Definition:</b> <a href="Platform_8h_source.html#l00098">Platform.h:98</a></div></div>
@@ -331,7 +332,7 @@ $(document).ready(function(){initNavTree('BaseApp_8cpp_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="dir_d4997a96f2e948238c4ace8570226aa1.html">tools</a></li><li class="navelem"><a class="el" href="dir_6bb00da5264f0867a3437473136cb3a5.html">RendererApp</a></li><li class="navelem"><b>BaseApp.cpp</b></li>
-    <li class="footer">Generated on Fri Sep 21 2018 07:00:36 for Worldstone by
+    <li class="footer">Generated on Sat Sep 22 2018 11:25:48 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

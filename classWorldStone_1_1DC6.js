@@ -8,7 +8,7 @@ var classWorldStone_1_1DC6 =
       [ "Is24Bits", "classWorldStone_1_1DC6.html#a89def2f7b534a43ec9798e53c9af3817a4c869540041f0de2616b6a9a96fd1ec3", null ]
     ] ],
     [ "decompressFrame", "classWorldStone_1_1DC6.html#a2620c42aeac2f55f64725d7044375acf", null ],
-    [ "decompressFrameIn", "classWorldStone_1_1DC6.html#a3b74a5c9067ba863f7ec9c19cc0cc5e7", null ],
+    [ "decompressFrameIn", "classWorldStone_1_1DC6.html#a9bd22c2b71615db72815e1f28d3e28ce", null ],
     [ "exportToPPM", "classWorldStone_1_1DC6.html#a0a5812478ca5ed1e727bbb74e2e78b33", null ],
     [ "extractHeaders", "classWorldStone_1_1DC6.html#aa97ff4babbdd1abcd08e11ff6d8e8540", null ],
     [ "getFrameHeaders", "classWorldStone_1_1DC6.html#a9cec4f181e339102845e8f2e45890cde", null ],
