@@ -3,7 +3,6 @@
 [![Appveyor build status](https://ci.appveyor.com/api/projects/status/537k5bthitwtplta/branch/master?svg=true)](https://ci.appveyor.com/project/Lectem/Worldstone/branch/master)
 [![Coverage](https://codecov.io/gh/Lectem/Worldstone/branch/master/graph/badge.svg)](https://codecov.io/gh/Lectem/Worldstone)
 [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/Lectem/Worldstone.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Lectem/Worldstone/context:cpp)
-[![CDash dashboard](https://img.shields.io/badge/CDash-Access-blue.svg)](http://my.cdash.org/index.php?project=Worldstone)
 
 [![Pull requests](https://img.shields.io/github/issues-pr-raw/Lectem/Worldstone.svg)](https://github.com/Lectem/Worldstone/pulls)
 [![Opened issues](https://img.shields.io/github/issues-raw/Lectem/Worldstone.svg)](https://github.com/Lectem/Worldstone/issues)

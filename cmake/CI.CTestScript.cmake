@@ -40,4 +40,4 @@ else()
     message(WARNING "GCov not found, not running coverage")
 endif()
 #ctest_memcheck()
-ctest_submit() # Comment this if you want to use the script but not use CDash
+#ctest_submit() # Comment this if you want to use the script but not use CDash
