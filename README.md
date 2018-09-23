@@ -56,7 +56,7 @@ You can tweak the configuration using the following CMake variables (I suggest u
 
 ### On Windows
 
-- Required shared libraries should automatically be copied to the executable directory by CMake, but in case where you can't run the tools from Visual, add the QTDIR environment variable with the Qt path as value (example : C:\Qt\5.7\msvc2015_64) then add %QTDIR%\bin and %QTDIR%\plugins to your PATH variable.
+- Required shared libraries should automatically be copied to the executable directory by CMake.
 
 ## Short-term objectives
 * COF viewer
