@@ -112,9 +112,9 @@ void RendererApp::executeAppLoopOnce()
     const Inputs::MouseState& mouseState = inputs.mouseState;
     imguiBeginFrame(
         int32_t(mouseState.x), int32_t(mouseState.y),
-        0 | (mouseState.buttonsMask & SDL_BUTTON(SDL_BUTTON_LEFT) ? IMGUI_MBUT_LEFT : 0)
-            | (mouseState.buttonsMask & SDL_BUTTON(SDL_BUTTON_RIGHT) ? IMGUI_MBUT_RIGHT : 0)
-            | (mouseState.buttonsMask & SDL_BUTTON(SDL_BUTTON_MIDDLE) ? IMGUI_MBUT_MIDDLE : 0),
+        0 | ((mouseState.buttonsMask & SDL_BUTTON(SDL_BUTTON_LEFT)) ? IMGUI_MBUT_LEFT : 0)
+            | ((mouseState.buttonsMask & SDL_BUTTON(SDL_BUTTON_RIGHT)) ? IMGUI_MBUT_RIGHT : 0)
+            | ((mouseState.buttonsMask & SDL_BUTTON(SDL_BUTTON_MIDDLE)) ? IMGUI_MBUT_MIDDLE : 0),
         uint16_t(windowWidth), uint16_t(windowHeight));
 
     ImGui::ShowDemoWindow();
