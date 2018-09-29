@@ -178,6 +178,7 @@ struct FrameData
     ImageView<uint8_t> imageView; ///< Output buffer image view
     FrameData(const DCC::Direction& dir, const DCC::FrameHeader& frameHeader,
               IImageProvider<uint8_t>& imgProvider)
+        : firstPixelBufferEntry(0)
     {
         offsetX = uint16_t(frameHeader.extents.xLower - dir.extents.xLower);
         offsetY = uint16_t(frameHeader.extents.yLower - dir.extents.yLower);

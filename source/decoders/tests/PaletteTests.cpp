@@ -24,8 +24,8 @@ TEST_CASE("PL2 creation")
     std::unique_ptr<PL2> pl2File = std::make_unique<PL2>();
     fs.read(pl2File.get(), sizeof(PL2));
 
-    bool sameBase = pl2->basePalette == pl2File->basePalette;
-    REQUIRE(basePalette == pl2File->basePalette);
+    const bool sameBase = pl2->basePalette == pl2File->basePalette;
+    REQUIRE(sameBase);
     CHECK(pl2->basePalette == pl2File->basePalette);
     for (size_t i = 0; i < 32; i++)
         CHECK(pl2->lightLevelVariations[i].indices == pl2File->lightLevelVariations[i].indices);
