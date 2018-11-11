@@ -55,7 +55,7 @@ public:
         uint32_t directions;   ///< Number of directions in this file
         uint32_t framesPerDir; ///< Number of frames for each direction
     };
-
+    /// @note offsets relative to the top-left screen pixel
     struct FrameHeader
     {
         int32_t  flip;      ///< Default (false) means scanlines are from bottom to top

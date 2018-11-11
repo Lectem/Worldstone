@@ -358,9 +358,11 @@ struct Dc6View : public FileBrowser::IFileView
         {
             const size_t                    frameIndexInFile = directionFrameOffset + frameIndex;
             const auto&                     frameHeader      = frameHeaders[frameIndexInFile];
-            const WorldStone::AABB<int32_t> frameExtents{frameHeader.offsetX, frameHeader.offsetY,
-                                                         frameHeader.offsetX + frameHeader.width,
-                                                         frameHeader.offsetY + frameHeader.height};
+            const WorldStone::AABB<int32_t> frameExtents{
+                frameHeader.offsetX, frameHeader.offsetY - frameHeader.height,
+                frameHeader.offsetX + frameHeader.width,
+                frameHeader.offsetY // The offset is the position of the bottom of the frame
+            };
             assert(frameExtents.width() == frameHeader.width);
             assert(frameExtents.height() == frameHeader.height);
 
