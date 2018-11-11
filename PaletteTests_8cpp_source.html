@@ -128,8 +128,8 @@ $(document).ready(function(){initNavTree('PaletteTests_8cpp_source.html','');});
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    std::unique_ptr&lt;PL2&gt; pl2File = std::make_unique&lt;PL2&gt;();</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    fs.read(pl2File.get(), <span class="keyword">sizeof</span>(<a class="code" href="structWorldStone_1_1PL2.html">PL2</a>));</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordtype">bool</span> sameBase = pl2-&gt;basePalette == pl2File-&gt;basePalette;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    REQUIRE(basePalette == pl2File-&gt;basePalette);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">bool</span> sameBase = pl2-&gt;basePalette == pl2File-&gt;basePalette;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    REQUIRE(sameBase);</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    CHECK(pl2-&gt;basePalette == pl2File-&gt;basePalette);</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; 32; i++)</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        CHECK(pl2-&gt;lightLevelVariations[i].indices == pl2File-&gt;lightLevelVariations[i].indices);</div>
@@ -182,7 +182,7 @@ $(document).ready(function(){initNavTree('PaletteTests_8cpp_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="dir_7c3a1345283c9702e0309ab160183c1c.html">decoders</a></li><li class="navelem"><a class="el" href="dir_49b41165fdb356798c67338541f4bc54.html">tests</a></li><li class="navelem"><a class="el" href="PaletteTests_8cpp.html">PaletteTests.cpp</a></li>
-    <li class="footer">Generated on Sun Sep 23 2018 22:22:42 for Worldstone by
+    <li class="footer">Generated on Sun Nov 11 2018 19:36:40 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

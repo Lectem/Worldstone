@@ -219,9 +219,9 @@ $(document).ready(function(){initNavTree('RendererApp_8cpp_source.html','');});
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keyword">const</span> <a class="code" href="structInputs_1_1MouseState.html">Inputs::MouseState</a>&amp; mouseState = inputs.mouseState;</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    imguiBeginFrame(</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        int32_t(mouseState.x), int32_t(mouseState.y),</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        0 | (mouseState.buttonsMask &amp; SDL_BUTTON(SDL_BUTTON_LEFT) ? IMGUI_MBUT_LEFT : 0)</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            | (mouseState.buttonsMask &amp; SDL_BUTTON(SDL_BUTTON_RIGHT) ? IMGUI_MBUT_RIGHT : 0)</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            | (mouseState.buttonsMask &amp; SDL_BUTTON(SDL_BUTTON_MIDDLE) ? IMGUI_MBUT_MIDDLE : 0),</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        0 | ((mouseState.buttonsMask &amp; SDL_BUTTON(SDL_BUTTON_LEFT)) ? IMGUI_MBUT_LEFT : 0)</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            | ((mouseState.buttonsMask &amp; SDL_BUTTON(SDL_BUTTON_RIGHT)) ? IMGUI_MBUT_RIGHT : 0)</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            | ((mouseState.buttonsMask &amp; SDL_BUTTON(SDL_BUTTON_MIDDLE)) ? IMGUI_MBUT_MIDDLE : 0),</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        uint16_t(windowWidth), uint16_t(windowHeight));</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    ImGui::ShowDemoWindow();</div>
@@ -307,7 +307,7 @@ $(document).ready(function(){initNavTree('RendererApp_8cpp_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="dir_d4997a96f2e948238c4ace8570226aa1.html">tools</a></li><li class="navelem"><a class="el" href="dir_6bb00da5264f0867a3437473136cb3a5.html">RendererApp</a></li><li class="navelem"><b>RendererApp.cpp</b></li>
-    <li class="footer">Generated on Sun Sep 23 2018 22:22:42 for Worldstone by
+    <li class="footer">Generated on Sun Nov 11 2018 19:36:40 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
