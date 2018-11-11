@@ -220,7 +220,7 @@ struct SpriteAnim
 struct DccView : public FileBrowser::IFileView
 {
 
-    DccView(const WorldStone::MpqArchive::Path& _filePath) : IFileView(_filePath) {}
+    explicit DccView(const WorldStone::MpqArchive::Path& _filePath) : IFileView(_filePath) {}
     WorldStone::DCC                        dccFile;
     WorldStone::DCC::Direction             currentDir;
     int                                    currentDirIndex = 0;
@@ -287,7 +287,7 @@ struct DccView : public FileBrowser::IFileView
 
 struct Dc6View : public FileBrowser::IFileView
 {
-    Dc6View(const WorldStone::MpqArchive::Path& _filePath) : IFileView(_filePath) {}
+    explicit Dc6View(const WorldStone::MpqArchive::Path& _filePath) : IFileView(_filePath) {}
     WorldStone::DC6 dc6File;
     SpriteAnim      spriteAnim;
     int             currentDirIndex = 0;
@@ -380,7 +380,7 @@ struct Dc6View : public FileBrowser::IFileView
 
 struct CofView : public FileBrowser::IFileView
 {
-    CofView(const WorldStone::MpqArchive::Path& _filePath) : IFileView(_filePath) {}
+    explicit CofView(const WorldStone::MpqArchive::Path& _filePath) : IFileView(_filePath) {}
     using COF = WorldStone::COF;
     COF cofFile;
     int currentLayerIdx = 1;
