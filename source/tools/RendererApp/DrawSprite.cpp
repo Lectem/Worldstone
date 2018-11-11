@@ -91,7 +91,7 @@ createVertexBufferFromSpriteFrame(const SpriteRenderer::Frame& frame)
     // Since we need to cover the whole pixel for it to render, no need to -1
     const float lastColumn = float(frame.width);
     const float lastRow    = float(frame.height);
-    // Negate as we render bottom up and not top down
+
     const float fOffsetX         = float(frame.offsetX);
     const float fOffsetY         = float(frame.offsetY);
     const float lastColumnOffset = fOffsetX + lastColumn;
