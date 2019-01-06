@@ -153,5 +153,26 @@ constexpr size_t Size(const T (&array)[N]) noexcept
     return N;
 }
 
+/**
+ * Template to check the size of a struct and have it displayed in case of error.
+ *
+ * static_assert will not show the value of sizeof, but using
+ * StaticCheckEnsureSizeOf<Type,ExpectedSize> will display the template parameters in the output,
+ * with the sizeof already evaluated. This is the only way to print it at compile time easily.
+ * @code
+ * struct Foo{ uint32_t foo; };
+ * static_assert(Utils::StaticCheckEnsureSizeOf<Foo, 4>(),"Foo should be of size 4");
+ * @endcode
+ * You can also call this directly if you are in a function body.
+ */
+template<class T, int ExpectedSize, int TSize = sizeof(T)>
+static constexpr bool StaticCheckSize()
+{
+    static_assert(ExpectedSize == TSize, "T has a bad size(see "
+                                         "StaticCheckEnsureSizeOf<T,ExpectedSize,ActualSize> in "
+                                         "error message)");
+    return true;
+}
+
 } // namespace Utils
 } // namespace WorldStone
