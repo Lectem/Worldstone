@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include <ios>
 #include <string>
 
 namespace WorldStone
@@ -18,13 +17,13 @@ class IOBase
 {
 public:
     using Path    = std::string;
-    using iostate = std::ios_base::iostate;
+    using iostate = int;
 
 protected:
-    static const iostate goodbit = std::ios_base::goodbit;
-    static const iostate badbit  = std::ios_base::badbit;
-    static const iostate failbit = std::ios_base::failbit;
-
+    static constexpr iostate goodbit = 0x0;
+    static constexpr iostate eofbit  = 0x1;
+    static constexpr iostate failbit = 0x2;
+    static constexpr iostate badbit  = 0x4;
     iostate _state = goodbit;
 
     void setstate(iostate state) { _state = _state | state; }
@@ -32,7 +31,9 @@ protected:
 public:
     explicit operator bool() const { return !fail(); }
     bool operator!() const { return fail(); }
+
     bool good() const { return _state == goodbit; }
+    bool eof() const { return _state & eofbit; }
     bool fail() const { return (_state & (badbit | failbit)) != 0; }
     bool bad() const { return (_state & badbit) != 0; }
 };

@@ -21,18 +21,16 @@ namespace WorldStone
  */
 class IStream : public IOBase
 {
-protected:
-    static const iostate eofbit = std::ios_base::eofbit;
-
 public:
     /// True if the end of the stream was reached during the last read operation
     bool                 eof() const { return (_state & eofbit) != 0; }
 
-    using seekdir = std::ios_base::seekdir; ///< Used as reference for @ref seek @see beg cur end
-    static const seekdir beg = std::ios_base::beg; ///< Beginning of the stream
-    static const seekdir cur = std::ios_base::cur; ///< Current position of the stream
-    static const seekdir end = std::ios_base::end; ///< End of the stream, not always supported
-
+    enum seekdir
+    {
+        beg,
+        cur,
+        end
+    };
     /**
      * Compute the size of the file.
      * @return the size of the file, or a negative value on error
