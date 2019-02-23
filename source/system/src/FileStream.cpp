@@ -58,10 +58,10 @@ bool FileStream::seek(long offset, IStream::seekdir origin)
 
 long FileStream::size()
 {
-    const long curPos = tell();
+    const long curPos = ftell(file);
     if (curPos == -1) setstate(failbit);
     seek(0, end);
-    const long size = tell();
+    const long size = ftell(file);
     if (size == -1) setstate(failbit);
     // Reset the file position even if the previous commands failed. Do not fail if position was
     // invalid
@@ -71,7 +71,8 @@ long FileStream::size()
 
 int FileStream::getc()
 {
-    // TODO : call stdlib getc for better perf
-    return IStream::getc();
+    const int c = fgetc(file);
+    if (c == EOF) { setstate(failbit | eofbit); }
+    return c;
 }
 }
