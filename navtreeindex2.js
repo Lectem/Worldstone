@@ -1,5 +1,8 @@
 var NAVTREEINDEX2 =
 {
+"structWorldStone_1_1Palette.html#a533011669167aeca8d9c56cc092055ce":[2,0,0,7,3],
+"structWorldStone_1_1Palette.html#a63cb82033481dc779e2f26f816fb2262":[2,0,0,7,2],
+"structWorldStone_1_1Palette.html#aac1446a80fac64566642fd3cf312dbb4":[2,0,0,7,6],
 "structWorldStone_1_1Palette.html#ad14ebc3d492192ec6bda718341b90319":[2,0,0,7,5],
 "structWorldStone_1_1Palette_1_1Color.html":[2,0,0,7,0],
 "structWorldStone_1_1Palette_1_1Color.html#a73303b3410ec3065a6880392b75e5bf1":[2,0,0,7,0,3],

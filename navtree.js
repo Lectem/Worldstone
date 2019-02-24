@@ -11,7 +11,6 @@ var NAVTREE =
         [ "All", "functions.html", null ],
         [ "Functions", "functions_func.html", null ],
         [ "Variables", "functions_vars.html", null ],
-        [ "Typedefs", "functions_type.html", null ],
         [ "Enumerations", "functions_enum.html", null ],
         [ "Enumerator", "functions_eval.html", null ]
       ] ]
@@ -31,8 +30,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classWorldStone_1_1IStream.html#ab36335d2d5a04bf7aa5dd7fb59f0fb7e",
-"structWorldStone_1_1Palette.html#ad14ebc3d492192ec6bda718341b90319"
+"classWorldStone_1_1IStream.html#a3accaec5f377a254e84a5745388eeba0",
+"structWorldStone_1_1Palette.html#a533011669167aeca8d9c56cc092055ce"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

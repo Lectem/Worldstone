@@ -1,6 +1,10 @@
 var classWorldStone_1_1IStream =
 [
-    [ "seekdir", "classWorldStone_1_1IStream.html#a000d492ec62dccb591bd089c45954720", null ],
+    [ "seekdir", "classWorldStone_1_1IStream.html#a0e551638926c38e4141d8dcaae069cb1", [
+      [ "beg", "classWorldStone_1_1IStream.html#a0e551638926c38e4141d8dcaae069cb1a18232e9babd4bb8da34d9a83bf9fba2b", null ],
+      [ "cur", "classWorldStone_1_1IStream.html#a0e551638926c38e4141d8dcaae069cb1a7784366a44b043fa3bb1addcf70fe240", null ],
+      [ "end", "classWorldStone_1_1IStream.html#a0e551638926c38e4141d8dcaae069cb1a363baf982c85163cb22f2950d84646e2", null ]
+    ] ],
     [ "~IStream", "classWorldStone_1_1IStream.html#a4850738610cfd764f95cbd2372086f3b", null ],
     [ "eof", "classWorldStone_1_1IStream.html#ab36335d2d5a04bf7aa5dd7fb59f0fb7e", null ],
     [ "getc", "classWorldStone_1_1IStream.html#a860efcd97fb13ea33a2965953733c438", null ],

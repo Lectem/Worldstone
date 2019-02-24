@@ -12,11 +12,10 @@ var indexSectionsWithContent =
   2: "bdfipsv",
   3: "bcdefgimorst",
   4: "abcdefhilmnostuvwxyz",
-  5: "s",
-  6: "fk",
-  7: "i",
-  8: "w",
-  9: "dst"
+  5: "fk",
+  6: "i",
+  7: "w",
+  8: "dst"
 };
 
 var indexSectionNames =
@@ -26,11 +25,10 @@ var indexSectionNames =
   2: "files",
   3: "functions",
   4: "variables",
-  5: "typedefs",
-  6: "enums",
-  7: "enumvalues",
-  8: "defines",
-  9: "pages"
+  5: "enums",
+  6: "enumvalues",
+  7: "defines",
+  8: "pages"
 };
 
 function convertToId(search)

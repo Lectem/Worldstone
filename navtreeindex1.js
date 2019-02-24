@@ -1,5 +1,9 @@
 var NAVTREEINDEX1 =
 {
+"classWorldStone_1_1IStream.html#a3accaec5f377a254e84a5745388eeba0":[2,0,0,16,7],
+"classWorldStone_1_1IStream.html#a4850738610cfd764f95cbd2372086f3b":[2,0,0,16,1],
+"classWorldStone_1_1IStream.html#a860efcd97fb13ea33a2965953733c438":[2,0,0,16,3],
+"classWorldStone_1_1IStream.html#a952ede59e2114c67d52e9ea247f13a87":[2,0,0,16,8],
 "classWorldStone_1_1IStream.html#ab36335d2d5a04bf7aa5dd7fb59f0fb7e":[2,0,0,16,2],
 "classWorldStone_1_1IStream.html#ac157e79e9a8fb3ba45ec0dc463a18990":[2,0,0,16,4],
 "classWorldStone_1_1IStream.html#ac3ef79a1f0410a624dd83ffa928f0a24":[2,0,0,16,5],
@@ -86,10 +90,9 @@ var NAVTREEINDEX1 =
 "dir_e1f934d12cc201af1e31517dc1cb2f75.html":[3,0,0,1,0],
 "files.html":[3,0],
 "functions.html":[2,3,0],
-"functions_enum.html":[2,3,4],
-"functions_eval.html":[2,3,5],
+"functions_enum.html":[2,3,3],
+"functions_eval.html":[2,3,4],
 "functions_func.html":[2,3,1],
-"functions_type.html":[2,3,3],
 "functions_vars.html":[2,3,2],
 "globals.html":[3,1,0],
 "globals_defs.html":[3,1,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX1 =
 "structWorldStone_1_1PalShiftTransform.html#a6099fb69cd7e8ebc115ca9cb6262dd1c":[2,0,0,8,1],
 "structWorldStone_1_1PalShiftTransform.html#ae40f1fcf9c1b267db84a91878d47dcc2":[2,0,0,8,0],
 "structWorldStone_1_1Palette.html":[2,0,0,7],
-"structWorldStone_1_1Palette.html#a107144c0be9df259e96109e8049ff5a1":[2,0,0,7,4],
-"structWorldStone_1_1Palette.html#a533011669167aeca8d9c56cc092055ce":[2,0,0,7,3],
-"structWorldStone_1_1Palette.html#a63cb82033481dc779e2f26f816fb2262":[2,0,0,7,2],
-"structWorldStone_1_1Palette.html#aac1446a80fac64566642fd3cf312dbb4":[2,0,0,7,6]
+"structWorldStone_1_1Palette.html#a107144c0be9df259e96109e8049ff5a1":[2,0,0,7,4]
 };

@@ -93,7 +93,7 @@ $(document).ready(function(){initNavTree('classWorldStone_1_1IStream.html','');}
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -106,8 +106,6 @@ $(document).ready(function(){initNavTree('classWorldStone_1_1IStream.html','');}
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="classWorldStone_1_1IStream-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">WorldStone::IStream Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
@@ -132,16 +130,18 @@ Inheritance diagram for WorldStone::IStream:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a000d492ec62dccb591bd089c45954720"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorldStone_1_1IStream.html#a000d492ec62dccb591bd089c45954720">seekdir</a> = std::ios_base::seekdir</td></tr>
-<tr class="memdesc:a000d492ec62dccb591bd089c45954720"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used as reference for <a class="el" href="classWorldStone_1_1IStream.html#aef0f13d53737334b47f992a3dbb99f39">seek</a>.  <a href="#a000d492ec62dccb591bd089c45954720">More...</a><br/></td></tr>
-<tr class="separator:a000d492ec62dccb591bd089c45954720"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e551638926c38e4141d8dcaae069cb1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><b>seekdir</b> { <b>beg</b>, 
+<b>cur</b>, 
+<b>end</b>
+ }</td></tr>
+<tr class="separator:a0e551638926c38e4141d8dcaae069cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classWorldStone_1_1IOBase"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classWorldStone_1_1IOBase')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classWorldStone_1_1IOBase.html">WorldStone::IOBase</a></td></tr>
 <tr class="memitem:aba5f6a8fe241d270aa367a96df209a0b inherit pub_types_classWorldStone_1_1IOBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba5f6a8fe241d270aa367a96df209a0b"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>Path</b> = std::string</td></tr>
 <tr class="separator:aba5f6a8fe241d270aa367a96df209a0b inherit pub_types_classWorldStone_1_1IOBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9ce640319f14982a6e6473c1e1391d8 inherit pub_types_classWorldStone_1_1IOBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9ce640319f14982a6e6473c1e1391d8"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>iostate</b> = std::ios_base::iostate</td></tr>
-<tr class="separator:ad9ce640319f14982a6e6473c1e1391d8 inherit pub_types_classWorldStone_1_1IOBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83e8515c11fb91f5130f8110b7bcfc4a inherit pub_types_classWorldStone_1_1IOBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a83e8515c11fb91f5130f8110b7bcfc4a"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>iostate</b> = int</td></tr>
+<tr class="separator:a83e8515c11fb91f5130f8110b7bcfc4a inherit pub_types_classWorldStone_1_1IOBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -165,7 +165,7 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a952ede59e2114c67d52e9ea247f13a87"><td class="memItemLeft" align="right" valign="top">virtual long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorldStone_1_1IStream.html#a952ede59e2114c67d52e9ea247f13a87">tell</a> ()=0</td></tr>
 <tr class="memdesc:a952ede59e2114c67d52e9ea247f13a87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the current position of the stream pointer.  <a href="#a952ede59e2114c67d52e9ea247f13a87">More...</a><br/></td></tr>
 <tr class="separator:a952ede59e2114c67d52e9ea247f13a87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef0f13d53737334b47f992a3dbb99f39"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorldStone_1_1IStream.html#aef0f13d53737334b47f992a3dbb99f39">seek</a> (long offset, <a class="el" href="classWorldStone_1_1IStream.html#a000d492ec62dccb591bd089c45954720">seekdir</a> origin)=0</td></tr>
+<tr class="memitem:aef0f13d53737334b47f992a3dbb99f39"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorldStone_1_1IStream.html#aef0f13d53737334b47f992a3dbb99f39">seek</a> (long offset, seekdir origin)=0</td></tr>
 <tr class="memdesc:aef0f13d53737334b47f992a3dbb99f39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the pointer of the stream to a given position.  <a href="#aef0f13d53737334b47f992a3dbb99f39">More...</a><br/></td></tr>
 <tr class="separator:aef0f13d53737334b47f992a3dbb99f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classWorldStone_1_1IOBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classWorldStone_1_1IOBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classWorldStone_1_1IOBase.html">WorldStone::IOBase</a></td></tr>
@@ -178,43 +178,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator!</b> () cons
 <tr class="memitem:a418ad90c120458f08d5e88a3aea9f2d1 inherit pub_methods_classWorldStone_1_1IOBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a418ad90c120458f08d5e88a3aea9f2d1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>good</b> () const </td></tr>
 <tr class="separator:a418ad90c120458f08d5e88a3aea9f2d1 inherit pub_methods_classWorldStone_1_1IOBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c50b0526edc987052413641888c2515 inherit pub_methods_classWorldStone_1_1IOBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5c50b0526edc987052413641888c2515"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>eof</b> () const </td></tr>
+<tr class="separator:a5c50b0526edc987052413641888c2515 inherit pub_methods_classWorldStone_1_1IOBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60a326eab0347c1dccd33bba77431341 inherit pub_methods_classWorldStone_1_1IOBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a60a326eab0347c1dccd33bba77431341"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>fail</b> () const </td></tr>
 <tr class="separator:a60a326eab0347c1dccd33bba77431341 inherit pub_methods_classWorldStone_1_1IOBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab727f6cc8c21d2ead4793f7c62bbf683 inherit pub_methods_classWorldStone_1_1IOBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab727f6cc8c21d2ead4793f7c62bbf683"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>bad</b> () const </td></tr>
 <tr class="separator:ab727f6cc8c21d2ead4793f7c62bbf683 inherit pub_methods_classWorldStone_1_1IOBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:a67d97101dc867a9101a184a18aae5718"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a67d97101dc867a9101a184a18aae5718"></a>
-static const <a class="el" href="classWorldStone_1_1IStream.html#a000d492ec62dccb591bd089c45954720">seekdir</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorldStone_1_1IStream.html#a67d97101dc867a9101a184a18aae5718">beg</a> = std::ios_base::beg</td></tr>
-<tr class="memdesc:a67d97101dc867a9101a184a18aae5718"><td class="mdescLeft">&#160;</td><td class="mdescRight">Beginning of the stream. <br/></td></tr>
-<tr class="separator:a67d97101dc867a9101a184a18aae5718"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66de2f3c1b98b1eb5f05d71b3f0a58c7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a66de2f3c1b98b1eb5f05d71b3f0a58c7"></a>
-static const <a class="el" href="classWorldStone_1_1IStream.html#a000d492ec62dccb591bd089c45954720">seekdir</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorldStone_1_1IStream.html#a66de2f3c1b98b1eb5f05d71b3f0a58c7">cur</a> = std::ios_base::cur</td></tr>
-<tr class="memdesc:a66de2f3c1b98b1eb5f05d71b3f0a58c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current position of the stream. <br/></td></tr>
-<tr class="separator:a66de2f3c1b98b1eb5f05d71b3f0a58c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a221ee1c2c13c747e186581afcf17e2e1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a221ee1c2c13c747e186581afcf17e2e1"></a>
-static const <a class="el" href="classWorldStone_1_1IStream.html#a000d492ec62dccb591bd089c45954720">seekdir</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorldStone_1_1IStream.html#a221ee1c2c13c747e186581afcf17e2e1">end</a> = std::ios_base::end</td></tr>
-<tr class="memdesc:a221ee1c2c13c747e186581afcf17e2e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">End of the stream, not always supported. <br/></td></tr>
-<tr class="separator:a221ee1c2c13c747e186581afcf17e2e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
-Static Protected Attributes</h2></td></tr>
-<tr class="memitem:a39f661adaf2d38999b3d187aa15e8e48"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a39f661adaf2d38999b3d187aa15e8e48"></a>
-static const iostate&#160;</td><td class="memItemRight" valign="bottom"><b>eofbit</b> = std::ios_base::eofbit</td></tr>
-<tr class="separator:a39f661adaf2d38999b3d187aa15e8e48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_static_attribs_classWorldStone_1_1IOBase"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_classWorldStone_1_1IOBase')"><img src="closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="classWorldStone_1_1IOBase.html">WorldStone::IOBase</a></td></tr>
-<tr class="memitem:a48c744a3ae8ce6189582a1c13a9b244a inherit pro_static_attribs_classWorldStone_1_1IOBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a48c744a3ae8ce6189582a1c13a9b244a"></a>
-static const iostate&#160;</td><td class="memItemRight" valign="bottom"><b>goodbit</b> = std::ios_base::goodbit</td></tr>
-<tr class="separator:a48c744a3ae8ce6189582a1c13a9b244a inherit pro_static_attribs_classWorldStone_1_1IOBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f815d146be4b16d9484b2614af26ecb inherit pro_static_attribs_classWorldStone_1_1IOBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9f815d146be4b16d9484b2614af26ecb"></a>
-static const iostate&#160;</td><td class="memItemRight" valign="bottom"><b>badbit</b> = std::ios_base::badbit</td></tr>
-<tr class="separator:a9f815d146be4b16d9484b2614af26ecb inherit pro_static_attribs_classWorldStone_1_1IOBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a898db1fcb7ab5ec44563fa2f882fdb95 inherit pro_static_attribs_classWorldStone_1_1IOBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a898db1fcb7ab5ec44563fa2f882fdb95"></a>
-static const iostate&#160;</td><td class="memItemRight" valign="bottom"><b>failbit</b> = std::ios_base::failbit</td></tr>
-<tr class="separator:a898db1fcb7ab5ec44563fa2f882fdb95 inherit pro_static_attribs_classWorldStone_1_1IOBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -226,6 +198,19 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setstate</b> (iostate
 <tr class="memitem:ac3a889b2a4ec6910e48cb879d0d19aac inherit pro_attribs_classWorldStone_1_1IOBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac3a889b2a4ec6910e48cb879d0d19aac"></a>
 iostate&#160;</td><td class="memItemRight" valign="bottom"><b>_state</b> = goodbit</td></tr>
 <tr class="separator:ac3a889b2a4ec6910e48cb879d0d19aac inherit pro_attribs_classWorldStone_1_1IOBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_attribs_classWorldStone_1_1IOBase"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_classWorldStone_1_1IOBase')"><img src="closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="classWorldStone_1_1IOBase.html">WorldStone::IOBase</a></td></tr>
+<tr class="memitem:a7711d21fd94e4f04933b7cdd02145674 inherit pro_static_attribs_classWorldStone_1_1IOBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7711d21fd94e4f04933b7cdd02145674"></a>
+static constexpr iostate&#160;</td><td class="memItemRight" valign="bottom"><b>goodbit</b> = 0x0</td></tr>
+<tr class="separator:a7711d21fd94e4f04933b7cdd02145674 inherit pro_static_attribs_classWorldStone_1_1IOBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a240a25722326b741e53b7ad0c2c19c0d inherit pro_static_attribs_classWorldStone_1_1IOBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a240a25722326b741e53b7ad0c2c19c0d"></a>
+static constexpr iostate&#160;</td><td class="memItemRight" valign="bottom"><b>eofbit</b> = 0x1</td></tr>
+<tr class="separator:a240a25722326b741e53b7ad0c2c19c0d inherit pro_static_attribs_classWorldStone_1_1IOBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7efdbd22b82fbcdf54d37a681dab80e9 inherit pro_static_attribs_classWorldStone_1_1IOBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7efdbd22b82fbcdf54d37a681dab80e9"></a>
+static constexpr iostate&#160;</td><td class="memItemRight" valign="bottom"><b>failbit</b> = 0x2</td></tr>
+<tr class="separator:a7efdbd22b82fbcdf54d37a681dab80e9 inherit pro_static_attribs_classWorldStone_1_1IOBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88ead63c6074a61ad1622f659bdc8f77 inherit pro_static_attribs_classWorldStone_1_1IOBase"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a88ead63c6074a61ad1622f659bdc8f77"></a>
+static constexpr iostate&#160;</td><td class="memItemRight" valign="bottom"><b>badbit</b> = 0x4</td></tr>
+<tr class="separator:a88ead63c6074a61ad1622f659bdc8f77 inherit pro_static_attribs_classWorldStone_1_1IOBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An interface for a stream of data. </p>
@@ -234,25 +219,7 @@ iostate&#160;</td><td class="memItemRight" valign="bottom"><b>_state</b> = goodb
 <dl class="System_tests"><dt><b><a class="el" href="System_tests.html#_System_tests000002">Tests:</a></b></dt><dd><a class="el" href="FileStreamTests_8cpp.html#TEST_RO_filestreams">RO_filestreams</a> </dd></dl>
 
 <p>Definition at line <a class="el" href="Stream_8h_source.html#l00022">22</a> of file <a class="el" href="Stream_8h_source.html">Stream.h</a>.</p>
-</div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a class="anchor" id="a000d492ec62dccb591bd089c45954720"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classWorldStone_1_1IStream.html#a000d492ec62dccb591bd089c45954720">WorldStone::IStream::seekdir</a> =  std::ios_base::seekdir</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Used as reference for <a class="el" href="classWorldStone_1_1IStream.html#aef0f13d53737334b47f992a3dbb99f39">seek</a>. </p>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classWorldStone_1_1IStream.html#a67d97101dc867a9101a184a18aae5718" title="Beginning of the stream. ">beg</a> <a class="el" href="classWorldStone_1_1IStream.html#a66de2f3c1b98b1eb5f05d71b3f0a58c7" title="Current position of the stream. ">cur</a> <a class="el" href="classWorldStone_1_1IStream.html#a221ee1c2c13c747e186581afcf17e2e1" title="End of the stream, not always supported. ">end</a> </dd></dl>
-
-<p>Definition at line <a class="el" href="Stream_8h_source.html#l00031">31</a> of file <a class="el" href="Stream_8h_source.html">Stream.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a860efcd97fb13ea33a2965953733c438"></a>
 <div class="memitem">
 <div class="memproto">
@@ -345,7 +312,7 @@ iostate&#160;</td><td class="memItemRight" valign="bottom"><b>_state</b> = goodb
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classWorldStone_1_1IStream.html#a000d492ec62dccb591bd089c45954720">seekdir</a>&#160;</td>
+          <td class="paramtype">seekdir&#160;</td>
           <td class="paramname"><em>origin</em>&#160;</td>
         </tr>
         <tr>
@@ -370,7 +337,7 @@ iostate&#160;</td><td class="memItemRight" valign="bottom"><b>_state</b> = goodb
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success, false if an error occured or an invalid position was given. </dd></dl>
-<dl class="section see"><dt>See Also</dt><dd><a class="el" href="classWorldStone_1_1IStream.html#a000d492ec62dccb591bd089c45954720" title="Used as reference for seek. ">seekdir</a> values : <a class="el" href="classWorldStone_1_1IStream.html#a67d97101dc867a9101a184a18aae5718" title="Beginning of the stream. ">beg</a> <a class="el" href="classWorldStone_1_1IStream.html#a66de2f3c1b98b1eb5f05d71b3f0a58c7" title="Current position of the stream. ">cur</a> <a class="el" href="classWorldStone_1_1IStream.html#a221ee1c2c13c747e186581afcf17e2e1" title="End of the stream, not always supported. ">end</a> </dd></dl>
+<dl class="section see"><dt>See Also</dt><dd>seekdir values : beg cur end </dd></dl>
 
 <p>Implemented in <a class="el" href="classWorldStone_1_1MpqFileStream.html#ac7eb647718760a9f180f9b8a0e1e01eb">WorldStone::MpqFileStream</a>, and <a class="el" href="classWorldStone_1_1FileStream.html#afd8bd59328fefe93236e2eb844d01ad9">WorldStone::FileStream</a>.</p>
 
@@ -443,7 +410,7 @@ iostate&#160;</td><td class="memItemRight" valign="bottom"><b>_state</b> = goodb
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>WorldStone</b></li><li class="navelem"><a class="el" href="classWorldStone_1_1IStream.html">IStream</a></li>
-    <li class="footer">Generated on Sun Nov 11 2018 19:36:40 for Worldstone by
+    <li class="footer">Generated on Sun Feb 24 2019 22:18:42 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>

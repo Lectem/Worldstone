@@ -7,7 +7,7 @@ var searchData=
   ['fill',['fill',['../structWorldStone_1_1ImageView.html#ad98b2ac534df849756d9757c03f5570c',1,'WorldStone::ImageView']]],
   ['fillbytes',['fillBytes',['../structWorldStone_1_1ImageView.html#af80fe096a337d7a57d78e1799c01450f',1,'WorldStone::ImageView']]],
   ['finaldc6size',['finalDc6Size',['../structWorldStone_1_1DCC_1_1Header.html#afd1493cf439410424917e7ca3b47819b',1,'WorldStone::DCC::Header']]],
-  ['flags',['flags',['../structWorldStone_1_1DC6_1_1Header.html#a65064520a78b5a873a933734d50875de',1,'WorldStone::DC6::Header::flags()'],['../classWorldStone_1_1DC6.html#a89def2f7b534a43ec9798e53c9af3817',1,'WorldStone::DC6::Flags()']]],
+  ['flags',['Flags',['../classWorldStone_1_1DC6.html#a89def2f7b534a43ec9798e53c9af3817',1,'WorldStone::DC6::Flags()'],['../structWorldStone_1_1DC6_1_1Header.html#a65064520a78b5a873a933734d50875de',1,'WorldStone::DC6::Header::flags()']]],
   ['flip',['flip',['../structWorldStone_1_1DC6_1_1FrameHeader.html#ad64f27ea76e81e3784ac56de6b3de363',1,'WorldStone::DC6::FrameHeader']]],
   ['format',['format',['../structWorldStone_1_1DC6_1_1Header.html#af7e995a6295b3c2b1da65e0d99fc381f',1,'WorldStone::DC6::Header']]],
   ['frame',['Frame',['../structSpriteRenderer_1_1Frame.html',1,'SpriteRenderer']]],

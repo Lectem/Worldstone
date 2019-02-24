@@ -1,7 +1,6 @@
 var searchData=
 [
   ['baseapp',['BaseApp',['../classBaseApp.html',1,'']]],
-  ['beg',['beg',['../classWorldStone_1_1IStream.html#a67d97101dc867a9101a184a18aae5718',1,'WorldStone::IStream']]],
   ['bitpositioninbuffer',['bitPositionInBuffer',['../classWorldStone_1_1BitStreamView.html#a58817db178acba468737e5b34fbd225d',1,'WorldStone::BitStreamView']]],
   ['bitstreamtests_2ecpp',['BitStreamTests.cpp',['../BitStreamTests_8cpp.html',1,'']]],
   ['bitstreamview',['BitStreamView',['../classWorldStone_1_1BitStreamView.html',1,'WorldStone']]],
