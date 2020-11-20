@@ -5,7 +5,7 @@
 #include "cof.h"
 #include <FileStream.h>
 #include <SystemUtils.h>
-#include <fmt/format.h>
+#include <cassert>
 #include "utils.h"
 
 // TODO : Remove asserts and replace with proper error handling

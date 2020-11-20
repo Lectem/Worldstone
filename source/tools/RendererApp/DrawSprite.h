@@ -27,6 +27,7 @@ public:
 
     protected:
         WorldStone::Vector<struct FrameRenderData> framesData;
+        uint64_t                                   lastUsed = uint64_t(-1);
     };
     using SpriteRenderDataHandle = std::weak_ptr<SpriteRenderData>; // This is a poor-man's handle
                                                                     // while waiting for a real

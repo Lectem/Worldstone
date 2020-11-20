@@ -3,6 +3,7 @@
 #include <cof.h>
 #include <dc6.h>
 #include <dcc.h>
+#include <dt1.h>
 #include <fmt/format.h>
 #include "DrawSprite.h"
 #include "bx/debug.h"
@@ -29,20 +30,29 @@ static WorldStone::IOBase::Path GetInstallDirectory()
     {
         HKEY    openedKey  = 0;
         LSTATUS statusCode = RegOpenKeyExA(baseKey, DIABLO2_KEY, 0, KEY_READ, &openedKey);
-        if (statusCode == ERROR_SUCCESS) {
+        if (statusCode == ERROR_SUCCESS)
+        {
             DWORD valueType = 0;
             DWORD valueSize = sizeof(buffer);
             statusCode =
                 RegQueryValueExA(openedKey, "InstallPath", 0, &valueType, buffer, &valueSize);
             RegCloseKey(openedKey);
-            if (statusCode == ERROR_SUCCESS && valueType == REG_SZ) {
-                return (const char*)buffer;
-            }
+            if (statusCode == ERROR_SUCCESS && valueType == REG_SZ) { return (const char*)buffer; }
         }
     }
 
 #endif
     return {};
+}
+
+// Small helper for data printing assuming 2 imgui columns
+template<class... T>
+static void ImGuiDataDetailRow(const char* name, const char* format, const T&... data)
+{
+    ImGui::Text(name);
+    ImGui::NextColumn();
+    ImGui::Text(format, data...);
+    ImGui::NextColumn();
 }
 
 char const* const FileBrowser::mpqFiles[]  = {"d2char.mpq",  "d2data.mpq",  "d2exp.mpq",
@@ -65,7 +75,8 @@ void FileBrowser::display(SpriteRenderer& spriteRenderer)
     ImGui::Begin("Files", nullptr, 0 & ImGuiWindowFlags_AlwaysAutoResize);
     ImGui::PushItemWidth(-1.f);
 
-    if (fileListWidget.display()) {
+    if (fileListWidget.display())
+    {
         bx::debugPrintf("New file selected %s\n", fileListWidget.getSelectedElement());
         onFileSelected(fileListWidget.getSelectedElement());
     }
@@ -79,40 +90,51 @@ void FileBrowser::displayMenuBar()
 {
     // See https://github.com/ocornut/imgui/issues/331
     const char* openPopupRequest = nullptr;
-    if (ImGui::BeginMainMenuBar()) {
-        if (ImGui::BeginMenu("File")) {
-            if (ImGui::MenuItem("Open", "Ctrl+O")) {
-
-                openPopupRequest = "Open file";
-            }
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("File"))
+        {
+            if (ImGui::MenuItem("Open", "Ctrl+O")) { openPopupRequest = "Open file"; }
             ImGui::EndMenu();
         }
 
         ImGui::EndMainMenuBar();
     }
 
-    if (openPopupRequest) {
-        if (mpqDirectory.size() == 0) {
+    constexpr size_t mpqPathBufferSize = 2048;
+    static char      mpqPathInputBuffer[mpqPathBufferSize];
+
+    if (openPopupRequest)
+    {
+        if (mpqDirectory.size() == 0)
+        {
             auto installDirectory = GetInstallDirectory();
             mpqDirectory          = installDirectory.size() ? installDirectory : "./";
+
+            mpqPathInputBuffer[mpqPathBufferSize - 1] = 0;
+            strncpy(mpqPathInputBuffer, mpqDirectory.c_str(), mpqPathBufferSize - 1);
         }
         ImGui::OpenPopup(openPopupRequest);
     }
 
-    if (ImGui::BeginPopupModal("Open file", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+    if (ImGui::BeginPopupModal("Open file", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+    {
         ImGui::Text("Choose the MPQ file to open.");
-        ImGui::Text("Installation path used:%s", mpqDirectory.c_str());
+        ImGui::InputText("Installation path used", mpqPathInputBuffer, mpqPathBufferSize);
+        mpqDirectory    = mpqPathInputBuffer;
         static int item = 0;
         ImGui::Combo("Mpq File", &item, mpqFiles, sizeof(mpqFiles) / sizeof(*mpqFiles));
 
-        if (ImGui::Button("Open")) {
+        if (ImGui::Button("Open"))
+        {
 
             currentView    = nullptr;
             currentArchive = WorldStone::MpqArchive{(mpqDirectory + mpqFiles[item]).c_str(),
                                                     (mpqDirectory + listFiles[0]).c_str()};
             if (!currentArchive.good())
                 currentArchive = WorldStone::MpqArchive{(mpqDirectory + mpqFiles[item]).c_str()};
-            if (currentArchive.good()) {
+            if (currentArchive.good())
+            {
                 auto fileList = currentArchive.findFiles();
                 std::sort(fileList.begin(), fileList.end());
                 fileListWidget.replaceElements(std::move(fileList));
@@ -129,7 +151,8 @@ void FileBrowser::displayMenuBar()
 
         if (ImGui::Button("Cancel")) ImGui::CloseCurrentPopup();
 
-        if (ImGui::BeginPopupModal("Error")) {
+        if (ImGui::BeginPopupModal("Error"))
+        {
             ImGui::Text("Failed to open file %s", (mpqDirectory + mpqFiles[item]).c_str());
             if (ImGui::Button("Close")) ImGui::CloseCurrentPopup();
             ImGui::EndPopup();
@@ -166,9 +189,7 @@ struct SpriteAnim
         float curFrameFloat = animationTime * framesPerSecond;
 
         ImGui::SliderFloat("FPS", &framesPerSecond, 0.f, 255.f);
-        if (framesPerSecond > 0.f) {
-            ImGui::Text("Current frame: %f ", double(curFrameFloat));
-        }
+        if (framesPerSecond > 0.f) { ImGui::Text("Current frame: %f ", double(curFrameFloat)); }
         else
         {
             int sliderFrame = int(animationTime);
@@ -187,7 +208,8 @@ struct SpriteAnim
 
             // Bounding box
             ImGui::Checkbox("Box", &drawAABB);
-            if (drawAABB) {
+            if (drawAABB)
+            {
                 drawList->AddRect(
                     ImVec2{pos.x + extents.xLower * scale, pos.y + extents.yLower * scale},
                     ImVec2{pos.x + extents.xUpper * scale, pos.y + extents.yUpper * scale},
@@ -195,7 +217,8 @@ struct SpriteAnim
             }
             ImGui::SameLine();
             ImGui::Checkbox("Gizmo", &drawGizmo);
-            if (drawGizmo) {
+            if (drawGizmo)
+            {
                 const float gizmoSize = 10.f;
                 drawList->AddLine(pos, ImVec2{pos.x + gizmoSize, pos.y}, 0xFF0000FF, 1.f);
                 drawList->AddLine(pos, ImVec2{pos.x, pos.y + gizmoSize}, 0xFF00FF00, 1.f);
@@ -208,7 +231,8 @@ struct SpriteAnim
         }
 
         // Advance timer
-        if (nbFrames && framesPerSecond > 0.f) {
+        if (nbFrames && framesPerSecond > 0.f)
+        {
             animationTime += ImGui::GetIO().DeltaTime;
             if (uint32_t(animationTime * framesPerSecond) >= nbFrames)
                 animationTime = std::fmod(animationTime, nbFrames / framesPerSecond);
@@ -221,24 +245,27 @@ struct DccView : public FileBrowser::IFileView
 {
 
     explicit DccView(const WorldStone::MpqArchive::Path& _filePath) : IFileView(_filePath) {}
-    WorldStone::DCC                        dccFile;
-    WorldStone::DCC::Direction             currentDir;
-    int                                    currentDirIndex = 0;
+    WorldStone::DCC            dccFile;
+    WorldStone::DCC::Direction currentDir;
+    int                        currentDirIndex = 0;
 
     SpriteAnim spriteAnim;
 
     void display(SpriteRenderer& spriteRenderer) override
     {
         const auto& header = dccFile.getHeader();
-        if (ImGui::Begin("DCC")) {
+        if (ImGui::Begin("DCC"))
+        {
             IFileView::display();
             // clang-format off
                 ImGui::Text("Header");
                 ImGui::Separator();
-                ImGui::Text("Version:"); ImGui::SameLine(); ImGui::Text("%hhu", header.version);
-                ImGui::Text("Directions:"); ImGui::SameLine(); ImGui::Text("%hhu", header.directions);
-                ImGui::Text("Frames per dir:"); ImGui::SameLine(); ImGui::Text("%hhu", header.framesPerDir);
-                ImGui::Text("Tag:"); ImGui::SameLine(); ImGui::Text("%u", header.tag);
+                ImGui::Columns(2);
+                ImGuiDataDetailRow("Version:", "%hhu", header.version);
+                ImGuiDataDetailRow("Directions:", "%hhu", header.directions);
+                ImGuiDataDetailRow("Frames per dir:", "%hhu", header.framesPerDir);
+                ImGuiDataDetailRow("Tag:", "%u", header.tag);
+                ImGui::Columns(1);
                 ImGui::Separator();
             // clang-format on
         }
@@ -246,10 +273,36 @@ struct DccView : public FileBrowser::IFileView
         bool dirChanged =
             ImGui::SliderInt("Direction", &currentDirIndex, 0, int(header.directions - 1));
         currentDirIndex = std::min(std::max(currentDirIndex, 0), int(header.directions - 1));
-        if (spriteAnim.spriteDataHdl.expired() || dirChanged) {
-            loadDirectionIntoAnim(uint32_t(currentDirIndex), spriteRenderer);
-        }
-        if (!spriteAnim.spriteDataHdl.expired()) {
+        if (spriteAnim.spriteDataHdl.expired() || dirChanged)
+        { loadDirectionIntoAnim(uint32_t(currentDirIndex), spriteRenderer); }
+        if (!spriteAnim.spriteDataHdl.expired())
+        {
+
+            ImGui::Text("Direction header");
+            ImGui::Separator();
+            ImGui::Columns(2);
+            const auto& curDirectionHeader = currentDir.header;
+            ImGuiDataDetailRow("Pixel encoding",
+                               curDirectionHeader.hasRawPixelEncoding ? "true" : "false", nullptr);
+            ImGuiDataDetailRow("Compress equal cells",
+                               curDirectionHeader.compressEqualCells ? "true" : "false", nullptr);
+            ImGuiDataDetailRow("variable0 field size (bits)", "%" PRIu32,
+                               curDirectionHeader.variable0Bits);
+            ImGuiDataDetailRow("width field size (bits)", "%" PRIu32, curDirectionHeader.widthBits);
+            ImGuiDataDetailRow("height field size (bits)", "%" PRIu32,
+                               curDirectionHeader.heightBits);
+            ImGuiDataDetailRow("xOffeset field size (bits)", "%" PRIu32,
+                               curDirectionHeader.xOffsetBits);
+            ImGuiDataDetailRow("yOffset field size (bits)", "%" PRIu32,
+                               curDirectionHeader.yOffsetBits);
+            ImGuiDataDetailRow("optional bytes field size (bits)", "%" PRIu32,
+                               curDirectionHeader.optionalBytesBits);
+            ImGuiDataDetailRow("coded bytes field size (bits)", "%" PRIu32,
+                               curDirectionHeader.codedBytesBits);
+
+            ImGui::Columns(1);
+            ImGui::Separator();
+
             spriteAnim.Display(spriteRenderer);
         }
         else
@@ -270,7 +323,8 @@ struct DccView : public FileBrowser::IFileView
         const auto& header = dccFile.getHeader();
         currentDir         = {};
         WorldStone::SimpleImageProvider<uint8_t> imageprovider;
-        if (dccFile.readDirection(currentDir, direction, imageprovider)) {
+        if (dccFile.readDirection(currentDir, direction, imageprovider))
+        {
             for (size_t i = 0; i < currentDir.frameHeaders.size(); i++)
             {
                 const auto& frameHeader = currentDir.frameHeaders[i];
@@ -295,15 +349,18 @@ struct Dc6View : public FileBrowser::IFileView
     void display(SpriteRenderer& spriteRenderer) override
     {
         const auto& header = dc6File.getHeader();
-        if (ImGui::Begin("DC6")) {
+        if (ImGui::Begin("DC6"))
+        {
             IFileView::display();
             // clang-format off
                 ImGui::Text("Header");
                 ImGui::Separator();
-                ImGui::Text("Version:"); ImGui::SameLine(); ImGui::Text("%d", header.version);
-                ImGui::Text("Flags:"); ImGui::SameLine(); ImGui::Text("%d", header.flags);
-                ImGui::Text("Directions:"); ImGui::SameLine(); ImGui::Text("%u", header.directions);
-                ImGui::Text("Frames per dir:"); ImGui::SameLine(); ImGui::Text("%u", header.framesPerDir);
+                ImGui::Columns(2);
+                ImGuiDataDetailRow("Version:", "%d", header.version);
+                ImGuiDataDetailRow("Flags:", "%d", header.flags);
+                ImGuiDataDetailRow("Directions:", "%u", header.directions);
+                ImGuiDataDetailRow("Frames per dir:", "%u", header.framesPerDir);
+                ImGui::Columns(1);
                 ImGui::Separator();
             // clang-format on
         }
@@ -311,12 +368,9 @@ struct Dc6View : public FileBrowser::IFileView
         bool dirChanged =
             ImGui::SliderInt("Direction", &currentDirIndex, 0, int(header.directions - 1));
         currentDirIndex = std::min(std::max(currentDirIndex, 0), int(header.directions - 1));
-        if (spriteAnim.spriteDataHdl.expired() || dirChanged) {
-            loadDirectionIntoAnim(uint32_t(currentDirIndex), spriteRenderer);
-        }
-        if (!spriteAnim.spriteDataHdl.expired()) {
-            spriteAnim.Display(spriteRenderer);
-        }
+        if (spriteAnim.spriteDataHdl.expired() || dirChanged)
+        { loadDirectionIntoAnim(uint32_t(currentDirIndex), spriteRenderer); }
+        if (!spriteAnim.spriteDataHdl.expired()) { spriteAnim.Display(spriteRenderer); }
         else
         {
             ImGui::Separator();
@@ -325,10 +379,12 @@ struct Dc6View : public FileBrowser::IFileView
         }
 
         static bool warningIgnored = false;
-        if (!warningIgnored && ImGui::BeginPopupModal("Warning")) {
+        if (!warningIgnored && ImGui::BeginPopupModal("Warning"))
+        {
             ImGui::Text("This file contains a lot of frames.\nThis is poorly handled right now and "
                         "might crash if you reload such files too quickly.");
-            if (ImGui::Button("Ignore")) {
+            if (ImGui::Button("Ignore"))
+            {
                 warningIgnored = true;
                 ImGui::CloseCurrentPopup();
             }
@@ -388,16 +444,18 @@ struct CofView : public FileBrowser::IFileView
     void display() override
     {
         const auto& header = cofFile.getHeader();
-        if (ImGui::Begin("COF")) {
+        if (ImGui::Begin("COF"))
+        {
             IFileView::display();
             // clang-format off
                 ImGui::Text("Header");
                 ImGui::Separator();
-                ImGui::Text("Layers:"); ImGui::SameLine(); ImGui::Text("%hhu", header.layers);
-                ImGui::Text("Frames:"); ImGui::SameLine(); ImGui::Text("%hhu", header.frames);
-                ImGui::Text("Directions:"); ImGui::SameLine(); ImGui::Text("%hhu", header.directions);
-                ImGui::Text("Version:"); ImGui::SameLine(); ImGui::Text("%hhu", header.version);
-                ImGui::NewLine();
+                ImGui::Columns(2);
+                ImGuiDataDetailRow("Layers:", "%hhu", header.layers);
+                ImGuiDataDetailRow("Frames:", "%hhu", header.frames); 
+                ImGuiDataDetailRow("Directions:", "%hhu", header.directions); 
+                ImGuiDataDetailRow("Version:", "%hhu", header.version); 
+                ImGui::Separator();
                 ImGui::Text("unknown dword(bytes 7-4):");
                 {
                     const uint8_t byte0 = (header.unknown1 >> (8 * 0)) & 0xff;
@@ -405,29 +463,34 @@ struct CofView : public FileBrowser::IFileView
                     const uint8_t byte2 = (header.unknown1 >> (8 * 2)) & 0xff;
                     const uint8_t byte3 = (header.unknown1 >> (8 * 3)) & 0xff;
                     ImGui::Text("0x%08x", header.unknown1);
-                    ImGui::SameLine(); ImGui::ColorButton("##color", ImVec4{ byte3 / 255.f, byte2 / 255.f, byte1 / 255.f, byte0 / 255.f }, ImGuiColorEditFlags_NoPicker);
+                    ImGui::ColorButton("##color", ImVec4{ byte3 / 255.f, byte2 / 255.f, byte1 / 255.f, byte0 / 255.f }, ImGuiColorEditFlags_NoPicker);
                     const std::string unkAsBin = fmt::format("{:08b} {:08b} {:08b} {:08b}", byte3, byte2, byte1, byte0);
                     ImGui::Text(unkAsBin.data());
                     const std::string unkAsInt = fmt::format("{:03} {:03} {:03} {:03}", byte3, byte2, byte1, byte0);
                     ImGui::Text(unkAsInt.data());
+                    ImGui::Separator();
+                    ImGui::NextColumn();
                 }
-                ImGui::NewLine();
-                ImGui::Text("AABB:"); ImGui::SameLine(); ImGui::Text("(%d,%d) -> (%d,%d)", header.xMin, header.yMin, header.xMax, header.yMax);
-                ImGui::Text("AnimRate:"); ImGui::SameLine(); ImGui::Text("%hd", header.animRate);
-                ImGui::Text("zeros:"); ImGui::SameLine(); ImGui::Text("%hx", header.zeros);
+                ImGuiDataDetailRow("AABB:"    , "(%d,%d) -> (%d,%d)", header.xMin, header.yMin, header.xMax, header.yMax);
+                ImGuiDataDetailRow("AnimRate:", "%hd", header.animRate);
+                ImGuiDataDetailRow("zeros:"   , "%hx", header.zeros);
+                ImGui::Columns(1);
 
             // clang-format on
             ImGui::Separator();
             ImGui::SliderInt("Layer", &currentLayerIdx, 1, header.layers);
             const COF::Layer& layer = cofFile.getLayers()[size_t(currentLayerIdx - 1)];
-            ImGui::Text("Component:%s", layer.component < COF::componentsNumber
-                                            ? COF::componentsNames[layer.component]
-                                            : "Invalid");
-            ImGui::Text("Casts shadow: %d", layer.castsShadow);
-            ImGui::Text("Is selectable: %d", layer.isSelectable);
-            ImGui::Text("Override transparency level: %d", layer.overrideTranslvl);
-            ImGui::Text("New transparency level: %d", layer.newTranslvl);
-            ImGui::Text("Weapon class: %s", layer.weaponClass);
+            ImGui::Columns(2);
+            ImGuiDataDetailRow("Component:", "%s",
+                               layer.component < COF::componentsNumber
+                                   ? COF::componentsNames[layer.component]
+                                   : "Invalid");
+            ImGuiDataDetailRow("Casts shadow:", " %d", layer.castsShadow);
+            ImGuiDataDetailRow("Is selectable:", "%d", layer.isSelectable);
+            ImGuiDataDetailRow("Override transparency level:", "%d", layer.overrideTranslvl);
+            ImGuiDataDetailRow("New transparency level:", "%d", layer.newTranslvl);
+            ImGuiDataDetailRow("Weapon class:", "%s", layer.weaponClass);
+            ImGui::Columns(1);
         }
         ImGui::End();
     }
@@ -437,7 +500,7 @@ struct PaletteView final : public FileBrowser::IFileView
 {
     using Palette = WorldStone::Palette;
     std::unique_ptr<Palette> palettePtr;
-    bgfx::TextureHandle      paletteTexture = BGFX_INVALID_HANDLE;
+    bgfx::TextureHandle      paletteTexture             = BGFX_INVALID_HANDLE;
     bool                     alreadySetAsCurrentPalette = false;
 
     PaletteView(const WorldStone::MpqArchive::Path& _filePath, std::unique_ptr<Palette> inPalette)
@@ -461,9 +524,11 @@ struct PaletteView final : public FileBrowser::IFileView
     void display(SpriteRenderer& spriteRenderer) override
     {
         ImGui::SetNextWindowSize(ImGui::GetContentRegionAvail(), ImGuiCond_FirstUseEver);
-        if (ImGui::Begin("Palette")) {
+        if (ImGui::Begin("Palette"))
+        {
             IFileView::display();
-            if (!alreadySetAsCurrentPalette && ImGui::Button("Set as current palette")) {
+            if (!alreadySetAsCurrentPalette && ImGui::Button("Set as current palette"))
+            {
                 spriteRenderer.setPalette(*palettePtr);
                 alreadySetAsCurrentPalette = true;
             }
@@ -589,7 +654,8 @@ public:
     void display() override
     {
         ImGui::SetNextWindowSize(ImGui::GetContentRegionAvail(), ImGuiCond_FirstUseEver);
-        if (ImGui::Begin("PL2")) {
+        if (ImGui::Begin("PL2"))
+        {
             IFileView::display();
             const int maxVal = int(textureHeight - 1);
             ImGui::DragIntRange2("Display range", &currentMin, &currentMax, 1.f, 0, maxVal);
@@ -608,6 +674,67 @@ public:
         ImGui::End();
     }
 };
+
+struct DT1View : public FileBrowser::IFileView
+{
+    explicit DT1View(const WorldStone::MpqArchive::Path& _filePath) : IFileView(_filePath) {}
+    using DT1 = WorldStone::DT1;
+    DT1 dt1File;
+    int currentTileIdx = 1;
+
+    void display() override
+    {
+        const auto& header = dt1File.getHeader();
+        if (ImGui::Begin("DT1"))
+        {
+            IFileView::display();
+            // clang-format off
+            ImGui::Text("Header");
+            ImGui::Separator();
+            ImGui::Columns(2);
+            ImGuiDataDetailRow("Version:", "%u", header.version);
+            ImGuiDataDetailRow("Flags:", "%u", header.flags);
+            ImGuiDataDetailRow("Tiles:", "%u", header.numTiles);
+            ImGuiDataDetailRow("FirstTile offset:", "%u(0x%p)", header.firstTile, header.firstTile);
+            ImGuiDataDetailRow("Library name:", "\"%s\"", header.libraryName);
+            ImGui::Columns(1);
+
+            ImGui::Separator();
+            ImGui::NewLine();
+
+            ImGui::SliderInt("Tile", &currentTileIdx, 1, header.numTiles);
+            const DT1::Tile::Header& tileHeader = dt1File.getTileHeaders()[size_t(currentTileIdx - 1)];
+            ImGui::Columns(2);
+            ImGuiDataDetailRow("Light direction:", "%d", tileHeader.lightDirection);
+            ImGuiDataDetailRow("Roof height:", "%d", tileHeader.roofHeight);
+            ImGuiDataDetailRow("Material flags:", "%hx", tileHeader.materialFlags);
+            ImGuiDataDetailRow("Total height:", "%d", tileHeader.dwTotalHeight);
+            ImGuiDataDetailRow("Width:", "%d", tileHeader.dwWidth);
+            ImGuiDataDetailRow("Height to bottom:", "%d", tileHeader.dwHeightToBottom);
+            ImGuiDataDetailRow("Type:", "%d", tileHeader.dwType);
+            ImGuiDataDetailRow("Index (style):", "%d", tileHeader.dwIndex_Style);
+            ImGuiDataDetailRow("SubIndex (sequence):", "%d", tileHeader.dwSubIndex_Sequence);
+            ImGuiDataDetailRow("Rarity/frame:", "%d", tileHeader.rarity);
+            ImGuiDataDetailRow("TransparentColor:", "%x", tileHeader.transparentColorRGB24);
+            ImGuiDataDetailRow("HW handle:", "%d", tileHeader.hwHandle);
+            ImGuiDataDetailRow("unknown word:", "%d", tileHeader.unkWord2);
+            ImGuiDataDetailRow("Internal flags:", "%d", tileHeader.bTypeFlag);
+            ImGuiDataDetailRow("Unknown byte:", "%d", tileHeader.unk2);
+            ImGuiDataDetailRow("Components offset:", "%d", tileHeader.dwComponentsOffset);
+            ImGuiDataDetailRow("Components size:", "%d", tileHeader.dwComponentsSize);
+            ImGuiDataDetailRow("Nb components:", "%d", tileHeader.nCompCount);
+            ImGui::Separator();
+			ImGuiDataDetailRow("Pointer to comps:", "%x", tileHeader.ptCompArray);
+			ImGuiDataDetailRow("Filename:", "%x", tileHeader.szFileName);
+			ImGuiDataDetailRow("Pointer to LRU:", "%x", tileHeader.ptLRUCache);
+            ImGui::Columns(1);
+        }
+        ImGui::End();
+    }
+};
+
+
+
 
 } // anonymous namespace
 
@@ -660,6 +787,13 @@ void FileBrowser::onFileSelected(const char* fileName)
             auto pl2         = WorldStone::PL2::ReadFromStream(paletteFile.get());
             if (pl2) {
                 currentView = std::make_unique<PL2View>(fileNameStr, std::move(pl2));
+            }
+        }
+        else if (extension == "dt1")
+        {
+            auto dt1View = std::make_unique<DT1View>(fileNameStr);
+            if (dt1View->dt1File.initDecoder(currentArchive.open(fileNameStr))) {
+                currentView = std::move(dt1View);
             }
         }
         else

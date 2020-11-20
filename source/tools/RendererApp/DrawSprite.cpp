@@ -59,14 +59,25 @@ static const uint16_t s_quadTriList[] = {
 };
 
 static const uint16_t s_quadTriStrip[] = {
-    0, 1, 2, 3,
+    0,
+    1,
+    2,
+    3,
 };
 } // namespace
+
+struct SpriteQuad
+{
+    PosColorTexcoordVertex m_vertices[4];
+
+    static SpriteQuad fromFrame(const SpriteRenderer::Frame& frame);
+};
 
 struct FrameRenderData
 {
     bgfx::TextureHandle      spriteTexture = BGFX_INVALID_HANDLE;
     bgfx::VertexBufferHandle vertexBuffer  = BGFX_INVALID_HANDLE;
+    SpriteQuad               spriteQuad;
 };
 
 struct SpriteRendererData
@@ -79,15 +90,9 @@ struct SpriteRendererData
     int64_t                 m_timeOffset;
 };
 
-static bgfx::VertexBufferHandle
-createVertexBufferFromSpriteFrame(const SpriteRenderer::Frame& frame)
+SpriteQuad SpriteQuad::fromFrame(const SpriteRenderer::Frame& frame)
 {
-    const bgfx::Memory* quadMemory = bgfx::alloc(4 * sizeof(PosColorTexcoordVertex));
-    // (void*) to shut -Wcast-align since we know bgfx will provide 4 bytes alignment
-    // Memory is actually stored right after the Memory struct, so at most 8 bytes alignment for
-    // 32bits and 16bytes for 64bit
-    PosColorTexcoordVertex* quadPtr = (PosColorTexcoordVertex*)(void*)quadMemory->data;
-
+    SpriteQuad quad;
     // Since we need to cover the whole pixel for it to render, no need to -1
     const float lastColumn = float(frame.width);
     const float lastRow    = float(frame.height);
@@ -97,22 +102,22 @@ createVertexBufferFromSpriteFrame(const SpriteRenderer::Frame& frame)
     const float lastColumnOffset = fOffsetX + lastColumn;
     const float lastRowOffset    = fOffsetY + lastRow;
     const bool  topDown          = true;
-    if (topDown == screenSpaceIsTopDown) {
-        quadPtr[0] = {{fOffsetX, fOffsetY, 0.f}, abgrBlack, 0.f, 0.f};
-        quadPtr[1] = {{fOffsetX, lastRowOffset, 0.f}, abgrGreen, 0.f, lastRow};
-        quadPtr[2] = {{lastColumnOffset, fOffsetY, 0.f}, abgrRed, lastColumn, 0.f};
-        quadPtr[3] = {{lastColumnOffset, lastRowOffset, 0.f}, abgrWhite, lastColumn, lastRow};
+    if (topDown == screenSpaceIsTopDown)
+    {
+        quad.m_vertices[0] = {{fOffsetX, fOffsetY, 0.f}, abgrBlack, 0.f, 0.f};
+        quad.m_vertices[1] = {{fOffsetX, lastRowOffset, 0.f}, abgrGreen, 0.f, lastRow};
+        quad.m_vertices[2] = {{lastColumnOffset, fOffsetY, 0.f}, abgrRed, lastColumn, 0.f};
+        quad.m_vertices[3] = {
+            {lastColumnOffset, lastRowOffset, 0.f}, abgrWhite, lastColumn, lastRow};
     }
     else
     {
-        quadPtr[0] = {{fOffsetX, lastRowOffset, 0.f}, abgrGreen, 0.f, 0.f};
-        quadPtr[1] = {{fOffsetX, fOffsetY, 0.f}, abgrBlack, 0.f, lastRow};
-        quadPtr[2] = {{lastColumnOffset, lastRowOffset, 0.f}, abgrWhite, lastColumn, 0.f};
-        quadPtr[3] = {{lastColumnOffset, fOffsetY, 0.f}, abgrRed, lastColumn, lastRow};
+        quad.m_vertices[0] = {{fOffsetX, lastRowOffset, 0.f}, abgrGreen, 0.f, 0.f};
+        quad.m_vertices[1] = {{fOffsetX, fOffsetY, 0.f}, abgrBlack, 0.f, lastRow};
+        quad.m_vertices[2] = {{lastColumnOffset, lastRowOffset, 0.f}, abgrWhite, lastColumn, 0.f};
+        quad.m_vertices[3] = {{lastColumnOffset, fOffsetY, 0.f}, abgrRed, lastColumn, lastRow};
     }
-
-    // Create static vertex buffer.
-    return bgfx::createVertexBuffer(quadMemory, PosColorTexcoordVertex::ms_decl);
+    return quad;
 }
 
 static bgfx::TextureHandle createTextureFromSprite(const SpriteRenderer::Frame& frame)
@@ -130,13 +135,13 @@ static FrameRenderData createFrameRenderData(const SpriteRenderer::Frame& frame)
 {
     FrameRenderData renderData;
     renderData.spriteTexture = createTextureFromSprite(frame);
-    renderData.vertexBuffer  = createVertexBufferFromSpriteFrame(frame);
+    renderData.spriteQuad    = SpriteQuad::fromFrame(frame);
     return renderData;
 }
 static void destroy(FrameRenderData& frameRenderData)
 {
-    bgfx::destroy(frameRenderData.vertexBuffer);
-    bgfx::destroy(frameRenderData.spriteTexture);
+    if (bgfx::isValid(frameRenderData.vertexBuffer)) bgfx::destroy(frameRenderData.vertexBuffer);
+    if (bgfx::isValid(frameRenderData.spriteTexture)) bgfx::destroy(frameRenderData.spriteTexture);
 }
 
 void SpriteRenderer::SpriteRenderData::addSpriteFrame(const Frame& frame)
@@ -179,7 +184,8 @@ int SpriteRenderer::shutdown()
     spritesToRender.clear();
     spritesData.clear();
     // Cleanup.
-    if (data) {
+    if (data)
+    {
         bgfx::destroy(data->m_paletteColor);
         bgfx::destroy(data->m_palColor);
         bgfx::destroy(data->m_texColor);
@@ -220,7 +226,8 @@ void SpriteRenderer::destroySpriteRenderData(SpriteRenderDataHandle renderDataHa
     assert(renderDataPtr != nullptr);
     for (auto& ptr : spritesData)
     {
-        if (ptr.get() == renderDataPtr) {
+        if (ptr.get() == renderDataPtr)
+        {
             assert(ptr.unique());
             ptr = nullptr;
             return;
@@ -233,12 +240,17 @@ void SpriteRenderer::recycleSpritesData()
     // This is really aggressive but right now we ask the user to always check/recreate the data
     // when needed All the handle system has to be written (and more than anything, we have to get
     // rid of shared_ptr)
-    if (spritesData.size() > 20) {
-        spritesData.erase(std::remove_if(spritesData.begin(), spritesData.end(),
-                                         [](const std::shared_ptr<SpriteRenderData>& ptr) {
-                                             return ptr == nullptr || ptr.unique();
-                                         }),
-                          spritesData.end());
+    // if (spritesData.size() > 20)
+    {
+        spritesData.erase(
+            std::remove_if(spritesData.begin(), spritesData.end(),
+                           [](const std::shared_ptr<SpriteRenderData>& ptr) {
+                               return ptr == nullptr
+                                      || ((bx::getHPCounter() - ptr->lastUsed)
+                                              > (bx::getHPFrequency() / uint64_t(2)) // 0.5s
+                                          && ptr.unique());
+                           }),
+            spritesData.end());
     }
 }
 
@@ -253,7 +265,13 @@ void SpriteRenderer::pushDrawRequest(SpriteRenderDataHandle spriteHandle,
 void SpriteRenderer::drawFrame(const FrameRenderData& renderData)
 {
     // Set vertex and index buffer.
-    bgfx::setVertexBuffer(0, renderData.vertexBuffer);
+    static_assert(sizeof(PosColorTexcoordVertex) * 4 == sizeof(renderData.spriteQuad),
+                  "Make sure we have the correct size");
+    bgfx::TransientVertexBuffer tvb;
+    bgfx::allocTransientVertexBuffer(&tvb, 4, PosColorTexcoordVertex::ms_decl);
+    memcpy(tvb.data, &renderData.spriteQuad, sizeof(renderData.spriteQuad));
+
+    bgfx::setVertexBuffer(0, &tvb, 0, 4);
     bgfx::setIndexBuffer(data->m_quadIndexBuf);
 
     // Bind texture
@@ -279,7 +297,8 @@ bool SpriteRenderer::draw(int screenWidth, int screenHeight)
     bx::mtxLookAtRh(view, eye, at);
 
     float proj[16];
-    if (screenSpaceIsTopDown) {
+    if (screenSpaceIsTopDown)
+    {
 
         // RightHanded origin at bottom left, z coming from the screen
         //
@@ -336,6 +355,7 @@ bool SpriteRenderer::draw(int screenWidth, int screenHeight)
         const DrawRequest&     drawRequest = spriteData.second;
         const FrameRenderData& renderData  = spriteData.first->framesData[drawRequest.frame];
         const float            scale       = drawRequest.scale;
+        spriteData.first->lastUsed         = bx::getHPCounter();
 
         // Submit 1 quad
         float mtx[16];
@@ -348,6 +368,12 @@ bool SpriteRenderer::draw(int screenWidth, int screenHeight)
         mtx[14]                 = 0.f;
 
         bgfx::setTransform(&mtx);
+
+        static_assert(sizeof(PosColorTexcoordVertex) * 4 == sizeof(renderData.spriteQuad),
+                      "Make sure we have the correct size");
+        bgfx::TransientVertexBuffer tvb;
+        bgfx::allocTransientVertexBuffer(&tvb, 4, PosColorTexcoordVertex::ms_decl);
+        memcpy(tvb.data, &renderData.spriteQuad, sizeof(renderData.spriteQuad));
 
         drawFrame(renderData);
     }
