@@ -4,6 +4,7 @@ set(DECODERS_SOURCES
     src/cof.cpp
     src/dc6.cpp
     src/dcc.cpp
+    src/dt1.cpp
     src/Palette.cpp
     src/utils.cpp
 )
@@ -13,6 +14,7 @@ set(DECODERS_HEADERS
     include/cof.h
     include/dc6.h
     include/dcc.h
+    include/dt1.h
     include/ImageView.h
     include/utils.h
     include/Palette.h
