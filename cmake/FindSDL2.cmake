@@ -162,7 +162,7 @@ get_filename_component(SDL2_LIBRARY_DIR ${SDL2_LIBRARY} DIRECTORY)
 
 IF(SDL2_LIBRARY)
     FIND_PATH(SDL2_INCLUDE_DIR SDL.h
-        HINTS $ENV{SDL2DIR}
+        HINTS $ENV{SDL2DIR} ${SDL2_LIBRARY_DIR} ${SDL2_LIBRARY_DIR}/../../
         PATH_SUFFIXES include/SDL2 include
         PATHS ${SDL2_SEARCH_PATHS}
     )
@@ -175,8 +175,7 @@ IF(SDL2_LIBRARY)
             # necessarily need it.
             FIND_LIBRARY(SDL2MAIN_LIBRARY
                 NAMES SDL2main
-                HINTS
-                $ENV{SDL2DIR}
+                HINTS $ENV{SDL2DIR} ${SDL2_LIBRARY_DIR}
                 PATH_SUFFIXES ${SDL2_FIND_PATH_SUFFIXES}
                 PATHS ${SDL2_SEARCH_PATHS}
             )
@@ -235,7 +234,7 @@ ENDIF(SDL2_LIBRARY)
 
 INCLUDE(FindPackageHandleStandardArgs)
 
-find_package_handle_standard_args(SDL2 REQUIRED_VARS SDL2_LIBRARY SDL2_LIBRARY_DIR SDL2_INCLUDE_DIR SDL2_DEPENDENCIES)
+find_package_handle_standard_args(SDL2 REQUIRED_VARS SDL2_LIBRARY SDL2_LIBRARY_DIR SDL2_INCLUDE_DIR)
 mark_as_advanced(SDL2_LIBRARY SDL2_LIBRARY_DIR SDL2_INCLUDE_DIR SDL2_DEPENDENCIES)
 
 if(SDL2_FOUND)
