@@ -5,7 +5,7 @@ endif()
 find_package(SDL2)
 
 if(NOT TARGET SDL2::SDL2)
-    message(WARNING "SDL2 not found, not building RendererApp. If you already installed SDL2, please set SDL2DIR or CMAKE_PREFIX_PATH to your SDL2 installation.")
+    message(WARNING "SDL2 not found, not building RendererApp. If you already installed SDL2, please set the SDL2DIR env variable or CMAKE_PREFIX_PATH to your SDL2 installation.")
     return()
 else()
     message(STATUS "Found SDL2 at ${SDL2_LIBRARY_DIR}, building RendererApp.")
