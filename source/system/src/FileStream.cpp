@@ -30,10 +30,9 @@ size_t FileStream::read(void* buffer, size_t size)
 {
     assert(is_open());
     const size_t readSize = fread(buffer, sizeof(char), size, file);
-    if (readSize != size) {
-        if (feof(file)) {
-            setstate(eofbit);
-        }
+    if (readSize != size)
+    {
+        if (feof(file)) { setstate(eofbit); }
         setstate(failbit);
     }
     return readSize;
@@ -75,4 +74,4 @@ int FileStream::getc()
     if (c == EOF) { setstate(failbit | eofbit); }
     return c;
 }
-}
+} // namespace WorldStone

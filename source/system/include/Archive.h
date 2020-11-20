@@ -34,8 +34,8 @@ public:
     Archive& operator=(const Archive&) = delete;
     virtual ~Archive();
 
-    virtual bool exists(const Path& filePath)    = 0;
-    virtual StreamPtr open(const Path& filePath) = 0;
-    virtual bool isThreadSafe() { return false; }
+    virtual bool      exists(const Path& filePath) = 0;
+    virtual StreamPtr open(const Path& filePath)   = 0;
+    virtual bool      isThreadSafe() { return false; }
 };
-}
+} // namespace WorldStone

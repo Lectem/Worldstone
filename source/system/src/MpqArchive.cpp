@@ -23,9 +23,7 @@ MpqArchive::MpqArchive(const char* MpqFileName, const char* listFilePath) : mpqF
 {
     static_assert(std::is_same<MpqArchive::HANDLE, ::HANDLE>(),
                   "Make sure we correctly defined HANDLE type");
-    if (load() && listFilePath) {
-        addListFile(listFilePath);
-    }
+    if (load() && listFilePath) { addListFile(listFilePath); }
 }
 
 MpqArchive::~MpqArchive() { unload(); }
@@ -100,11 +98,10 @@ size_t MpqFileStream::read(void* buffer, size_t size)
     DWORD readBytes = 0;
 
     bool success = SFileReadFile(file, buffer, static_cast<DWORD>(size), &readBytes, nullptr);
-    if (!success) {
+    if (!success)
+    {
         const DWORD lastError = GetLastError();
-        if (lastError == ERROR_HANDLE_EOF) {
-            setstate(eofbit);
-        }
+        if (lastError == ERROR_HANDLE_EOF) { setstate(eofbit); }
         setstate(failbit);
     }
     return readBytes;
@@ -134,4 +131,4 @@ long MpqFileStream::size()
     if (sizeLower32bits == SFILE_INVALID_SIZE) setstate(failbit);
     return static_cast<long>(sizeLower32bits);
 }
-}
+} // namespace WorldStone

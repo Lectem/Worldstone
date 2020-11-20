@@ -111,8 +111,8 @@ TEST_CASE("BitStreamView read.")
         const size_t offset = CHAR_BIT + 2;
         bitstream.setPosition(offset);
         BitStreamView subView = bitstream.createSubView(bitstream.sizeInBits() - offset);
-        CHECK(subView.bufferSizeInBytes() ==
-              bitstream.bufferSizeInBytes() - 1); // We're in the second byte
+        CHECK(subView.bufferSizeInBytes()
+              == bitstream.bufferSizeInBytes() - 1); // We're in the second byte
         CHECK(subView.tell() == 0);
     }
     SUBCASE("Subview of size 0")

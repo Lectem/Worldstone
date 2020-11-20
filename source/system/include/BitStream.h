@@ -42,10 +42,10 @@ public:
     BitStreamView() = default;
     /// Creates a bitstream from raw memory
     BitStreamView(const void* inputBuffer, size_t sizeInBits, size_t firstBitOffsetInBuffer = 0)
-        : size(sizeInBits),
-          firstBitOffset(firstBitOffsetInBuffer),
-          currentBitPosition(firstBitOffsetInBuffer),
-          buffer(static_cast<const byte*>(inputBuffer))
+        : size(sizeInBits)
+        , firstBitOffset(firstBitOffsetInBuffer)
+        , currentBitPosition(firstBitOffsetInBuffer)
+        , buffer(static_cast<const byte*>(inputBuffer))
     {
         assert(firstBitOffset + size <= bufferSizeInBits());
     }
@@ -143,8 +143,8 @@ public:
         currentBitPosition += size_t(nbBits);
         // Note: Could get rid of the condition by having one extra byte at the end of the stream
         const uint16_t shortFromBuffer =
-            buffer[curBytesPos] |
-            ((bitPosInCurByte + nbBits > 8) ? uint16_t(buffer[curBytesPos + 1] << CHAR_BIT) : 0);
+            buffer[curBytesPos]
+            | ((bitPosInCurByte + nbBits > 8) ? uint16_t(buffer[curBytesPos + 1] << CHAR_BIT) : 0);
         const unsigned mask  = 0xFF >> (CHAR_BIT - nbBits);
         const uint8_t  value = uint8_t((shortFromBuffer >> bitPosInCurByte) & mask);
         return value;
@@ -158,7 +158,7 @@ public:
      * @note The value is sign extended, hence for 1-bit values: 0b0 is 0 and 0b1 is -1.
      */
     template<unsigned NbBits, typename std::enable_if<(NbBits > 0)>::type* = nullptr>
-    int32_t           readSigned()
+    int32_t readSigned()
     {
         return Utils::signExtend<int32_t, NbBits>(readUnsigned(NbBits));
     }
@@ -169,10 +169,10 @@ public:
      * call it.
      */
     template<unsigned NbBits, typename std::enable_if<(NbBits == 0)>::type* = nullptr>
-    int32_t           readSigned()
+    int32_t readSigned()
     {
         currentBitPosition += NbBits;
         return 0;
     }
 };
-}
+} // namespace WorldStone

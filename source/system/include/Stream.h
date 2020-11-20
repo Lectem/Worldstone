@@ -23,7 +23,7 @@ class IStream : public IOBase
 {
 public:
     /// True if the end of the stream was reached during the last read operation
-    bool                 eof() const { return (_state & eofbit) != 0; }
+    bool eof() const { return (_state & eofbit) != 0; }
 
     enum seekdir
     {
@@ -76,4 +76,4 @@ public:
 };
 
 using StreamPtr = std::unique_ptr<IStream>;
-}
+} // namespace WorldStone

@@ -35,6 +35,6 @@ public:
      */
     long   size() override;
     size_t read(void* buffer, size_t size) override;
-    int getc() override;
+    int    getc() override;
 };
-}
+} // namespace WorldStone

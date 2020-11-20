@@ -24,12 +24,12 @@ public:
     MpqArchive& operator=(MpqArchive&& toMove);
     ~MpqArchive() override;
 
-    bool exists(const Path& filePath) override;
+    bool      exists(const Path& filePath) override;
     StreamPtr open(const Path& filePath) override;
 
     HANDLE getInternalHandle() { return mpqHandle; }
 
-    void addListFile(const char* listFilePAth);
+    void              addListFile(const char* listFilePAth);
     std::vector<Path> findFiles(const Path& searchMask = "*");
 
 private:
@@ -70,4 +70,4 @@ public:
 
     ~MpqFileStream() override;
 };
-}
+} // namespace WorldStone

@@ -1,6 +1,6 @@
 /**
-* @file FileStreamTests.cpp
-*/
+ * @file FileStreamTests.cpp
+ */
 
 #include <FileStream.h>
 #include <MpqArchive.h>
@@ -30,7 +30,7 @@ public:
 
     ~MpqFileWrapper() { close(); }
 };
-}
+} // namespace
 typedef doctest::Types<WorldStone::FileStream, MpqFileWrapper> stream_types;
 
 TYPE_TO_STRING(WorldStone::FileStream);

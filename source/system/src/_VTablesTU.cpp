@@ -23,4 +23,4 @@ int IStream::getc()
     else
         return -1;
 }
-}
+} // namespace WorldStone
