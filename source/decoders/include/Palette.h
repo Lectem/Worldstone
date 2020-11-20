@@ -29,18 +29,18 @@ struct Palette
     struct Color24Bits
     {
         uint8_t r, g, b;
-        bool operator==(const Color24Bits& rhs) const
+        bool    operator==(const Color24Bits& rhs) const
         {
             return r == rhs.r && g == rhs.g && b == rhs.b;
         }
     };
-    static const size_t colorCount = 256;
+    static const size_t           colorCount = 256;
     std::array<Color, colorCount> colors;
 
-    bool decode(const char* filename);
-    bool decode(IStream* file);
+    bool    decode(const char* filename);
+    bool    decode(IStream* file);
     uint8_t GetClosestColorIndex(Color color);
-    bool operator==(const Palette& rhs) const { return colors == rhs.colors; }
+    bool    operator==(const Palette& rhs) const { return colors == rhs.colors; }
 };
 
 struct PalShiftTransform

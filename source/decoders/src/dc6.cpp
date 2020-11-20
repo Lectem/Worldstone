@@ -18,9 +18,7 @@ bool DC6::initDecoder(StreamPtr&& streamPtr)
 {
     assert(!stream);
     stream = std::move(streamPtr);
-    if (stream && stream->good()) {
-        return extractHeaders();
-    }
+    if (stream && stream->good()) { return extractHeaders(); }
     return false;
 }
 
@@ -59,8 +57,10 @@ std::vector<uint8_t> DC6::decompressFrame(size_t frameNumber) const
     // Allocate memory for the decoded data
     std::vector<uint8_t> data(static_cast<size_t>(fHeader.width * fHeader.height));
 
-    if (decompressFrameIn(frameNumber, data.data()))return data;
-    else return {};
+    if (decompressFrameIn(frameNumber, data.data()))
+        return data;
+    else
+        return {};
 }
 
 bool DC6::decompressFrameIn(size_t frameNumber, uint8_t* data) const

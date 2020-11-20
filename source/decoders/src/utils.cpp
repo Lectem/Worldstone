@@ -14,7 +14,8 @@ namespace Utils
 void exportToPGM(const char* output, const uint8_t* data, int width, int height, int maxVal)
 {
     assert(width > 0 && height > 0);
-    if (maxVal == -1) {
+    if (maxVal == -1)
+    {
         for (int i = 0; i < width * height; ++i)
         {
             if (maxVal < data[i]) maxVal = data[i];
@@ -23,7 +24,8 @@ void exportToPGM(const char* output, const uint8_t* data, int width, int height,
     maxVal     = maxVal < 1 ? 1 : maxVal;
     int   bpp  = maxVal >= 256 ? 2 : 1;
     FILE* file = fopen(output, "wb");
-    if (file) {
+    if (file)
+    {
         fmt::print(file, "P5 {} {} {}\n", width, height, maxVal);
         fwrite(data, static_cast<size_t>(bpp), static_cast<size_t>(width * height), file);
         fclose(file);
@@ -41,7 +43,8 @@ void exportToPPM(const char* output, const uint8_t* data, int width, int height,
 {
     assert(width > 0 && height > 0);
     FILE* file = fopen(output, "wb");
-    if (file) {
+    if (file)
+    {
         fmt::print(file, "P6 {} {} 255\n", width, height);
         for (size_t i = 0; i < static_cast<size_t>(width * height); ++i)
         {

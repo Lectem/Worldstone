@@ -57,4 +57,4 @@ struct AABB
                 std::numeric_limits<T>::lowest(), std::numeric_limits<T>::lowest()};
     }
 };
-}
+} // namespace WorldStone

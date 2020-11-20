@@ -96,7 +96,7 @@ public:
      * @return A valid vector to the data on success, empty one on failure
      */
     std::vector<uint8_t> decompressFrame(size_t frameNumber) const;
-    
+
     /**Same as @ref decompressFrame but will output the data in a given buffer
      */
     bool decompressFrameIn(size_t frameNumber, uint8_t* data) const;

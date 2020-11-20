@@ -26,7 +26,8 @@ bool Palette::decode(const char* filename)
 
 bool Palette::decode(IStream* file)
 {
-    if (file && file->good()) {
+    if (file && file->good())
+    {
         for (size_t i = 0; i < colorCount; i++)
         {
             // order is BGR, not RGB
@@ -52,7 +53,8 @@ uint8_t Palette::GetClosestColorIndex(Palette::Color color)
         const int      diffBlue  = palColor.b - color.b;
         const uint32_t distance =
             uint32_t(diffRed * diffRed + diffGreen * diffGreen + diffBlue * diffBlue);
-        if (distance < closestColorDistance) {
+        if (distance < closestColorDistance)
+        {
             closestColorDistance = distance;
             closestColorIndex    = currentIndex;
         }
@@ -85,7 +87,8 @@ ColorHSL ConvertRGBtoHSL(const Palette::Color& rgb)
     hsl.lum = minMaxSum / 2.0;
     assert(hsl.lum >= 0.0 && hsl.lum <= 1.0);
 
-    if (minRGB == maxRGB) {
+    if (minRGB == maxRGB)
+    {
         hsl.hue = 0.0;
         hsl.sat = 0.0;
 
@@ -95,18 +98,14 @@ ColorHSL ConvertRGBtoHSL(const Palette::Color& rgb)
     {
 
         const double deltaMinMax = maxRGB - minRGB;
-        if (hsl.lum > 0.5) {
-            hsl.sat = deltaMinMax / (2.0 - minMaxSum);
-        }
+        if (hsl.lum > 0.5) { hsl.sat = deltaMinMax / (2.0 - minMaxSum); }
         else
         {
             hsl.sat = deltaMinMax / minMaxSum;
         }
         assert(hsl.sat >= 0.0 && hsl.sat <= 1.0);
 
-        if (maxRGB == red) {
-            hsl.hue = (green - blue) / deltaMinMax;
-        }
+        if (maxRGB == red) { hsl.hue = (green - blue) / deltaMinMax; }
         else if (maxRGB == green)
         {
             hsl.hue = (blue - red) / deltaMinMax + 2.0;
@@ -135,7 +134,8 @@ double hue2rgb(double p, double q, double t)
 Palette::Color ConvertHSLtoRGB(const ColorHSL& hsl)
 {
     Palette::Color rgbColor;
-    if (hsl.sat == 0.0) {
+    if (hsl.sat == 0.0)
+    {
         rgbColor.r = rgbColor.g = rgbColor.b = uint8_t(hsl.lum * 255.0);
         return rgbColor;
     }
@@ -145,7 +145,7 @@ Palette::Color ConvertHSLtoRGB(const ColorHSL& hsl)
         if (hsl.lum > 0.5)
             q = hsl.lum + hsl.sat - hsl.lum * hsl.sat;
         else
-            q          = (hsl.sat + 1.0) * hsl.lum;
+            q = (hsl.sat + 1.0) * hsl.lum;
         const double p = 2.0 * hsl.lum - q;
 
         rgbColor.r = uint8_t(hue2rgb(p, q, hsl.hue + 120.0) * 255.0);
@@ -209,9 +209,7 @@ void PL2CreateSelectedUnitShift(PL2& pl2, ColorHSL hslColors[Palette::colorCount
     {
 
         ColorHSL tmpColorHSL = hslColors[colorIndex];
-        if (tmpColorHSL.lum != 0.0) {
-            tmpColorHSL.lum = std::min(tmpColorHSL.lum + 0.2, 1.0);
-        }
+        if (tmpColorHSL.lum != 0.0) { tmpColorHSL.lum = std::min(tmpColorHSL.lum + 0.2, 1.0); }
 
         pl2.selectedUnitShift.indices[colorIndex] =
             pl2.basePalette.GetClosestColorIndex(ConvertHSLtoRGB(tmpColorHSL));
@@ -336,9 +334,7 @@ void PL2CreateColorshifts(PL2& pl2, ColorHSL hslColors[Palette::colorCount])
             tmpColorHSL.lum += double(0.2f); // The game actually uses the float constant which can
                                              // give slightly off results
 #endif
-            if (tmpColorHSL.lum > 1.0) {
-                tmpColorHSL.lum = 1.0;
-            }
+            if (tmpColorHSL.lum > 1.0) { tmpColorHSL.lum = 1.0; }
 
             pl2.hueVariations[48 + hueShiftIndex].indices[colorIndex] =
                 pl2.basePalette.GetClosestColorIndex(ConvertHSLtoRGB(tmpColorHSL));
@@ -377,7 +373,8 @@ void PL2CreateColorshifts(PL2& pl2, ColorHSL hslColors[Palette::colorCount])
         {
             ColorHSL tmpColorHSL = hslColors[colorIndex];
             // Only shift non red/orange (blood/fire?) colors
-            if (tmpColorHSL.hue > 45.0 && tmpColorHSL.hue < 315.0) {
+            if (tmpColorHSL.hue > 45.0 && tmpColorHSL.hue < 315.0)
+            {
 
                 tmpColorHSL.hue += (double)hueShiftIndex * 15.0;
                 if (tmpColorHSL.hue > 360.0) tmpColorHSL.hue -= 360.0;
@@ -545,7 +542,8 @@ std::unique_ptr<PL2> PL2::ReadFromStream(IStream* stream)
 {
     static_assert(sizeof(PL2) == 443175, "PL2 struct does not match the size of the files");
     static_assert(std::is_trivially_copyable<PL2>::value, "PL2 is not trivially copyable");
-    if (stream && stream->good()) {
+    if (stream && stream->good())
+    {
         auto pl2 = std::make_unique<PL2>();
         if (stream->read(pl2.get(), sizeof(PL2)) == sizeof(PL2)) return pl2;
     }

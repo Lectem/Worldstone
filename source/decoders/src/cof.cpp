@@ -18,7 +18,8 @@ constexpr const char* COF::componentsNames[COF::componentsNumber];
 
 bool COF::read(const StreamPtr& streamPtr)
 {
-    if (streamPtr && streamPtr->good()) {
+    if (streamPtr && streamPtr->good())
+    {
         static_assert(std::is_trivially_copyable<Header>(),
                       "COF::Header must be trivially copyable");
         static_assert(sizeof(Header) == 4 + 6 * sizeof(uint32_t),
