@@ -21,10 +21,9 @@ void SearchableListWidget::updateFilteredElementsList()
 
 bool SearchableListWidget::display()
 {
-    if (textFilter.Draw("##Filter")) {
-        updateFilteredElementsList();
-    }
-    if (!filteredElements.size()) {
+    if (textFilter.Draw("##Filter")) { updateFilteredElementsList(); }
+    if (!filteredElements.size())
+    {
         ImGui::Text("No file found.");
         return false;
     }
@@ -35,8 +34,7 @@ bool SearchableListWidget::display()
 
 const char* SearchableListWidget::getSelectedElement()
 {
-    if (currentSelectionIndex >= 0 && size_t(currentSelectionIndex) < filteredElements.size()) {
-        return filteredElements[size_t(currentSelectionIndex)];
-    }
+    if (currentSelectionIndex >= 0 && size_t(currentSelectionIndex) < filteredElements.size())
+    { return filteredElements[size_t(currentSelectionIndex)]; }
     return nullptr;
 }

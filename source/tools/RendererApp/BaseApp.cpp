@@ -2,13 +2,14 @@
 #include <Platform.h>
 
 WS_PRAGMA_DIAGNOSTIC_PUSH()
-// Caused by winnt.h because SDL2 changes packing, see https://bugzilla.libsdl.org/show_bug.cgi?id=4159
-WS_PRAGMA_DIAGNOSTIC_IGNORED_MSC(4121)  // warning C4121:
-                                        // 'JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V2':
-                                        // alignment of a member was sensitive to packing
+// Caused by winnt.h because SDL2 changes packing, see
+// https://bugzilla.libsdl.org/show_bug.cgi?id=4159
+WS_PRAGMA_DIAGNOSTIC_IGNORED_MSC(4121) // warning C4121:
+                                       // 'JOBOBJECT_IO_RATE_CONTROL_INFORMATION_NATIVE_V2':
+                                       // alignment of a member was sensitive to packing
+#include <bgfx/platform.h>
 #include <SDL.h>
 #include <SDL_syswm.h>
-#include <bgfx/platform.h>
 WS_PRAGMA_DIAGNOSTIC_POP()
 
 // List of stupid defines from Xlib.h, included by SDL_syswm
@@ -23,7 +24,8 @@ int BaseApp::init()
     stopRunning = false;
 
     // Setup SDL
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+    {
         SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Error initializing SDL: %s\n", SDL_GetError());
         return -1;
     }
@@ -36,8 +38,9 @@ int BaseApp::init()
         windowWidth, windowHeight,
         SDL_WINDOW_SHOWN
         // clang-format on
-        );
-    if (!mainWindow) {
+    );
+    if (!mainWindow)
+    {
         SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Error creating window: %s\n", SDL_GetError());
         return -1;
     }
@@ -45,7 +48,8 @@ int BaseApp::init()
     // Initialize the renderer
     SDL_SysWMinfo wmi;
     SDL_VERSION(&wmi.version);
-    if (!SDL_GetWindowWMInfo(mainWindow, &wmi)) {
+    if (!SDL_GetWindowWMInfo(mainWindow, &wmi))
+    {
         SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Couldn't get window information: %s", SDL_GetError());
         return -1;
     }
@@ -140,9 +144,8 @@ void BaseApp::executeLoopOnce()
         {
             Inputs::MouseState mouseState;
             mouseState.buttonsMask = SDL_GetMouseState(&mouseState.x, &mouseState.y);
-            if (!(SDL_GetWindowFlags(mainWindow) & SDL_WINDOW_MOUSE_FOCUS)) {
-                mouseState.x = mouseState.y = std::numeric_limits<int>::lowest();
-            }
+            if (!(SDL_GetWindowFlags(mainWindow) & SDL_WINDOW_MOUSE_FOCUS))
+            { mouseState.x = mouseState.y = std::numeric_limits<int>::lowest(); }
             transfer.PushMouseState(mouseState);
         }
 
@@ -164,9 +167,7 @@ void BaseApp::executeAppLoopOnce()
         {
         case SDL_QUIT: requireExit(); break;
         case SDL_KEYUP:
-            if (event.key.keysym.sym == SDLK_F1) {
-                debugDisplay = !debugDisplay;
-            }
+            if (event.key.keysym.sym == SDLK_F1) { debugDisplay = !debugDisplay; }
             break;
         default: break;
         }
@@ -192,15 +193,14 @@ void BaseApp::run()
         executeLoopOnce();
     }
     // Wait for destruction of the context
-    while (bgfx::RenderFrame::NoContext != bgfx::renderFrame())
-    {
-    };
+    while (bgfx::RenderFrame::NoContext != bgfx::renderFrame()) {};
     appThread.join();
 }
 
 void BaseApp::runAppThread()
 {
-    if (!initAppThread()) {
+    if (!initAppThread())
+    {
         requireExit();
         shutdownAppThread();
         return;

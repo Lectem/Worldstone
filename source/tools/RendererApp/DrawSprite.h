@@ -1,9 +1,9 @@
 #pragma once
 
 #include <stdint.h>
+#include <Palette.h>
 #include <Vector.h>
 #include <memory>
-#include <Palette.h>
 
 class SpriteRenderer
 {
@@ -34,7 +34,7 @@ public:
                                                                     // handle system
 
     void init(const WorldStone::Palette& palette);
-    int shutdown();
+    int  shutdown();
     void setPalette(const WorldStone::Palette& palette);
 
     SpriteRenderDataHandle createSpriteRenderData();
@@ -61,7 +61,7 @@ private:
     void drawFrame(const struct FrameRenderData& renderData);
     void recycleSpritesData();
 
-    WorldStone::Vector<std::shared_ptr<SpriteRenderData>> spritesData;
+    WorldStone::Vector<std::shared_ptr<SpriteRenderData>>                         spritesData;
     WorldStone::Vector<std::pair<std::shared_ptr<SpriteRenderData>, DrawRequest>> spritesToRender;
 
     // Should actually be pimpl, but for now data is enough

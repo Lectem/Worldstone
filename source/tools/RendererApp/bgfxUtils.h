@@ -5,6 +5,6 @@
 #pragma once
 #include <bgfx/bgfx.h>
 #include <bx/readerwriter.h>
-bgfx::ShaderHandle loadShader(const char* _name);
+bgfx::ShaderHandle  loadShader(const char* _name);
 bgfx::ProgramHandle loadProgram(bx::FileReaderI* _reader, const char* _vsName, const char* _fsName);
 bgfx::ProgramHandle loadProgram(const char* _vsName, const char* _fsName);

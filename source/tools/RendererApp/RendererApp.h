@@ -16,8 +16,8 @@ private:
 
     void updateMouseAccordingToImgui();
 
-    bool                 showBgfxStats = false;
-    bx::DefaultAllocator imguiAllocator;
+    bool                               showBgfxStats = false;
+    bx::DefaultAllocator               imguiAllocator;
     std::unique_ptr<class FileBrowser> fileBrowser;
     SpriteRenderer                     spriteRenderer;
 };

@@ -3,19 +3,22 @@
 #include <fmt/format.h>
 
 using WorldStone::DC6;
-using WorldStone::Palette;
 using WorldStone::FileStream;
+using WorldStone::Palette;
 
 int main(int argc, char* argv[])
 {
-    if (argc == 4) {
+    if (argc == 4)
+    {
         Palette palette;
-        if (!palette.decode(argv[2])) {
+        if (!palette.decode(argv[2]))
+        {
             fmt::print("Couldn't read the palette file\n");
             return 1;
         }
         DC6 dc6;
-        if (dc6.initDecoder(std::make_unique<FileStream>(argv[1]))) {
+        if (dc6.initDecoder(std::make_unique<FileStream>(argv[1])))
+        {
             int frameIndex = 0;
             for (auto& frameHeader : dc6.getFrameHeaders())
             {

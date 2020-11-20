@@ -79,9 +79,7 @@ void RendererApp::executeAppLoopOnce()
         {
         case SDL_QUIT: requireExit(); break;
         case SDL_KEYDOWN:
-            if (event.key.keysym.sym == SDLK_F1) {
-                showBgfxStats = !showBgfxStats;
-            }
+            if (event.key.keysym.sym == SDLK_F1) { showBgfxStats = !showBgfxStats; }
             WS_FALLTHROUGH;
         case SDL_KEYUP:
         {
@@ -94,7 +92,9 @@ void RendererApp::executeAppLoopOnce()
             imguiIO.KeySuper      = ((SDL_GetModState() & KMOD_GUI) != 0);
             break;
         }
-        case SDL_MOUSEWHEEL: { float mouseWheelY = float(event.wheel.y);
+        case SDL_MOUSEWHEEL:
+        {
+            float mouseWheelY = float(event.wheel.y);
 #if SDL_VERSION_ATLEAST(2, 0, 4)
             if (event.wheel.direction == SDL_MOUSEWHEEL_FLIPPED) mouseWheelY *= -1.f;
 #endif
@@ -177,7 +177,8 @@ void RendererApp::updateMouseAccordingToImgui()
     if (io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange) return;
 
     const ImGuiMouseCursor imguiCursor = ImGui::GetMouseCursor();
-    if (io.MouseDrawCursor || imguiCursor == ImGuiMouseCursor_None) {
+    if (io.MouseDrawCursor || imguiCursor == ImGuiMouseCursor_None)
+    {
         // Hide OS mouse cursor if imgui is drawing it or if it wants no cursor
         SDL_ShowCursor(SDL_FALSE);
     }
