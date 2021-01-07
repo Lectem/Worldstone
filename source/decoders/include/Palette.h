@@ -76,6 +76,7 @@ struct PL2
     PalShiftTransform additiveBlend[256]; ///< glBlendFunc(GL_ONE, GL_ONE)
     PalShiftTransform multiplicativeBlend[256]; ///< glBlendFunc(GL_ZERO, GL_SRC_COLOR)
 
+    // The following 128 palette shifts are the ones specified in states.txt
     PalShiftTransform hueVariations[111];
     PalShiftTransform redTones;
     PalShiftTransform greenTones;
