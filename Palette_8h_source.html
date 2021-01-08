@@ -172,23 +172,24 @@ $(document).ready(function(){initNavTree('Palette_8h_source.html','');});
 <div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="structWorldStone_1_1PL2.html#aa478964ca76b3945495d8c954f63d334">   76</a></span>&#160;    <a class="code" href="structWorldStone_1_1PalShiftTransform.html">PalShiftTransform</a> <a class="code" href="structWorldStone_1_1PL2.html#aa478964ca76b3945495d8c954f63d334">additiveBlend</a>[256]; </div>
 <div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="structWorldStone_1_1PL2.html#a4656d2b617571747f3cf4175519f8afb">   77</a></span>&#160;    <a class="code" href="structWorldStone_1_1PalShiftTransform.html">PalShiftTransform</a> <a class="code" href="structWorldStone_1_1PL2.html#a4656d2b617571747f3cf4175519f8afb">multiplicativeBlend</a>[256]; </div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <a class="code" href="structWorldStone_1_1PalShiftTransform.html">PalShiftTransform</a> hueVariations[111];</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <a class="code" href="structWorldStone_1_1PalShiftTransform.html">PalShiftTransform</a> redTones;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <a class="code" href="structWorldStone_1_1PalShiftTransform.html">PalShiftTransform</a> greenTones;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <a class="code" href="structWorldStone_1_1PalShiftTransform.html">PalShiftTransform</a> blueTones;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <a class="code" href="structWorldStone_1_1PalShiftTransform.html">PalShiftTransform</a> unknownColorVariations[14];</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <a class="code" href="structWorldStone_1_1PalShiftTransform.html">PalShiftTransform</a> maxComponentBlend[256];</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <a class="code" href="structWorldStone_1_1PalShiftTransform.html">PalShiftTransform</a> darkenedColorShift;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <a class="code" href="structWorldStone_1_1Palette_1_1Color24Bits.html">Palette::Color24Bits</a> textColors[13];</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <a class="code" href="structWorldStone_1_1PalShiftTransform.html">PalShiftTransform</a>    textColorShifts[13];</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keyword">static</span> std::unique_ptr&lt;PL2&gt; CreateFromPalette(<span class="keyword">const</span> <a class="code" href="structWorldStone_1_1Palette.html">Palette</a>&amp; palette);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">static</span> std::unique_ptr&lt;PL2&gt; ReadFromStream(<a class="code" href="classWorldStone_1_1IStream.html">IStream</a>* stream);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;};</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;} <span class="comment">// namespace WorldStone</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">// The following 128 palette shifts are the ones specified in states.txt</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <a class="code" href="structWorldStone_1_1PalShiftTransform.html">PalShiftTransform</a> hueVariations[111];</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <a class="code" href="structWorldStone_1_1PalShiftTransform.html">PalShiftTransform</a> redTones;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <a class="code" href="structWorldStone_1_1PalShiftTransform.html">PalShiftTransform</a> greenTones;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <a class="code" href="structWorldStone_1_1PalShiftTransform.html">PalShiftTransform</a> blueTones;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <a class="code" href="structWorldStone_1_1PalShiftTransform.html">PalShiftTransform</a> unknownColorVariations[14];</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <a class="code" href="structWorldStone_1_1PalShiftTransform.html">PalShiftTransform</a> maxComponentBlend[256];</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <a class="code" href="structWorldStone_1_1PalShiftTransform.html">PalShiftTransform</a> darkenedColorShift;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <a class="code" href="structWorldStone_1_1Palette_1_1Color24Bits.html">Palette::Color24Bits</a> textColors[13];</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <a class="code" href="structWorldStone_1_1PalShiftTransform.html">PalShiftTransform</a>    textColorShifts[13];</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">static</span> std::unique_ptr&lt;PL2&gt; CreateFromPalette(<span class="keyword">const</span> <a class="code" href="structWorldStone_1_1Palette.html">Palette</a>&amp; palette);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">static</span> std::unique_ptr&lt;PL2&gt; ReadFromStream(<a class="code" href="classWorldStone_1_1IStream.html">IStream</a>* stream);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;};</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;} <span class="comment">// namespace WorldStone</span></div>
 <div class="ttc" id="classWorldStone_1_1IStream_html"><div class="ttname"><a href="classWorldStone_1_1IStream.html">WorldStone::IStream</a></div><div class="ttdoc">An interface for a stream of data. </div><div class="ttdef"><b>Definition:</b> <a href="Stream_8h_source.html#l00022">Stream.h:22</a></div></div>
 <div class="ttc" id="Stream_8h_html"><div class="ttname"><a href="Stream_8h.html">Stream.h</a></div></div>
 <div class="ttc" id="structWorldStone_1_1Palette_1_1Color_html"><div class="ttname"><a href="structWorldStone_1_1Palette_1_1Color.html">WorldStone::Palette::Color</a></div><div class="ttdef"><b>Definition:</b> <a href="Palette_8h_source.html#l00023">Palette.h:23</a></div></div>
@@ -206,7 +207,7 @@ $(document).ready(function(){initNavTree('Palette_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li><li class="navelem"><a class="el" href="dir_7c3a1345283c9702e0309ab160183c1c.html">decoders</a></li><li class="navelem"><a class="el" href="dir_112f59ce41b72cf5bdf247a10e9ed384.html">include</a></li><li class="navelem"><b>Palette.h</b></li>
-    <li class="footer">Generated on Wed Jan 6 2021 16:45:35 for Worldstone by
+    <li class="footer">Generated on Fri Jan 8 2021 00:19:24 for Worldstone by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.6 </li>
   </ul>
