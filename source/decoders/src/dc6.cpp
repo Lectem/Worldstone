@@ -69,6 +69,20 @@ bool DC6::decompressFrameIn(size_t frameNumber, uint8_t* data) const
     stream->seek(framePointers[frameNumber] + sizeof(FrameHeader), IStream::beg);
     const FrameHeader& fHeader = frameHeaders[frameNumber];
     assert(fHeader.width > 0 && fHeader.height > 0);
+    
+    // Eat any leading 0s. Blizzard somehow changed and fucked up the encoding or serialization in D2:Remaster
+    // The 3 additional trailing bytes that used to be garbage at the end of the data are now replaced with leading 0s
+    // Those are NOT counted by the FrameHeader::length member, so ignore them
+    int leadingZeros = 0;
+    int val = -1;
+    do {
+        val = stream->getc();
+        if(val == 0)
+            leadingZeros++;
+    } while (val == 0);
+    // These are the only values we encountered so far, so report if you find another.
+    assert(leadingZeros == 0 || leadingZeros == 3);
+
 
     // TODO: figure if we should invert data here or let the renderer do it
     // assert(!fHeader.flip);
@@ -76,12 +90,13 @@ bool DC6::decompressFrameIn(size_t frameNumber, uint8_t* data) const
     // We're reading it bottom to top, but save data with the y axis from top to
     // bottom
     int    x = 0, y = fHeader.height - 1;
-    size_t rawIndex = 0;
-    while (rawIndex < fHeader.length)
+    size_t rawIndex;
+    for (rawIndex = 0; rawIndex < fHeader.length; val = stream->getc())
     {
-        int val = stream->getc();
-        rawIndex++;
-        if (stream->eof()) return false;
+        if (stream->eof() || val == -1) return false;
+
+        rawIndex++; // We ate a character from the stream
+
         uint8_t chunkSize = static_cast<uint8_t>(val);
         if (chunkSize == 0x80) // end of line
         {
