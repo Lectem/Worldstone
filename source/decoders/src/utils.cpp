@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <fmt/format.h>
 #include "Palette.h"
+#include <cassert>
 
 namespace WorldStone
 {

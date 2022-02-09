@@ -8,6 +8,7 @@
 #include <fmt/format.h>
 #include "Palette.h"
 #include "utils.h"
+#include <cassert>
 
 // TODO : Remove asserts and replace with proper error handling
 
